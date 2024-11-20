@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
+import car from '@/assets/car.jpg'
 
 const HeroSection = () => {
   const formFields = [
@@ -44,7 +45,7 @@ const HeroSection = () => {
 <div
        className="bg-[#ffeded] min-h-screen relative flex flex-col bg-no-repeat bg-cover bg-[position:60%_center] sm:bg-center"
        style={{
-         backgroundImage: "url('/heroimage/enhanced.jpg')",
+         backgroundImage: `url(${car.src})`, // Use the imported image here
          backgroundSize: 'cover',
        }}
 
