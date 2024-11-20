@@ -445,7 +445,7 @@ const Navbar = () => {
                     Search
                   </Link>
                   <Link
-                    href="/best_deals"
+                    href="/bestdealss"
                     className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Best Deals

@@ -3,7 +3,7 @@ import React from "react";
 
 const InspectionDetails = () => {
     return (
-        <section className="history-legal-defects">
+        <div className="history-legal-defects">
 
             <div className="container bg-[#FEF3F3]">
 
@@ -102,7 +102,7 @@ const InspectionDetails = () => {
         }
       }
     `}</style>
-        </section>
+        </div>
     );
 };
 

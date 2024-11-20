@@ -381,7 +381,7 @@ const AppBar = () => {
                       Search
                     </Link>
                     <Link 
-                      href="/best_deals" 
+                      href="/bestdealss" 
                       className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Best Deals
