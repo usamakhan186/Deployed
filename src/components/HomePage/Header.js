@@ -44,11 +44,9 @@ const HeroSection = () => {
 <div
       className="bg-[#ffeded] min-h-screen relative flex flex-col bg-no-repeat bg-cover bg-[position:60%_center] sm:bg-center"
       style={{
-        backgroundImage: url('/car-mobile.jpg'), url('/car.jpg'),
+        backgroundImage: `url('/heroImage/enhanced.jpg')`,
         backgroundSize: 'cover',
-        '@media (min-width: 640px)': {
-          backgroundImage: url('/car.jpg')
-        }
+        // Media queries are not valid directly in the style object. Instead, handle them using CSS or Tailwind's responsive classes.
       }}
     >
       <div className="bg-zinc-600 bg-opacity-40 py-20 sm:py-8 flex-1">

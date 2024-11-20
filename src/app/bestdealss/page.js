@@ -1,7 +1,7 @@
 'use client';
 
 import AppBar from '@/components/AppBar2'
-import BestDealsPage from '@/components/Bestdeals/bestdealspage'
+import BestDealsPage from '@/components/Best_deals/bestdealspage'
 import React, { Suspense } from 'react'
 
 const BestDealsPageWrapper = () => {
@@ -16,7 +16,7 @@ const BestDeals = () => {
   return (
     <div>
       <AppBar />
-      <BestDealsPageWrapper />
+      <BestDealsPageWrapper/>
     </div>
   )
 }

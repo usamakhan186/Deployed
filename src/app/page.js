@@ -18,7 +18,7 @@ export default function Home() {
     <Navbar/>
     <HeroSection/>
     <SafePurchaseSection/>
-    <TrendingSearches />
+    {/* <TrendingSearches /> */}
     <CarListings />
     <CarBuyingProcess/>
     <CarBuy/>
