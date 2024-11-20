@@ -41,13 +41,19 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div
-      className="bg-[#ffeded] h-screen pb-12 bg-cover bg-center relative sm:bg-top sm:bg-contain"
-      style={{ backgroundImage: "url('/heroImage/Enhanced.jpg')" }}
+<div
+      className="bg-[#ffeded] min-h-screen relative flex flex-col bg-no-repeat bg-cover bg-[position:60%_center] sm:bg-center"
+      style={{
+        backgroundImage: url('/car-mobile.jpg'), url('/car.jpg'),
+        backgroundSize: 'cover',
+        '@media (min-width: 640px)': {
+          backgroundImage: url('/car.jpg')
+        }
+      }}
     >
-      <div className="bg-zinc-600 bg-opacity-40 min-h-screen">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 lg:pt-32">
-          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-8 lg:space-y-0">
+      <div className="bg-zinc-600 bg-opacity-40 py-20 sm:py-8 flex-1">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 lg:pt-32 pb-8 sm:pb-12 min-h-screen">
+          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-8 lg:space-y-0 h-full">
             {/* Left Column */}
             <div className="space-y-6 lg:space-y-8 text-white lg:flex-1">
               <div>
@@ -75,7 +81,7 @@ const HeroSection = () => {
             </div>
 
             {/* Search Form */}
-            <div className="bg-white bg-opacity-90 rounded-2xl p-4 sm:p-6 shadow-lg lg:w-[47%] w-full max-h-screen overflow-y-auto">
+            <div className="bg-white bg-opacity-90 rounded-2xl p-4 sm:p-6 shadow-lg lg:w-[47%] w-full">
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-0 mb-6 sm:mb-8">
                 <h2 className="text-lg sm:text-xl font-semibold">
                   Personalize your search

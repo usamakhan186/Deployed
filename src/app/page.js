@@ -7,6 +7,7 @@ import Footer from "@/components/HomePage/Footer";
 import HeroSection from "@/components/HomePage/Header";
 import CarBuyingProcess from "@/components/HomePage/Proccess";
 import TestimonialsSection from "@/components/HomePage/Reviews";
+import SafePurchaseSection from "@/components/HomePage/SafePurchaseSection";
 import CarBuy from "@/components/HomePage/ShopCar";
 import TrendingSearches from "@/components/HomePage/Trending";
 import WhyChooseUs from "@/components/HomePage/WhyUs";
@@ -16,7 +17,8 @@ export default function Home() {
    <>
     <Navbar/>
     <HeroSection/>
-    {/* <TrendingSearches /> */}
+    <SafePurchaseSection/>
+    <TrendingSearches />
     <CarListings />
     <CarBuyingProcess/>
     <CarBuy/>

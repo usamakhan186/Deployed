@@ -1,17 +1,22 @@
-"use client";
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Eye, EyeOff, Heart, CircleUser, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import Select from 'react-select';
-
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ServicesDropdown from './ServicesDropdown';
 
-
-
-
+// Dynamically import React Select with no SSR
+const Select = dynamic(() => import('react-select'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-[80px] h-[38px] bg-transparent"></div>
+  )
+});
 
 const Navbar = () => {
+  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -32,7 +37,10 @@ const Navbar = () => {
   const [showForm, setShowForm] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  // Handle scroll effect
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -42,7 +50,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent scroll when either modal is open
   useEffect(() => {
     if (showLoginModal || showSignupModal) {
       document.body.style.overflow = 'hidden';
@@ -59,45 +66,42 @@ const Navbar = () => {
     console.log('Login attempt with:', { email, password });
   };
 
-
   const handleSignup = (e) => {
     e.preventDefault();
     console.log('Signup attempt with:', formData);
   };
+
   let hideDropdownTimeout;
 
   const handleMouseEnter = () => {
-    // Clear any pending timeout to keep the dropdown visible
     clearTimeout(hideDropdownTimeout);
     setIsDropdownVisible(true);
   };
 
   const handleMouseLeave = () => {
-    // Set a delay before hiding the dropdown
     hideDropdownTimeout = setTimeout(() => {
       setIsDropdownVisible(false);
-    }, 200); // Adjust the delay as needed
+    }, 200);
   };
 
   useEffect(() => {
-    // Clear the timeout when component unmounts to prevent memory leaks
     return () => clearTimeout(hideDropdownTimeout);
   }, []);
 
   const languageOptions = [
     { value: 'EN', label: 'English', flag: '/flags/en.png' },
-
-    { value: 'ES', label: 'Español', flag: '/flags/es.png' }, // Added Spanish option
+    { value: 'ES', label: 'Español', flag: '/flags/es.png' },
   ];
-  // Add more languages with respective flag images
-
 
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      borderRadius: '9999px', // Circular shape
+      borderRadius: '9999px',
       padding: '2px 4px',
       minWidth: '80px',
+      backgroundColor: 'transparent',
+      border: 'none',
+      boxShadow: 'none',
     }),
     option: (provided) => ({
       ...provided,
@@ -111,22 +115,25 @@ const Navbar = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
+      color: 'white',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+      border: '1px solid #e5e7eb',
     }),
   };
-
 
   const LoginModal = () => (
     <div
       className={`fixed inset-0 flex z-50 items-center justify-center ${showLoginModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
         } transition-opacity duration-300`}
     >
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setShowLoginModal(false)}
       />
 
-      {/* Modal */}
       <div
         className={`relative bg-red-50/85 rounded-lg w-full max-w-md transform transition-all duration-300 ${showLoginModal ? 'scale-100' : 'scale-95'
           }`}
@@ -158,7 +165,6 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Social Login Buttons */}
             <div className="grid grid-cols-2 gap-4 mb-2">
               <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
@@ -170,17 +176,15 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 text-gray-500">or via e-mail</span>
+                <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
               </div>
             </div>
 
-            {/* Login Form */}
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
                 <div className="mt-1">
@@ -234,6 +238,7 @@ const Navbar = () => {
     </div>
   );
 
+  
   const SignupModal = () => (
     <div
       className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
