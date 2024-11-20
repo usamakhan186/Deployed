@@ -42,11 +42,11 @@ const HeroSection = () => {
 
   return (
 <div
-      className="bg-[#ffeded] min-h-screen relative flex flex-col bg-no-repeat bg-cover bg-[position:60%_center] sm:bg-center"
-      style={{
-        backgroundImage: `url('${process.env.NEXT_PUBLIC_BASE_PATH || ''}/heroImage/enhanced.jpg')`,
-        backgroundSize: 'cover',
-      }}
+       className="bg-[#ffeded] min-h-screen relative flex flex-col bg-no-repeat bg-cover bg-[position:60%_center] sm:bg-center"
+       style={{
+         backgroundImage: "url('/heroimage/enhanced.jpg')",
+         backgroundSize: 'cover',
+       }}
 
     >
       <div className="bg-zinc-600 bg-opacity-40 py-20 sm:py-8 flex-1">
