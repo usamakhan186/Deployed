@@ -1,3 +1,4 @@
+"use client"
 import AppBar from '@/components/AppBar2'
 import React from 'react'
 import RefundPolicyPage from '../safepurchase/RefundPolicySafe'

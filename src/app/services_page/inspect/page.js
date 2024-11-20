@@ -1,4 +1,4 @@
-
+"use client"
 import AppBar from '@/components/AppBar2'
 import Footer from '@/components/HomePage/Footer'
 import FAQSection from '@/components/Inspect/Faq'

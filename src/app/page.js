@@ -1,3 +1,4 @@
+"use client"
 import Navbar from "@/components/AppBar";
 import CarBudgetSelector from "@/components/HomePage/Budget";
 import CarListings from "@/components/HomePage/CarList";

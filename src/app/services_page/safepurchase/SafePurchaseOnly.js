@@ -1,4 +1,4 @@
-"use client";
+
 import React from "react";
 import { Shield, CreditCard, Clock, CheckCircle, AlertTriangle, HelpCircle } from "lucide-react";
 
