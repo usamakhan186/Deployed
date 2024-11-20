@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Select from 'react-select';
 
 import Image from 'next/image';
+import ServicesDropdown from './ServicesDropdown';
+
 
 
 
@@ -443,17 +445,14 @@ const Navbar = () => {
                     Search
                   </Link>
                   <Link
-                    href="/sell"
+                    href="/best_deals"
                     className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Best Deals
                   </Link>
-                  <Link
-                    href="/dealer"
-                    className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Services
-                  </Link>
+                  <div className="relative">
+                    <ServicesDropdown />
+                  </div>
                   <Link
                     href="/import__process"
                     className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
@@ -507,7 +506,7 @@ const Navbar = () => {
 
                 {/* Dropdown Menu */}
                 {isDropdownVisible && (
-                  <div className="absolute left-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20">
+                  <div className="absolute left-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20 hidden sm:block">
                     <button
                       onClick={() => setShowLoginModal(true)}
                       className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"

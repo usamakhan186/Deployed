@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const AppBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -360,9 +361,15 @@ const AppBar = () => {
               {/* Logo and Left Menu Items */}
               <div className="flex items-center">
                 <div className="flex-shrink-0 flex items-center">
-                  <Link href="/" className="text-xl font-bold text-gray-900">
-                    LOGO
-                  </Link>
+                <Link href="/" className="text-xl font-bold text-white">
+                  <Image
+                    src="/Logo/logo.png.png" // Correct path to your image
+                    alt="Logo" // Accessible description
+                    width={100} // Image width
+                    height={50} // Image height
+                    className="inline-block" // Styling for the image
+                  />
+                </Link>
                   <span className="text-gray-200 text-2xl mx-5">|</span>
                 </div>
                 <div className="hidden md:block">
@@ -371,13 +378,13 @@ const AppBar = () => {
                       href="/cars" 
                       className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
-                      Find Cars
+                      Search
                     </Link>
                     <Link 
-                      href="/sell" 
+                      href="/best_deals" 
                       className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
-                      Sell a car
+                      Best Deals
                     </Link>
                     <Link 
                       href="/dealer" 
