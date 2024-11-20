@@ -60,7 +60,7 @@ const BestDealsPage = () => {
       originalPrice: 87900,
     },
     {
-      id: 1,
+      id: 2,
       make: 'BMW',
       model: 'M3 Competition',
       year: 2023,
@@ -73,7 +73,7 @@ const BestDealsPage = () => {
       originalPrice: 87900,
     },
     {
-      id: 1,
+      id: 3,
       make: 'BMW',
       model: 'M3 Competition',
       year: 2023,
@@ -86,7 +86,7 @@ const BestDealsPage = () => {
       originalPrice: 87900,
     },
     {
-      id: 1,
+      id: 4,
       make: 'BMW',
       model: 'M3 Competition',
       year: 2023,
@@ -276,4 +276,4 @@ const BestDealsPage = () => {
   );
 };
 
-export default BestDealsPage;
+export default BestDealsPage; 
