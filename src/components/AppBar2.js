@@ -1,8 +1,10 @@
 "use client";
+import ServicesDropdown from './ServicesDropdown';
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Eye, EyeOff } from 'lucide-react';
+import { Menu, X, Eye, EyeOff, Heart, CircleUser, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 const AppBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,6 +24,66 @@ const AppBar = () => {
     postalCode: '',
     agreeToTerms: false
   });
+  const [showForm, setShowForm] = useState(false);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const Select = dynamic(() => import('react-select'), {
+    ssr: false,
+    loading: () => (
+      <div className="w-[80px] h-[38px] bg-transparent"></div>
+    )
+  });
+  const languageOptions = [
+    { value: 'EN', label: 'English', flag: '/flags/en.png' },
+    { value: 'ES', label: 'Español', flag: '/flags/es.png' },
+  ];
+
+  
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      borderRadius: '9999px',
+      padding: '2px 4px',
+      minWidth: '80px',
+      backgroundColor: 'red',
+      border: 'none',
+      boxShadow: 'none',
+    }),
+    option: (provided) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '8px 12px',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      color: 'white',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+      border: '1px solid #e5e7eb',
+    }),
+  };
+  let hideDropdownTimeout;
+  const handleMouseEnter = () => {
+    clearTimeout(hideDropdownTimeout);
+    setIsDropdownVisible(true);
+  };
+  
+
+  const handleMouseLeave = () => {
+    hideDropdownTimeout = setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 200);
+  };
+
+  
+
+  
 
   // Handle scroll effect
   useEffect(() => {
@@ -370,47 +432,94 @@ const AppBar = () => {
                     className="inline-block" // Styling for the image
                   />
                 </Link>
-                  <span className="text-gray-200 text-2xl mx-5">|</span>
+                  <span className="text-gray-600 text-2xl mx-5">|</span>
                 </div>
                 <div className="hidden md:block">
                   <div className="flex items-center space-x-1">
-                    <Link 
-                      href="/cars" 
-                      className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                    >
-                      Search
-                    </Link>
-                    <Link 
-                      href="/best_deals" 
-                      className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                    >
-                      Best Deals
-                    </Link>
-                    <Link 
-                      href="/dealer" 
-                      className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                    >
-                      Services
-                    </Link>
+                  <Link
+                    href="/cars"
+                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Search
+                  </Link>
+                  <Link
+                    href="/bestdealss"
+                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Best Deals
+                  </Link>
+                  <div className="relative text-black ">
+                    <ServicesDropdown className="hover:text-red-400"/>
+                  </div>
+                  <Link
+                    href="/import__process"
+                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Import process
+                  </Link>
+                  <Link
+                    href="/blog"
+                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    About
+                  </Link>
                   </div>
                 </div>
               </div>
 
               {/* Right Menu Items */}
-              <div className="hidden md:flex items-center space-x-2">
-                <button
-                  onClick={() => setShowLoginModal(true)}
-                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => setShowSignupModal(true)}
-                  className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors"
-                >
-                  Sign up
-                </button>
+              <div className="flex items-center space-x-4">
+              <Heart className="text-gray-600 hover:text-red-500 cursor-pointer" />
+              <Select
+                options={languageOptions}
+                defaultValue={languageOptions[0]}
+                styles={customStyles}
+                formatOptionLabel={(option) => (
+                  <div className="flex items-center">
+                    {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
+                    <span className="ml-2">{option.label}</span>
+                  </div>
+                )}
+                isSearchable={false}
+              />
+
+              {/* User Icon with Dropdown Trigger - Hidden on Mobile */}
+              <div
+                className="relative inline-block text-left  sm:flex" // Hide on mobile (hidden), visible on sm+
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {/* User Icon with Dropdown Trigger */}
+                <div className="flex items-center cursor-pointer">
+                  <CircleUser className="h-6 w-6 text-grey-300" />
+                  <ChevronDown className="text-white" />
+                </div>
+
+                {/* Dropdown Menu */}
+                {isDropdownVisible && (
+                  <div className="absolute left-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20 hidden sm:block">
+                    <button
+                      onClick={() => setShowLoginModal(true)}
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                    >
+                      My Account
+                    </button>
+                    <button
+                      onClick={() => setShowSignupModal(true)}
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                )}
               </div>
+            </div>
 
               {/* Mobile Menu Button */}
               <div className="md:hidden">

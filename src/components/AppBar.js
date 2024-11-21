@@ -88,11 +88,7 @@ const Navbar = () => {
     return () => clearTimeout(hideDropdownTimeout);
   }, []);
 
-  const languageOptions = [
-    { value: 'EN', label: 'English', flag: '/flags/en.png' },
-    { value: 'ES', label: 'Español', flag: '/flags/es.png' },
-  ];
-
+  
   const customStyles = {
     control: (provided) => ({
       ...provided,

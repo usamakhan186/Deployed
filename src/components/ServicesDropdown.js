@@ -28,7 +28,7 @@ const ServicesDropdown = () => {
     >
       {/* Dropdown Button */}
       <button
-        className="inline-flex justify-center w-full text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+        className="inline-flex justify-center w-full hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
       >
         Services
         <svg
