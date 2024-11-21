@@ -119,6 +119,19 @@ const Navbar = () => {
       border: '1px solid #e5e7eb',
     }),
   };
+  const languageOptions = [
+    { 
+      value: 'EN', 
+      label: 'English', 
+      flag: '/flags/en.png' 
+    },
+    { 
+      value: 'ES', 
+      label: 'Español', 
+      flag: '/flags/es.png' 
+    },
+  ];
+  
 
   const LoginModal = () => (
     <div
