@@ -1,38 +1,77 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const ServicesDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   let timeoutId;
 
-  // Handle mouse enter
-  const handleMouseEnter = () => {
-    clearTimeout(timeoutId);  // Clear any existing timeout to avoid delays when hovering back
-    setIsOpen(true);
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Handle mouse/touch interactions
+  const handleInteractionStart = () => {
+    if (!isMobile) {
+      clearTimeout(timeoutId);
+      setIsOpen(true);
+    }
   };
 
-  // Handle mouse leave with delay
-  const handleMouseLeave = () => {
-    timeoutId = setTimeout(() => {
-      setIsOpen(false);
-    }, 100); // Adjust delay time as needed (300ms in this case)
+  const handleInteractionEnd = () => {
+    if (!isMobile) {
+      timeoutId = setTimeout(() => {
+        setIsOpen(false);
+      }, 100);
+    }
   };
+
+  // Toggle for mobile
+  const handleClick = (e) => {
+    if (isMobile) {
+      e.preventDefault();
+      setIsOpen(!isOpen);
+    }
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobile && isOpen && !event.target.closest('.services-dropdown')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMobile, isOpen]);
 
   return (
     <div 
-      className="relative inline-block text-left" 
-      onMouseEnter={handleMouseEnter} 
-      onMouseLeave={handleMouseLeave}
+      className="relative inline-block text-left services-dropdown" 
+      onMouseEnter={handleInteractionStart}
+      onMouseLeave={handleInteractionEnd}
+      onTouchStart={handleInteractionStart}
+      onTouchEnd={handleInteractionEnd}
     >
       {/* Dropdown Button */}
       <button
+        onClick={handleClick}
         className="inline-flex justify-center w-full hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
       >
         Services
         <svg
-          className="-mr-1 ml-2 h-5 w-5"
+          className={`-mr-1 ml-2 h-5 w-5 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -49,30 +88,37 @@ const ServicesDropdown = () => {
       </button>
 
       {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Link
-              href="/services_page/safepurchase"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Safe Purchase
-            </Link>
-            <Link
-              href="/services_page/inspect"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Inspect Car
-            </Link>
-            <Link
-              href="/services_page/refund"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              We Give Refund
-            </Link>
-          </div>
+      <div 
+        className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition-all duration-200 ${
+          isOpen 
+            ? 'opacity-100 translate-y-0 visible' 
+            : 'opacity-0 -translate-y-2 invisible'
+        }`}
+      >
+        <div className="py-1">
+          <Link
+            href="/services_page/safepurchase"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            Safe Purchase
+          </Link>
+          <Link
+            href="/services_page/inspect"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            Inspect Car
+          </Link>
+          <Link
+            href="/services_page/refund"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            We Give Refund
+          </Link>
         </div>
-      )}
+      </div>
     </div>
   );
 };

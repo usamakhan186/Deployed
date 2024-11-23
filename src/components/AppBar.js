@@ -507,7 +507,7 @@ const Navbar = () => {
 
               {/* User Icon with Dropdown - Desktop Only */}
               <div
-                className="hidden md:flex relative inline-block text-left"
+                className="hidden md:flex relative  text-left"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -558,9 +558,9 @@ const Navbar = () => {
               <Link href="/bestdealss" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Best Deals
               </Link>
-              <Link href="/services" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
-                Services
-              </Link>
+              <div className="relative">
+                    <ServicesDropdown />
+                  </div>
               <Link href="/import__process" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Import process
               </Link>
