@@ -441,11 +441,11 @@ const Navbar = () => {
               <div className="flex-shrink-0 flex items-center">
                 <Link href="/" className="text-xl font-bold text-white">
                   <Image
-                    src="/Logo/logo.png.png" // Correct path to your image
-                    alt="Logo" // Accessible description
-                    width={100} // Image width
-                    height={50} // Image height
-                    className="inline-block" // Styling for the image
+                    src="/Logo/logo.png.png"
+                    alt="Logo"
+                    width={100}
+                    height={50}
+                    className="inline-block"
                   />
                 </Link>
                 <span className="text-gray-200 text-2xl mx-5">|</span>
@@ -485,7 +485,6 @@ const Navbar = () => {
                   >
                     About
                   </Link>
-
                 </div>
               </div>
             </div>
@@ -506,21 +505,19 @@ const Navbar = () => {
                 isSearchable={false}
               />
 
-              {/* User Icon with Dropdown Trigger - Hidden on Mobile */}
+              {/* User Icon with Dropdown - Desktop Only */}
               <div
-                className="relative inline-block text-left  sm:flex" // Hide on mobile (hidden), visible on sm+
+                className="hidden md:flex relative inline-block text-left"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                {/* User Icon with Dropdown Trigger */}
                 <div className="flex items-center cursor-pointer">
                   <CircleUser className="h-6 w-6 text-white" />
                   <ChevronDown className="text-white" />
                 </div>
 
-                {/* Dropdown Menu */}
                 {isDropdownVisible && (
-                  <div className="absolute left-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20 hidden sm:block">
+                  <div className="absolute right-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20">
                     <button
                       onClick={() => setShowLoginModal(true)}
                       className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
@@ -536,52 +533,63 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
-            </div>
-            {/* Right Menu Items closed */}
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                type="button"
-                className="text-gray-700 hover:text-gray-900 p-2"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
+
+              {/* Mobile Menu Button */}
+              <div className="md:hidden">
+                <button
+                  type="button"
+                  className="text-white hover:text-gray-200 p-2"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Updated to match desktop links */}
         {isMenuOpen && (
           <div className="md:hidden bg-[#ffeded] shadow-lg">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a href="/cars" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
-                Find Cars
-              </a>
-              <a href="/sell" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
-                Sell a car
-              </a>
-              <a href="/apply" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+              <Link href="/cars" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Search
+              </Link>
+              <Link href="/bestdealss" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Best Deals
+              </Link>
+              <Link href="/services" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Services
-              </a>
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setShowLoginModal(true);
-                }}
-                className="block w-full text-left text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setShowSignupModal(true);
-                }}
-                className="block bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-base font-medium shadow-sm mx-2 mb-2 w-[calc(100%-1rem)]"
-              >
-                Sign up
-              </button>
+              </Link>
+              <Link href="/import__process" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Import process
+              </Link>
+              <Link href="/blog" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Blog
+              </Link>
+              <Link href="/about" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                About
+              </Link>
+              <div className="pt-4 mt-2 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setShowLoginModal(true);
+                  }}
+                  className="block w-full text-left text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setShowSignupModal(true);
+                  }}
+                  className="block w-full text-left text-white bg-red-500 hover:bg-red-600 px-3 py-2 rounded-md text-base font-medium mt-2"
+                >
+                  Sign Up
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -594,4 +602,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default dynamic (() => Promise.resolve(Navbar), {ssr: false});

@@ -539,23 +539,23 @@ const AppBar = () => {
           {/* Mobile Menu */}
           <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96' : 'max-h-0 overflow-hidden'}`}>
             <div className="bg-white border-t border-gray-100 px-4 pt-2 pb-3 space-y-1">
-              <Link 
-                href="/cars" 
-                className="block text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-base font-medium transition-colors"
-              >
-                Find Cars
+            <Link href="/cars" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Search
               </Link>
-              <Link 
-                href="/sell" 
-                className="block text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-base font-medium transition-colors"
-              >
-                Sell a car
+              <Link href="/bestdealss" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Best Deals
               </Link>
-              <Link 
-                href="/dealer" 
-                className="block text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md text-base font-medium transition-colors"
-              >
-                Apply as Dealer
+              <Link href="/services" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Services
+              </Link>
+              <Link href="/import__process" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Import process
+              </Link>
+              <Link href="/blog" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                Blog
+              </Link>
+              <Link href="/about" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+                About
               </Link>
               <button
                 onClick={() => {
