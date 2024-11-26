@@ -1,3 +1,5 @@
+
+
 "use client";
 import React, { useRef, useState, useEffect } from 'react';
 import {
@@ -13,59 +15,160 @@ import {
     X,
     Check,
     TrendingDown,
+    ChevronDown,
+    CreditCard,
+    ShoppingCart,
+    Info
 } from 'lucide-react';
 
+// New Checkout Sidebar Component
+
+
 const GuaranteeCard = () => {
-  return (
-    <div className="lg:w-[65%] py-8 pb-3 px-6">
-      <div className="bg-red-100/50 rounded-xl p-8 relative overflow-hidden">
-        {/* Circular gradient overlay */}
-        <div className="absolute right-0 top-36 w-1/4 h-full bg-gray-50 bg-opacity-80 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-        
-        {/* Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-          {/* 14 days return policy */}
-          <div>
-            <div className="flex items-center mb-4">
-              <div className="bg-orange-500 rounded-lg p-1">
-                <Check className="text-white w-5 h-5" />
-              </div>
-              <h3 className="text-[#1e2b4d] text-lg font-bold ml-3">14 days return policy</h3>
-            </div>
-            <p className="text-[#4a5578] text-base hidden lg:block">
-              If you don't fall in love with the car, simply return it to us.
-            </p>
-          </div>
+    return (
+        <div className="lg:w-[65%] py-8 pb-3 px-6">
+            <div className="bg-red-100/50 rounded-xl p-8 relative overflow-hidden">
+                {/* Circular gradient overlay */}
+                <div className="absolute right-0 top-36 w-1/4 h-full bg-gray-50 bg-opacity-80 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
 
-          {/* Risk-free purchase */}
-          <div>
-            <div className="flex items-center mb-4">
-              <div className="bg-orange-500 rounded-lg p-1">
-                <Check className="text-white w-5 h-5" />
-              </div>
-              <h3 className="text-[#1e2b4d] text-lg font-bold ml-3">Risk-free purchase</h3>
-            </div>
-            <p className="text-[#4a5578] text-base hidden lg:block">
-              We are liable for the technical condition of each sold car.
-            </p>
-          </div>
+                {/* Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                    {/* 14 days return policy */}
+                    <div>
+                        <div className="flex items-center mb-4">
+                            <div className="bg-orange-500 rounded-lg p-1">
+                                <Check className="text-white w-5 h-5" />
+                            </div>
+                            <h3 className="text-[#1e2b4d] text-lg font-bold ml-3">14 days return policy</h3>
+                        </div>
+                        <p className="text-[#4a5578] text-base hidden lg:block">
+                            If you don't fall in love with the car, simply return it to us.
+                        </p>
+                    </div>
 
-          {/* 6 months warranty */}
-          <div>
-            <div className="flex items-center mb-4">
-              <div className="bg-orange-500 rounded-lg p-1">
-                <Check className="text-white w-5 h-5" />
-              </div>
-              <h3 className="text-[#1e2b4d] text-lg font-bold ml-3">6 months warranty</h3>
+                    {/* Risk-free purchase */}
+                    <div>
+                        <div className="flex items-center mb-4">
+                            <div className="bg-orange-500 rounded-lg p-1">
+                                <Check className="text-white w-5 h-5" />
+                            </div>
+                            <h3 className="text-[#1e2b4d] text-lg font-bold ml-3">Risk-free purchase</h3>
+                        </div>
+                        <p className="text-[#4a5578] text-base hidden lg:block">
+                            We are liable for the technical condition of each sold car.
+                        </p>
+                    </div>
+
+                    {/* 6 months warranty */}
+                    <div>
+                        <div className="flex items-center mb-4">
+                            <div className="bg-orange-500 rounded-lg p-1">
+                                <Check className="text-white w-5 h-5" />
+                            </div>
+                            <h3 className="text-[#1e2b4d] text-lg font-bold ml-3">6 months warranty</h3>
+                        </div>
+                        <p className="text-[#4a5578] text-base hidden lg:block">
+                            In addition, with every car you receive an extended warranty.
+                        </p>
+                    </div>
+                </div>
             </div>
-            <p className="text-[#4a5578] text-base hidden lg:block">
-              In addition, with every car you receive an extended warranty.
-            </p>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
+};
+
+const CheckoutSidebar = () => {
+    const [isServicesExpanded, setIsServicesExpanded] = useState(false);
+    const [zipCode, setZipCode] = useState('');
+
+    return (
+        <div className="bg-white rounded-lg shadow-lg p-6">
+            {/* Price Section */}
+            <div className="mb-6">
+                <div className="flex justify-between items-start">
+                    <span className="text-gray-600 font-bold text-2xl">Car price</span>
+                    <div className="text-right">
+                        <div className="text-2xl font-bold">€27,299</div>
+                        <div className="text-sm text-gray-500">Price without VAT €22,561</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Action Buttons */}
+            <button className="w-full bg-red-500 text-white py-3 rounded-lg mb-3 flex items-center justify-center">
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Buy
+            </button>
+            <button className="w-full border border-gray-200 py-3 rounded-lg mb-6 flex items-center justify-center">
+                <CreditCard className="w-5 h-5 mr-2" />
+                Financing €170/mo
+            </button>
+
+            {/* Services Section */}
+            <div className="border-t pt-4">
+                <div className="flex justify-between items-center mb-4">
+                    <span className="text-gray-600">Services total</span>
+                    <div className="flex items-center">
+                        <span className="font-bold">€364</span>
+                        <ChevronDown
+                            className={`w-5 h-5 ml-2 cursor-pointer transform transition-transform ${isServicesExpanded ? 'rotate-180' : ''}`}
+                            onClick={() => setIsServicesExpanded(!isServicesExpanded)}
+                        />
+                    </div>
+                </div>
+
+                {isServicesExpanded && (
+                    <div className="space-y-3">
+                        <div className="flex justify-between">
+                            <span>CarAudit™</span>
+                            <span>€79</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>Delivery</span>
+                            <button className="text-blue-600 hover:underline">
+                                Enter ZIP code
+                            </button>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <span>Car registration</span>
+                                <Info className="w-4 h-4 ml-1 text-gray-400" />
+                            </div>
+                            <span>€80</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <span>Administration Fee</span>
+                                <Info className="w-4 h-4 ml-1 text-gray-400" />
+                            </div>
+                            <span>€30</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <span>Import MOT</span>
+                                <Info className="w-4 h-4 ml-1 text-gray-400" />
+                            </div>
+                            <span>€175</span>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Total Price */}
+            <div className="border-t mt-6 pt-4">
+                <div className="flex justify-between">
+                    <div>
+                        <div className="font-bold text-lg">Total price</div>
+                        <div className="text-sm text-gray-500">Total price excluding VAT</div>
+                    </div>
+                    <div className="text-right">
+                        <div className="font-bold text-lg">€27,663</div>
+                        <div className="text-sm text-gray-500">€22,847</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 
@@ -116,7 +219,7 @@ const AppBar = () => {
     }, [currentTop]);
 
     return (
-        <div 
+        <div
             ref={appBarRef}
             className={`w-full bg-red-50 py-2 border-b ${isSticky ? 'fixed left-0 shadow-md z-40' : 'relative'}`}
         >
@@ -139,7 +242,7 @@ const AppBar = () => {
                             Price map
                         </a>
                     </div>
-                    
+
                     <div className="hidden md:flex items-center space-x-6">
                         <button className="flex items-center text-red-500 hover:text-red-600">
                             <Heart className="h-5 w-5 mr-1.5 stroke-[1.5]" />
@@ -156,7 +259,7 @@ const AppBar = () => {
     );
 };
 
-  
+
 const CarDetailPage = () => {
     const scrollRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
@@ -187,47 +290,47 @@ const CarDetailPage = () => {
                 scroll('right');
             }
         };
-    
+
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
     }, []);
-    
+
     useEffect(() => {
         const container = scrollRef.current;
         if (!container) return;
-    
+
         const checkScroll = () => {
             setShowLeftArrow(container.scrollLeft > 0);
             setShowRightArrow(
                 container.scrollLeft < container.scrollWidth - container.clientWidth - 1
             );
         };
-    
+
         container.addEventListener('scroll', checkScroll);
         checkScroll();
         window.addEventListener('resize', checkScroll);
-    
+
         return () => {
             container.removeEventListener('scroll', checkScroll);
             window.removeEventListener('resize', checkScroll);
         };
     }, []);
-    
+
     const scroll = (direction) => {
         const container = scrollRef.current;
         if (container) {
             // Calculate the width of one image including margin
             const imageWidth = container.querySelector('div').offsetWidth + 4; // 4px for margin
-            
+
             container.scrollTo({
-                left: direction === 'left' 
-                    ? container.scrollLeft - imageWidth 
+                left: direction === 'left'
+                    ? container.scrollLeft - imageWidth
                     : container.scrollLeft + imageWidth,
                 behavior: 'smooth'
             });
         }
     };
-    
+
 
     const openModal = (index) => {
         setSelectedImage(index);
@@ -249,7 +352,7 @@ const CarDetailPage = () => {
     };
 
     return (
-        <div>
+        <div className='bg-white'>
             {/* Mobile/Tablet Header */}
             <div className="md:hidden relative">
                 <div className="absolute top-4 left-4 z-10">
@@ -384,6 +487,54 @@ const CarDetailPage = () => {
                 </div>
             </div>
 
+            <div className="max-w-7xl mx-auto px-4 lg:px-8">
+    <GuaranteeCard />
+    
+    {/* New flexbox container for main content and sidebar */}
+    <div className="flex flex-col lg:flex-row gap-8">
+        {/* Main content area */}
+        <div className="flex-1">
+            <AppBar />
+            
+            {/* Details Section */}
+            <div className="mt-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Details</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {specs.map((spec, index) => (
+                        <div key={index} className="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-100">
+                            <div className="text-gray-400">{spec.icon}</div>
+                            <span className="text-gray-700">{spec.text}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Features Section */}
+            <div className="mt-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Features</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {features.map((feature, index) => (
+                        <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                            <Check className="w-5 h-5 text-green-500" />
+                            <span className="text-gray-700">{feature}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+
+        {/* Checkout Sidebar */}
+        <div className="lg:w-[380px]">
+            <div className="sticky top-24">
+                <CheckoutSidebar />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
             {/* Modal Viewer */}
             {modalOpen && (
                 <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
@@ -435,19 +586,19 @@ const CarDetailPage = () => {
                 </div>
             )}
 
-            <style>
-                {`
-          .scrollbar-hide::-webkit-scrollbar {
+<style>
+    {`
+        .scrollbar-hide::-webkit-scrollbar {
             display: none;
-          }
-          .scrollbar-hide {
+        }
+        .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
-          }
-        `}
-            </style>
-            <GuaranteeCard/>
-            <AppBar/>
+        }
+    `}
+</style>
+            {/* <GuaranteeCard />
+            <AppBar /> */}
         </div>
     );
 };

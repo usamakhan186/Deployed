@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import dynamic from "next/dynamic";
 
 // Dynamically import AppBar and CarDetailPage to improve performance by lazy loading
@@ -11,29 +11,31 @@ export default function CarPage() {
   const [showAppBar, setShowAppBar] = useState(true);
   const [scrolling, setScrolling] = useState(false);
 
-  // Use requestAnimationFrame to throttle scroll events
+  // Use useEffect to ensure scroll event handling happens only on the client-side
   useEffect(() => {
-    let ticking = false;
+    if (typeof window !== 'undefined') {
+      let ticking = false;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrolled = window.scrollY > 0;
-          setShowAppBar(!scrolled); // Hide AppBar if scrolled, show it when at top
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+      const handleScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const scrolled = window.scrollY > 0;
+            setShowAppBar(!scrolled); // Hide AppBar if scrolled, show it when at top
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
 
-    // Listen to the scroll event
-    window.addEventListener("scroll", handleScroll);
+      // Listen to the scroll event
+      window.addEventListener("scroll", handleScroll);
 
-    // Cleanup on component unmount
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      // Cleanup on component unmount
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
   return (
     <div className="bg-red-50">
@@ -42,9 +44,16 @@ export default function CarPage() {
           showAppBar ? "opacity-100" : "opacity-90"
         }`}
       >
-        <DynamicAppBar /> {/* Lazy-loaded AppBar component */}
+        {/* Wrap dynamic component in Suspense with a fallback */}
+        <Suspense fallback={<div>Loading AppBar...</div>}>
+          <DynamicAppBar />
+        </Suspense>
       </div>
-      <DynamicCarDetailPage /> {/* Lazy-loaded CarDetailPage component */}
+      
+      {/* Wrap dynamic component in Suspense with a fallback */}
+      <Suspense fallback={<div>Loading Car Details...</div>}>
+        <DynamicCarDetailPage />
+      </Suspense>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import React from "react";
 
 const CarAudit = () => {
   return (
-    <section className="py-12 bg-gray-50">
+    <div className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-center text-3xl font-bold text-black mb-8">
           The purchase starts with a CarAudit™ inspection
@@ -69,7 +69,7 @@ const CarAudit = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

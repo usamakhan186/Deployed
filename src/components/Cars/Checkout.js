@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 import { 
   CreditCard, 
   Lock, 
   Check,
-  
 } from 'lucide-react';
 
 const PaymentPage = () => {

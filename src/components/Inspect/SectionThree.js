@@ -47,7 +47,7 @@ const CustomerReviewsSection = () => {
   ];
 
   return (
-    <section className="bg-lightBlue py-10 px-4">
+    <div className="bg-lightBlue py-10 px-4">
       <div className="container mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -96,7 +96,7 @@ const CustomerReviewsSection = () => {
           </button>
         </div> */}
       </div>
-    </section>
+    </div>
   );
 };
 

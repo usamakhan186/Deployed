@@ -24,7 +24,6 @@ const inspect = () => {
         <CustomerReviewsSection/>
         <InspectionDetails/>
         <FAQSection/>
-       
         <Footer/>
        
         

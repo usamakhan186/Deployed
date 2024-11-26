@@ -1,21 +1,101 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Eye, EyeOff, Heart, CircleUser, ChevronDown } from 'lucide-react';
+import { CircleUser, ChevronDown, BookmarkIcon, Clock, Heart, ShoppingCart, X, Eye, EyeOff, Menu } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import ServicesDropdown from './ServicesDropdown';
+
 
 // Dynamically import React Select with no SSR
-const Select = dynamic(() => import('react-select'), {
+const Select = dynamic(() => import('react-select'), { 
   ssr: false,
-  loading: () => (
-    <div className="w-[80px] h-[38px] bg-transparent"></div>
-  )
+  loading: () => null
+});
+const ServicesDropdown = dynamic(() => import('./ServicesDropdown'), {
+  ssr: false,
+  loading: () => <div className="h-10 w-24" />
 });
 
+const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  let hideDropdownTimeout;
+
+  const handleMouseEnter = () => {
+    clearTimeout(hideDropdownTimeout);
+    setIsDropdownVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideDropdownTimeout = setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    return () => clearTimeout(hideDropdownTimeout);
+  }, []);
+
+  return (
+    <div
+      className="hidden md:flex relative text-left"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="flex items-center cursor-pointer">
+        <CircleUser className="h-6 w-6 text-white" />
+        <ChevronDown className="text-white" />
+      </div>
+
+      {isDropdownVisible && (
+        <div className="absolute right-0 mt-6 w-64 bg-white rounded-md shadow-lg py-2 z-20">
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <BookmarkIcon className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Saved searches</span>
+          </button>
+          
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <Clock className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Last searches</span>
+          </button>
+          
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <Heart className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Favorite cars</span>
+          </button>
+          
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <ShoppingCart className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Orders in progress</span>
+          </button>
+
+          <div className="px-4 py-3 border-t border-gray-100">
+            <button
+              onClick={() => setShowLoginModal(true)}
+              className="w-full mb-2 px-4 py-2 text-white bg-[#EF4444] rounded-md hover:bg-[[#D93C0B]] transition-colors"
+            >
+              Login
+            </button>
+            
+            <div className="text-sm text-gray-500 text-center">
+              Don't have an account? 
+              <button
+                onClick={() => setShowSignupModal(true)}
+                className="text-blue-600 hover:text-blue-700 ml-1"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Navbar = () => {
+  const [isClient, setIsClient] = useState(false);
+  const [isSelectLoaded, setIsSelectLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,20 +115,24 @@ const Navbar = () => {
     agreeToTerms: false
   });
   const [showForm, setShowForm] = useState(false);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
 
   useEffect(() => {
+    setIsClient(true);
     setMounted(true);
+    setIsSelectLoaded(true);
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
+    if (isClient) {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [isClient]);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     if (showLoginModal || showSignupModal) {
@@ -61,32 +145,24 @@ const Navbar = () => {
     };
   }, [showLoginModal, showSignupModal]);
 
+
   const handleLogin = (e) => {
     e.preventDefault();
     console.log('Login attempt with:', { email, password });
   };
 
+  
   const handleSignup = (e) => {
     e.preventDefault();
     console.log('Signup attempt with:', formData);
   };
 
-  let hideDropdownTimeout;
+ 
 
-  const handleMouseEnter = () => {
-    clearTimeout(hideDropdownTimeout);
-    setIsDropdownVisible(true);
-  };
+  
+ 
 
-  const handleMouseLeave = () => {
-    hideDropdownTimeout = setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 200);
-  };
 
-  useEffect(() => {
-    return () => clearTimeout(hideDropdownTimeout);
-  }, []);
 
   
   const customStyles = {
@@ -111,7 +187,7 @@ const Navbar = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
-      color: 'white',
+      color: isScrolled ? 'black' : 'white',
     }),
     menu: (provided) => ({
       ...provided,
@@ -119,19 +195,11 @@ const Navbar = () => {
       border: '1px solid #e5e7eb',
     }),
   };
+
   const languageOptions = [
-    { 
-      value: 'EN', 
-      label: 'English', 
-      flag: '/flags/en.png' 
-    },
-    { 
-      value: 'ES', 
-      label: 'Español', 
-      flag: '/flags/es.png' 
-    },
+    { value: 'EN', label: 'English', flag: '/flags/en.png' },
+    { value: 'ES', label: 'Español', flag: '/flags/es.png' },
   ];
-  
 
   const LoginModal = () => (
     <div
@@ -250,8 +318,8 @@ const Navbar = () => {
   
   const SignupModal = () => (
     <div
-      className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        } transition-opacity duration-300`}
+    className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+    } transition-opacity duration-300`}
     >
       {/* Backdrop */}
       <div
@@ -431,6 +499,10 @@ const Navbar = () => {
     </div>
   );
 
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <>
       <nav className="absolute w-full z-10">
@@ -506,33 +578,11 @@ const Navbar = () => {
               />
 
               {/* User Icon with Dropdown - Desktop Only */}
-              <div
-                className="hidden md:flex relative  text-left"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <div className="flex items-center cursor-pointer">
-                  <CircleUser className="h-6 w-6 text-white" />
-                  <ChevronDown className="text-white" />
-                </div>
-
-                {isDropdownVisible && (
-                  <div className="absolute right-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20">
-                    <button
-                      onClick={() => setShowLoginModal(true)}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                    >
-                      My Account
-                    </button>
-                    <button
-                      onClick={() => setShowSignupModal(true)}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                    >
-                      Sign Up
-                    </button>
-                  </div>
-                )}
-              </div>
+             {/* User Icon with Dropdown - Desktop Only */}
+<UserDropdown 
+  setShowLoginModal={setShowLoginModal}
+  setShowSignupModal={setShowSignupModal}
+/>
 
               {/* Mobile Menu Button */}
               <div className="md:hidden">

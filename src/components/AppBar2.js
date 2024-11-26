@@ -1,14 +1,68 @@
-"use client";
-import ServicesDropdown from './ServicesDropdown';
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Eye, EyeOff, Heart, CircleUser, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
+const ServicesDropdown = dynamic(() => import('./ServicesDropdown'), {
+  ssr: false,
+  loading: () => <div className="h-10 w-24" />
+});
+
+const Select = dynamic(() => import('react-select'), { 
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center gap-2">
+      <div className="w-5 h-5 rounded-full bg-gray-200" />
+      <div className="w-16 h-5 bg-gray-200 rounded" />
+    </div>
+  )
+});
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    borderRadius: '9999px',
+    padding: '2px 2px',
+    minWidth: '80px',
+    backgroundColor: '#D3390D',
+    border: 'none',
+    boxShadow: 'none',
+  }),
+  option: (provided) => ({
+    ...provided,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '8px 12px',
+  }),
+  singleValue: (provided, { selectProps }) => ({
+    ...provided,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    color: selectProps.isScrolled ? 'black' : 'white',
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: 'white',
+    border: '1px solid #e5e7eb',
+  }),
+};
+
+const languageOptions = [
+  { value: 'EN', label: 'English', flag: '/flags/en.png' },
+  { value: 'ES', label: 'Español', flag: '/flags/es.png' },
+];
+
 const AppBar = () => {
+  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -22,80 +76,17 @@ const AppBar = () => {
     phone: '',
     country: '',
     postalCode: '',
-    agreeToTerms: false
+    agreeToTerms: false,
+    countryCode: '+92'
   });
-  const [showForm, setShowForm] = useState(false);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const Select = dynamic(() => import('react-select'), {
-    ssr: false,
-    loading: () => (
-      <div className="w-[80px] h-[38px] bg-transparent"></div>
-    )
-  });
-  const languageOptions = [
-    { value: 'EN', label: 'English', flag: '/flags/en.png' },
-    { value: 'ES', label: 'Español', flag: '/flags/es.png' },
-  ];
 
-  
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      borderRadius: '9999px',
-      padding: '2px 4px',
-      minWidth: '80px',
-      backgroundColor: 'red',
-      border: 'none',
-      boxShadow: 'none',
-    }),
-    option: (provided) => ({
-      ...provided,
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      padding: '8px 12px',
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      color: 'white',
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: 'white',
-      border: '1px solid #e5e7eb',
-    }),
-  };
-  let hideDropdownTimeout;
-  const handleMouseEnter = () => {
-    clearTimeout(hideDropdownTimeout);
-    setIsDropdownVisible(true);
-  };
-  
-
-  const handleMouseLeave = () => {
-    hideDropdownTimeout = setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 200);
-  };
-
-  
-
-  
-
-  // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
+    setMounted(true);
+    const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent scroll when either modal is open
   useEffect(() => {
     if (showLoginModal || showSignupModal) {
       document.body.style.overflow = 'hidden';
@@ -106,6 +97,23 @@ const AppBar = () => {
       document.body.style.overflow = 'unset';
     };
   }, [showLoginModal, showSignupModal]);
+
+  let hideDropdownTimeout;
+
+  const handleMouseEnter = () => {
+    clearTimeout(hideDropdownTimeout);
+    setIsDropdownVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideDropdownTimeout = setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    return () => clearTimeout(hideDropdownTimeout);
+  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -123,13 +131,10 @@ const AppBar = () => {
         showLoginModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
       } transition-opacity duration-300`}
     >   
-      {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setShowLoginModal(false)}
       />
-
-      {/* Modal */}
       <div 
         className={`relative bg-red-50/85 rounded-lg w-full max-w-md transform transition-all duration-300 ${
           showLoginModal ? 'scale-100' : 'scale-95'
@@ -162,7 +167,6 @@ const AppBar = () => {
               </button>
             </div>
 
-            {/* Social Login Buttons */}
             <div className="grid grid-cols-2 gap-4 mb-2">
               <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
@@ -174,17 +178,15 @@ const AppBar = () => {
               </button>
             </div>
 
-            {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 text-gray-500">or via e-mail</span>
+                <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
               </div>
             </div>
 
-            {/* Login Form */}
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
                 <div className="mt-1">
@@ -240,24 +242,21 @@ const AppBar = () => {
 
   const SignupModal = () => (
     <div
-    className={`fixed inset-0 flex z-50 items-center justify-center ${
+      className={`fixed inset-0 flex z-50 items-center justify-center ${
         showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
       } transition-opacity duration-300`}
     >
-      {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setShowSignupModal(false)}
       />
-
-      {/* Modal */}
       <div 
-      className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${
-        showSignupModal ? 'scale-100' : 'scale-95'
-      }`}
-    >
-      <div className="px-8 pt-8 pb-6 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200 scrollbar-track-transparent hover:scrollbar-thumb-red-300">
-      <div className="flex justify-between items-center mb-6">
+        className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${
+          showSignupModal ? 'scale-100' : 'scale-95'
+        }`}
+      >
+        <div className="px-8 pt-8 pb-6 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200 scrollbar-track-transparent hover:scrollbar-thumb-red-300">
+          <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-red-600">Create Account</h2>
             <button
               onClick={() => setShowSignupModal(false)}
@@ -281,7 +280,6 @@ const AppBar = () => {
               </button>
             </div>
 
-            {/* Social Signup Buttons */}
             <div className="grid grid-cols-2 gap-4 mb-2">
               <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
@@ -293,17 +291,15 @@ const AppBar = () => {
               </button>
             </div>
 
-            {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 text-gray-500">or via e-mail</span>
+                <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
               </div>
             </div>
 
-            {/* Signup Form */}
             <form onSubmit={handleSignup} className="space-y-4">
               <input
                 type="email"
@@ -371,6 +367,7 @@ const AppBar = () => {
                   onChange={(e) => setFormData({...formData, country: e.target.value})}
                 >
                   <option value="">Select country</option>
+                  {/* Add more country options here */}
                 </select>
                 <input
                   type="text"
@@ -411,6 +408,10 @@ const AppBar = () => {
     </div>
   );
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
       <header 
@@ -425,101 +426,101 @@ const AppBar = () => {
                 <div className="flex-shrink-0 flex items-center">
                 <Link href="/" className="text-xl font-bold text-white">
                   <Image
-                    src="/Logo/logo.png.png" // Correct path to your image
-                    alt="Logo" // Accessible description
-                    width={100} // Image width
-                    height={50} // Image height
-                    className="inline-block" // Styling for the image
+                    src="/Logo/logo.png.png"
+                    alt="Logo"
+                    width={100}
+                    height={50}
+                    className="inline-block"
                   />
                 </Link>
                   <span className="text-gray-600 text-2xl mx-5">|</span>
                 </div>
                 <div className="hidden md:block">
                   <div className="flex items-center space-x-1">
-                  <Link
-                    href="/cars"
-                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Search
-                  </Link>
-                  <Link
-                    href="/bestdealss"
-                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Best Deals
-                  </Link>
-                  <div className="relative text-black ">
-                    <ServicesDropdown className="hover:text-red-400"/>
-                  </div>
-                  <Link
-                    href="/import__process"
-                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Import process
-                  </Link>
-                  <Link
-                    href="/blog"
-                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Blog
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    About
-                  </Link>
+                    <Link
+                      href="/cars"
+                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Search
+                    </Link>
+                    <Link
+                      href="/bestdealss"
+                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Best Deals
+                    </Link>
+                    <div className="relative text-black">
+                      <ServicesDropdown className="hover:text-red-400"/>
+                    </div>
+                    <Link
+                      href="/import__process"
+                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Import process
+                    </Link>
+                    <Link
+                      href="/blog"
+                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Blog
+                    </Link>
+                    <Link
+                      href="/about"
+                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      About
+                    </Link>
                   </div>
                 </div>
               </div>
 
               {/* Right Menu Items */}
               <div className="flex items-center space-x-4">
-              <Heart className="text-gray-600 hover:text-red-500 cursor-pointer" />
-              <Select
-                options={languageOptions}
-                defaultValue={languageOptions[0]}
-                styles={customStyles}
-                formatOptionLabel={(option) => (
-                  <div className="flex items-center">
-                    {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
-                    <span className="ml-2">{option.label}</span>
-                  </div>
-                )}
-                isSearchable={false}
-              />
+                <Heart className="text-gray-600 hover:text-red-500 cursor-pointer" />
+                <Select
+                  options={languageOptions}
+                  defaultValue={languageOptions[0]}
+                  styles={customStyles}
+                  formatOptionLabel={(option) => (
+                    <div className="flex items-center">
+                      {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
+                      <span className="ml-2">{option.label}</span>
+                    </div>
+                  )}
+                  isSearchable={false}
+                />
 
-              {/* User Icon with Dropdown Trigger - Hidden on Mobile */}
-              <div
-                className="relative inline-block text-left  sm:flex" // Hide on mobile (hidden), visible on sm+
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                {/* User Icon with Dropdown Trigger */}
-                <div className="flex items-center cursor-pointer">
-                  <CircleUser className="h-6 w-6 text-grey-300" />
-                  <ChevronDown className="text-white" />
+                {/* User Icon with Dropdown Trigger - Hidden on Mobile */}
+                <div
+                  className="relative inline-block text-left hidden sm:flex"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {/* User Icon with Dropdown Trigger */}
+                  <div className="flex items-center cursor-pointer">
+                    <CircleUser className="h-6 w-6 text-grey-300" />
+                    <ChevronDown className="text-black" />
+                  </div>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownVisible && (
+                    <div className="absolute right-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20">
+                      <button
+                        onClick={() => setShowLoginModal(true)}
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                      >
+                        My Account
+                      </button>
+                      <button
+                        onClick={() => setShowSignupModal(true)}
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                      >
+                        Sign Up
+                      </button>
+                    </div>
+                  )}
                 </div>
-
-                {/* Dropdown Menu */}
-                {isDropdownVisible && (
-                  <div className="absolute left-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20 hidden sm:block">
-                    <button
-                      onClick={() => setShowLoginModal(true)}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                    >
-                      My Account
-                    </button>
-                    <button
-                      onClick={() => setShowSignupModal(true)}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                    >
-                      Sign Up
-                    </button>
-                  </div>
-                )}
               </div>
-            </div>
 
               {/* Mobile Menu Button */}
               <div className="md:hidden">
@@ -539,7 +540,7 @@ const AppBar = () => {
           {/* Mobile Menu */}
           <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96' : 'max-h-0 overflow-hidden'}`}>
             <div className="bg-white border-t border-gray-100 px-4 pt-2 pb-3 space-y-1">
-            <Link href="/cars" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
+              <Link href="/cars" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Search
               </Link>
               <Link href="/bestdealss" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
@@ -579,7 +580,6 @@ const AppBar = () => {
           </div>
         </nav>
       </header>
-
       <LoginModal />
       <SignupModal />
     </>

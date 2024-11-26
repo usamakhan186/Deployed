@@ -1,14 +1,16 @@
 import Navbar from '@/components/AppBar'
 import React from 'react'
-import AboutPage from './aboutus'
+import HeroSection from './aboutus'
+
 
 
 const aboutPage = () => {
-   
+
   return (
     <div>
         <Navbar/>
-        <AboutPage/>
+        <HeroSection/>
+        
         
 
     </div>
