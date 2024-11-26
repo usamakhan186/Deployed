@@ -83,7 +83,7 @@ const Footer = () => {
             <h3 className="text-gray-800 font-semibold mb-4">Follow Us</h3>
             <div className="flex gap-4">
               <a href="#" className="text-gray-600 hover:text-gray-800">
-                <Instagram size={20} />
+                {/* <Instagram size={20} /> */}
               </a>
               <a href="#" className="text-gray-600 hover:text-gray-800">
                 <MessageCircle size={20} />
