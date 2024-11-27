@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Eye, EyeOff, Heart, CircleUser, ChevronDown } from 'lucide-react';
+import { Menu, X, Eye, EyeOff, Heart,BookmarkIcon,Clock,ShoppingCart,CircleUser, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
@@ -57,12 +57,88 @@ const languageOptions = [
   { value: 'ES', label: 'Español', flag: '/flags/es.png' },
 ];
 
+const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  let hideDropdownTimeout;
+
+  const handleMouseEnter = () => {
+    clearTimeout(hideDropdownTimeout);
+    setIsDropdownVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideDropdownTimeout = setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    return () => clearTimeout(hideDropdownTimeout);
+  }, []);
+
+  return (
+    <div
+      className="hidden md:flex relative text-left"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="flex items-center cursor-pointer">
+        <CircleUser className="h-6 w-6 text-grey" />
+        <ChevronDown className="text-grey" />
+      </div>
+
+      {isDropdownVisible && (
+        <div className="absolute right-0 mt-6 w-64 bg-white rounded-md shadow-lg py-2 z-20">
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <BookmarkIcon className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Saved searches</span>
+          </button>
+
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <Clock className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Last searches</span>
+          </button>
+
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <Heart className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Favorite cars</span>
+          </button>
+
+          <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <ShoppingCart className="h-4 w-4 mr-3 text-gray-500" />
+            <span>Orders in progress</span>
+          </button>
+
+          <div className="px-4 py-3 border-t border-gray-100">
+            <button
+              onClick={() => setShowLoginModal(true)}
+              className="w-full mb-2 px-4 py-2 text-white bg-[#EF4444] rounded-md hover:bg-[[#D93C0B]] transition-colors"
+            >
+              Login
+            </button>
+
+            <div className="text-sm text-gray-500 text-center">
+              Don't have an account?
+              <button
+                onClick={() => setShowSignupModal(true)}
+                className="text-blue-600 hover:text-blue-700 ml-1"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const AppBar = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  // const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -453,7 +529,7 @@ const AppBar = () => {
                       <ServicesDropdown className="hover:text-red-400"/>
                     </div>
                     <Link
-                      href="/import__process"
+                      href="/importproces"
                       className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Import process
@@ -462,7 +538,7 @@ const AppBar = () => {
                       href="/blog"
                       className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
-                      Blog
+                      News
                     </Link>
                     <Link
                       href="/about"
@@ -476,52 +552,26 @@ const AppBar = () => {
 
               {/* Right Menu Items */}
               <div className="flex items-center space-x-4">
-                <Heart className="text-gray-600 hover:text-red-500 cursor-pointer" />
-                <Select
-                  options={languageOptions}
-                  defaultValue={languageOptions[0]}
-                  styles={customStyles}
-                  formatOptionLabel={(option) => (
-                    <div className="flex items-center">
-                      {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
-                      <span className="ml-2">{option.label}</span>
-                    </div>
-                  )}
-                  isSearchable={false}
-                />
-
-                {/* User Icon with Dropdown Trigger - Hidden on Mobile */}
-                <div
-                  className="relative inline-block text-left hidden sm:flex"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {/* User Icon with Dropdown Trigger */}
-                  <div className="flex items-center cursor-pointer">
-                    <CircleUser className="h-6 w-6 text-grey-300" />
-                    <ChevronDown className="text-black" />
+              <Heart className="text-gray-100 hover:text-red-500 cursor-pointer" />
+              <Select
+                options={languageOptions}
+                defaultValue={languageOptions[0]}
+                styles={customStyles}
+                formatOptionLabel={(option) => (
+                  <div className="flex items-center">
+                    {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
+                    <span className="ml-2">{option.label}</span>
                   </div>
+                )}
+                isSearchable={false}
+              />
 
-                  {/* Dropdown Menu */}
-                  {isDropdownVisible && (
-                    <div className="absolute right-0 mt-6 w-40 bg-white rounded-md shadow-lg py-2 z-20">
-                      <button
-                        onClick={() => setShowLoginModal(true)}
-                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                      >
-                        My Account
-                      </button>
-                      <button
-                        onClick={() => setShowSignupModal(true)}
-                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                      >
-                        Sign Up
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-
+              {/* User Icon with Dropdown - Desktop Only */}
+              {/* User Icon with Dropdown - Desktop Only */}
+              <UserDropdown
+                setShowLoginModal={setShowLoginModal}
+                setShowSignupModal={setShowSignupModal}
+              />
               {/* Mobile Menu Button */}
               <div className="md:hidden">
                 <button
@@ -535,6 +585,7 @@ const AppBar = () => {
                 </button>
               </div>
             </div>
+          </div>
           </div>
 
           {/* Mobile Menu */}

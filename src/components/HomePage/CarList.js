@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MapPin, Heart, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 const CarListings = () => {
+  const [activeCategory, setActiveCategory] = useState("Sedan");
+  
   const categories = ["Sedan", "SUV", "Luxury", "Sports", "Trucks"];
   
   const cars = [
     {
       id: 1,
+      category: "Sedan",
       slug: "2015-mercedes-benz-c350",
-      image: "https://images.unsplash.com/photo-1626668893632-6f3a4466d22f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjJ8fG1lcmNlZGVzJTIwYzM1MHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+      image: "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=800&q=60",
       price: "CHF 39,999",
       model: "2015 Mercedes-Benz C350",
       mileage: "46500km",
@@ -21,8 +24,51 @@ const CarListings = () => {
     },
     {
       id: 2,
+      category: "Sedan",
+      slug: "2015-mercedes-benz-c350",
+      image: "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=800&q=60",
+      price: "CHF 39,999",
+      model: "2015 Mercedes-Benz C350",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 3,
+      category: "Sedan",
+      slug: "2015-mercedes-benz-c350",
+      image: "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=800&q=60",
+      price: "CHF 39,999",
+      model: "2015 Mercedes-Benz C350",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 4,
+      category: "Sedan",
+      slug: "2015-mercedes-benz-c350",
+      image: "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=800&q=60",
+      price: "CHF 39,999",
+      model: "2015 Mercedes-Benz C350",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 5,
+      category: "Sports",
       slug: "2019-mercedes-benz-e53-amg",
-      image: "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fG1lcmNlZGVzJTIwZTUzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
+      image: "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=800&q=60",
       price: "CHF 46,998",
       model: "2019 Mercedes-Benz E53 AMG",
       mileage: "46500km",
@@ -33,9 +79,66 @@ const CarListings = () => {
       watchers: 29
     },
     {
-      id: 3,
+      id: 6,
+      category: "Sports",
+      slug: "2019-mercedes-benz-e53-amg",
+      image: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 46,998",
+      model: "2019 Mercedes-Benz E53 AMG",
+      mileage: "46500km",
+      fuelType: "Petrol", 
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 7,
+      category: "Sports",
+      slug: "2019-mercedes-benz-e53-amg",
+      image: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 46,998",
+      model: "2019 Mercedes-Benz E53 AMG",
+      mileage: "46500km",
+      fuelType: "Petrol", 
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 8,
+      category: "Sports",
+      slug: "2019-mercedes-benz-e53-amg",
+      image: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 46,998",
+      model: "2019 Mercedes-Benz E53 AMG",
+      mileage: "46500km",
+      fuelType: "Petrol", 
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 9,
+      category: "Sports",
+      slug: "2019-mercedes-benz-e53-amg",
+      image: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 46,998",
+      model: "2019 Mercedes-Benz E53 AMG",
+      mileage: "46500km",
+      fuelType: "Petrol", 
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 10,
+      category: "Luxury",
       slug: "2017-bmw-330-xi",
-      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym13JTIwMzMwfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
+      image: "https://images.unsplash.com/photo-1599338474777-92be0b662488?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       price: "CHF 25,998",
       model: "2017 BMW 330 XI",
       mileage: "46500km",
@@ -46,9 +149,66 @@ const CarListings = () => {
       watchers: 29
     },
     {
-      id: 4,
+      id: 12,
+      category: "Luxury",
+      slug: "2017-bmw-330-xi",
+      image: "https://images.unsplash.com/photo-1599338474777-92be0b662488?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 25,998",
+      model: "2017 BMW 330 XI",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 13,
+      category: "Luxury",
+      slug: "2017-bmw-330-xi",
+      image: "https://images.unsplash.com/photo-1599338474777-92be0b662488?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 25,998",
+      model: "2017 BMW 330 XI",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 14,
+      category: "Luxury",
+      slug: "2017-bmw-330-xi",
+      image: "https://images.unsplash.com/photo-1599338474777-92be0b662488?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 25,998",
+      model: "2017 BMW 330 XI",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 15,
+      category: "Luxury",
+      slug: "2017-bmw-330-xi",
+      image: "https://images.unsplash.com/photo-1599338474777-92be0b662488?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 25,998",
+      model: "2017 BMW 330 XI",
+      mileage: "46500km",
+      fuelType: "Petrol",
+      efficiency: "22kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 29
+    },
+    {
+      id: 16,
+      category: "Sports",
       slug: "2018-audi-a5-premium-plus",
-      image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGF1ZGklMjBhNXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+      image: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       price: "CHF 37,999",
       model: "2018 Audi A5 Premium Plus",
       mileage: "46500km",
@@ -57,9 +217,155 @@ const CarListings = () => {
       transmission: "Automatic",
       location: "Geneva",
       watchers: 29
+    },
+    {
+      id: 17,
+      category: "SUV",
+      slug: "2020-bmw-x5",
+      image: "https://images.unsplash.com/photo-1632487727140-4da9bb61760d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 55,999",
+      model: "2020 BMW X5",
+      mileage: "35000km",
+      fuelType: "Diesel",
+      efficiency: "18kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 45
+    },
+    {
+      id: 18,
+      category: "Trucks",
+      slug: "2021-ford-f150",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 48,999",
+      model: "2021 Ford F-150",
+      mileage: "25000km",
+      fuelType: "Diesel",
+      efficiency: "15kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 38
+    },
+    {
+      id: 188,
+      category: "Trucks",
+      slug: "2021-ford-f150",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 48,999",
+      model: "2021 Ford F-150",
+      mileage: "25000km",
+      fuelType: "Diesel",
+      efficiency: "15kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 38
+    },
+    {
+      id: 1888,
+      category: "Trucks",
+      slug: "2021-ford-f150",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 48,999",
+      model: "2021 Ford F-150",
+      mileage: "25000km",
+      fuelType: "Diesel",
+      efficiency: "15kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 38
+    },
+    {
+      id: 178,
+      category: "Trucks",
+      slug: "2021-ford-f150",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 48,999",
+      model: "2021 Ford F-150",
+      mileage: "25000km",
+      fuelType: "Diesel",
+      efficiency: "15kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 38
+    },
+ 
+   
+
+  
+    {
+      id: 23,
+      category: "SUV",
+      slug: "2021-mercedes-benz-gle",
+      image: "https://images.unsplash.com/photo-1632487727140-4da9bb61760d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 68,999",
+      model: "2021 Mercedes-Benz GLE",
+      mileage: "30000km",
+      fuelType: "Petrol",
+      efficiency: "16kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 52
+    },
+    {
+      id: 24,
+      category: "SUV",
+      slug: "2021-mercedes-benz-gle",
+      image: "https://images.unsplash.com/photo-1632487727140-4da9bb61760d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 68,999",
+      model: "2021 Mercedes-Benz GLE",
+      mileage: "30000km",
+      fuelType: "Petrol",
+      efficiency: "16kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 52
+    },
+    {
+      id: 25,
+      category: "SUV",
+      slug: "2021-mercedes-benz-gle",
+      image: "https://images.unsplash.com/photo-1632487727140-4da9bb61760d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 68,999",
+      model: "2021 Mercedes-Benz GLE",
+      mileage: "30000km",
+      fuelType: "Petrol",
+      efficiency: "16kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 52
+    },
+    {
+      id: 26,
+      category: "SUV",
+      slug: "2021-mercedes-benz-gle",
+      image: "https://images.unsplash.com/photo-1632487727140-4da9bb61760d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 68,999",
+      model: "2021 Mercedes-Benz GLE",
+      mileage: "30000km",
+      fuelType: "Petrol",
+      efficiency: "16kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 52
+    },
+    {
+      id: 27,
+      category: "SUV",
+      slug: "2021-mercedes-benz-gle",
+      image: "https://images.unsplash.com/photo-1632487727140-4da9bb61760d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: "CHF 68,999",
+      model: "2021 Mercedes-Benz GLE",
+      mileage: "30000km",
+      fuelType: "Petrol",
+      efficiency: "16kmpl",
+      transmission: "Automatic",
+      location: "Geneva",
+      watchers: 52
     }
   ];
 
+  // Filter cars based on active category
+  const filteredCars = cars.filter(car => car.category === activeCategory);
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-16">
@@ -69,11 +375,12 @@ const CarListings = () => {
         </h2>
         
         <div className="flex flex-wrap gap-2">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <button
-              key={index}
+              key={category}
+              onClick={() => setActiveCategory(category)}
               className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all
-                ${index === 0 
+                ${category === activeCategory 
                   ? 'bg-emerald-500 text-white shadow-sm' 
                   : 'bg-white text-gray-600 hover:bg-gray-100 shadow-sm'}`}
             >
@@ -84,7 +391,7 @@ const CarListings = () => {
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {cars.map((car) => (
+        {filteredCars.map((car) => (
           <div 
             key={car.id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden group"
@@ -131,12 +438,7 @@ const CarListings = () => {
                       <span className="text-sm font-medium text-gray-600">{car.watchers} Watchers</span>
                     </div>
                     
-                    <button 
-                      className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors shadow-sm"
-                      aria-label="View details"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
+                    
                   </div>
                 </div>
               </div>

@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { Search, Filter, Heart, Info, ChevronRight, X, ShoppingCart } from 'lucide-react';
+import { Search, Filter, Heart, Info, ChevronRight, X } from 'lucide-react';
 
-// Create a separate component for the filtered content
-const FilteredContent = ({ isMobileFiltersOpen, setIsMobileFiltersOpen }) => {  // Add these props
-  const searchParams = useSearchParams();
+const BestDealsPage = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     price: '',
     make: '',
@@ -16,17 +16,6 @@ const FilteredContent = ({ isMobileFiltersOpen, setIsMobileFiltersOpen }) => {  
     mileage: '',
     sortBy: 'newest',
   });
-  const handleBuyNow = (car) => {
-    const queryParams = new URLSearchParams({
-      carId: car.id,
-      price: car.price,
-      make: car.make,
-      model: car.model,
-      year: car.year
-    }).toString();
-    
-    router.push(`/checkout?${queryParams}`);
-  };
 
   // Sync filters with query parameters on page load
   useEffect(() => {
@@ -229,6 +218,7 @@ const FilteredContent = ({ isMobileFiltersOpen, setIsMobileFiltersOpen }) => {  
               <FilterControls />
             </div>
           </div>
+
           {/* Deals Grid */}
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -242,7 +232,7 @@ const FilteredContent = ({ isMobileFiltersOpen, setIsMobileFiltersOpen }) => {  
                     />
                     <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
                       <Heart size={20} className="text-gray-600" />
-                    </button> 
+                    </button>
                   </div>
                   
                   <div className="flex-1">
@@ -272,23 +262,10 @@ const FilteredContent = ({ isMobileFiltersOpen, setIsMobileFiltersOpen }) => {  
                     </div>
                   </div>
                   
-                  <div className="flex gap-2 mt-4">
-                    <button 
-                      onClick={() => router.push(`/cars/${car.id}`)}
-                      className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 flex items-center justify-center"
-                    >
-                      View Details
-                      <ChevronRight size={16} className="ml-2" />
-                    </button>
-                    
-                    <button 
-                      onClick={() => handleBuyNow(car)}
-                      className="flex-1 bg-[#FC4F3F] text-white py-2 px-2 rounded-md hover:bg-[#DC2626] flex items-center justify-center"
-                    >
-                      Buy Now
-                      <ShoppingCart size={16} className="ml-2" />
-                    </button>
-                  </div>
+                  <button className="w-full mt-4 bg-[#FC4F3F]  text-white py-2 px-4 rounded-md hover:bg-[#DC2626] flex items-center justify-center">
+                    View Details
+                    <ChevronRight size={16} className="ml-2" />
+                  </button>
                 </div>
               ))}
             </div>
@@ -298,36 +275,5 @@ const FilteredContent = ({ isMobileFiltersOpen, setIsMobileFiltersOpen }) => {  
     </div>
   );
 };
-const BestDealsPage = () => {
-  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
-  // Handle hydration
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
-
- 
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-7xl mx-auto py-4 px-4 sm:py-8 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold">Best Deals</h1>
-          
-          {/* Wrap the content that uses useSearchParams in Suspense */}
-          <Suspense fallback={<div>Loading...</div>}>
-            <FilteredContent />
-          </Suspense>
-        </div>
-      </main>
-    </div>
-  );
-};
-
-
-export default BestDealsPage; 
+export default BestDealsPage;

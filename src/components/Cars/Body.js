@@ -591,33 +591,33 @@ const CarList = () => {
   }, []);
 
 
-  const handleSearch = (searchTerm) => {
-    if (!searchTerm.trim()) {
-      setFilteredCars(cars);
-      return;
-    }
+  // const handleSearch = (searchTerm) => {
+  //   if (!searchTerm.trim()) {
+  //     setFilteredCars(cars);
+  //     return;
+  //   }
 
-    const searchLower = searchTerm.toLowerCase();
-    const filtered = cars.filter(car => {
-      return (
-        car.name.toLowerCase().includes(searchLower) ||
-        car.features.some(feature =>
-          feature.toLowerCase().includes(searchLower)
-        ) ||
-        car.transmission.toLowerCase().includes(searchLower) ||
-        car.fuelType.toLowerCase().includes(searchLower) ||
-        car.power.toLowerCase().includes(searchLower) ||
-        car.mileage.toLowerCase().includes(searchLower)
-      );
-    });
+  //   const searchLower = searchTerm.toLowerCase();
+  //   const filtered = cars.filter(car => {
+  //     return (
+  //       car.name.toLowerCase().includes(searchLower) ||
+  //       car.features.some(feature =>
+  //         feature.toLowerCase().includes(searchLower)
+  //       ) ||
+  //       car.transmission.toLowerCase().includes(searchLower) ||
+  //       car.fuelType.toLowerCase().includes(searchLower) ||
+  //       car.power.toLowerCase().includes(searchLower) ||
+  //       car.mileage.toLowerCase().includes(searchLower)
+  //     );
+  //   });
 
-    setFilteredCars(filtered);
-  };
+  //   setFilteredCars(filtered);
+  // };
 
   return (
     <div className="w-full">
       <div className="max-w-7xl mx-auto px-4">
-        <SearchBar onSearch={handleSearch} />
+        {/* <SearchBar onSearch={handleSearch} /> */}
         <div className="flex flex-col gap-4 mt-4">
           {filteredCars.map((car) => (
             <CarCard key={car.id} car={car} />

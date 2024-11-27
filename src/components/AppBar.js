@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 
 // Dynamically import React Select with no SSR
-const Select = dynamic(() => import('react-select'), { 
+const Select = dynamic(() => import('react-select'), {
   ssr: false,
   loading: () => null
 });
@@ -53,17 +53,17 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
             <BookmarkIcon className="h-4 w-4 mr-3 text-gray-500" />
             <span>Saved searches</span>
           </button>
-          
+
           <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
             <Clock className="h-4 w-4 mr-3 text-gray-500" />
             <span>Last searches</span>
           </button>
-          
+
           <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
             <Heart className="h-4 w-4 mr-3 text-gray-500" />
             <span>Favorite cars</span>
           </button>
-          
+
           <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
             <ShoppingCart className="h-4 w-4 mr-3 text-gray-500" />
             <span>Orders in progress</span>
@@ -76,9 +76,9 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
             >
               Login
             </button>
-            
+
             <div className="text-sm text-gray-500 text-center">
-              Don't have an account? 
+              Don't have an account?
               <button
                 onClick={() => setShowSignupModal(true)}
                 className="text-blue-600 hover:text-blue-700 ml-1"
@@ -151,20 +151,20 @@ const Navbar = () => {
     console.log('Login attempt with:', { email, password });
   };
 
-  
+
   const handleSignup = (e) => {
     e.preventDefault();
     console.log('Signup attempt with:', formData);
   };
 
- 
-
-  
- 
 
 
 
-  
+
+
+
+
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -315,11 +315,11 @@ const Navbar = () => {
     </div>
   );
 
-  
+
   const SignupModal = () => (
     <div
-    className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-    } transition-opacity duration-300`}
+      className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        } transition-opacity duration-300`}
     >
       {/* Backdrop */}
       <div
@@ -540,16 +540,16 @@ const Navbar = () => {
                     <ServicesDropdown />
                   </div>
                   <Link
-                    href="/import__process"
-                    className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Import process
-                  </Link>
+                      href="/importproces"
+                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Import process
+                    </Link>
                   <Link
                     href="/blog"
                     className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
-                    Blog
+                    News
                   </Link>
                   <Link
                     href="/about"
@@ -578,11 +578,11 @@ const Navbar = () => {
               />
 
               {/* User Icon with Dropdown - Desktop Only */}
-             {/* User Icon with Dropdown - Desktop Only */}
-<UserDropdown 
-  setShowLoginModal={setShowLoginModal}
-  setShowSignupModal={setShowSignupModal}
-/>
+              {/* User Icon with Dropdown - Desktop Only */}
+              <UserDropdown
+                setShowLoginModal={setShowLoginModal}
+                setShowSignupModal={setShowSignupModal}
+              />
 
               {/* Mobile Menu Button */}
               <div className="md:hidden">
@@ -609,8 +609,8 @@ const Navbar = () => {
                 Best Deals
               </Link>
               <div className="relative">
-                    <ServicesDropdown />
-                  </div>
+                <ServicesDropdown />
+              </div>
               <Link href="/import__process" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Import process
               </Link>
@@ -652,4 +652,4 @@ const Navbar = () => {
   );
 };
 
-export default dynamic (() => Promise.resolve(Navbar), {ssr: false});
+export default dynamic(() => Promise.resolve(Navbar), { ssr: false });

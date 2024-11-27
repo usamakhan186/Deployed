@@ -17,9 +17,7 @@ const DreamCarBanner = () => {
             <button className="bg-[#FF5A5F] hover:bg-[#E54850] text-white font-bold py-3 px-6 rounded-md">
               Get your car
             </button>
-            <button className="text-[#FF5A5F] font-bold py-3 px-6">
-              I want to sell a car
-            </button>
+            
           </div>
         </div>
         <div className="md:w-[50%] flex justify-center sm:mt-0 mt-12">
