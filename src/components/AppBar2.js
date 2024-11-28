@@ -1,17 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Eye, EyeOff, Heart,BookmarkIcon,Clock,ShoppingCart,CircleUser, ChevronDown } from 'lucide-react';
+import { Menu, X, Eye, EyeOff, Heart, BookmarkIcon, Clock, ShoppingCart, CircleUser, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
-const ServicesDropdown = dynamic(() => import('./ServicesDropdown'), {
-  ssr: false,
-  loading: () => <div className="h-10 w-24" />
-});
 
-const Select = dynamic(() => import('react-select'), { 
+
+const Select = dynamic(() => import('react-select'), {
   ssr: false,
   loading: () => (
     <div className="flex items-center gap-2">
@@ -76,6 +73,8 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
     return () => clearTimeout(hideDropdownTimeout);
   }, []);
 
+   
+
   return (
     <div
       className="hidden md:flex relative text-left"
@@ -133,11 +132,131 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
   );
 };
 
+const ServicesDropdown = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  let timeoutId;
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Handle mouse/touch interactions
+  const handleInteractionStart = () => {
+    if (!isMobile) {
+      clearTimeout(timeoutId);
+      setIsOpen(true);
+    }
+  };
+
+  const handleInteractionEnd = () => {
+    if (!isMobile) {
+      timeoutId = setTimeout(() => {
+        setIsOpen(false);
+      }, 100);
+    }
+  };
+
+  // Toggle for mobile
+  const handleClick = (e) => {
+    if (isMobile) {
+      e.preventDefault();
+      setIsOpen(!isOpen);
+    }
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobile && isOpen && !event.target.closest('.services-dropdown')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMobile, isOpen]);
+
+  return (
+    <div 
+      className="relative inline-block text-left services-dropdown" 
+      onMouseEnter={handleInteractionStart}
+      onMouseLeave={handleInteractionEnd}
+      onTouchStart={handleInteractionStart}
+      onTouchEnd={handleInteractionEnd}
+    >
+      {/* Dropdown Button */}
+      <button
+        onClick={handleClick}
+        className="inline-flex justify-center w-full  text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+      >
+        Services
+        <svg
+          className={`-mr-1 ml-2 h-5 w-5 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {/* Dropdown Menu */}
+      <div 
+        className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition-all duration-200 ${
+          isOpen 
+            ? 'opacity-100 translate-y-0 visible' 
+            : 'opacity-0 -translate-y-2 invisible'
+        }`}
+      >
+        <div className="py-1">
+          <Link
+            href="/services_page/safepurchase"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            Safe Purchase
+          </Link>
+          <Link
+            href="/services_page/inspect"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            Inspect Car
+          </Link>
+          <Link
+            href="/services_page/fnance"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            Car Financing
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AppBar = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   // const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
@@ -203,18 +322,16 @@ const AppBar = () => {
 
   const LoginModal = () => (
     <div
-      className={`fixed inset-0 flex z-50 items-center justify-center ${
-        showLoginModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      } transition-opacity duration-300`}
-    >   
-      <div 
+      className={`fixed inset-0 flex z-50 items-center justify-center ${showLoginModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        } transition-opacity duration-300`}
+    >
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setShowLoginModal(false)}
       />
-      <div 
-        className={`relative bg-red-50/85 rounded-lg w-full max-w-md transform transition-all duration-300 ${
-          showLoginModal ? 'scale-100' : 'scale-95'
-        }`}
+      <div
+        className={`relative bg-red-50/85 rounded-lg w-full max-w-md transform transition-all duration-300 ${showLoginModal ? 'scale-100' : 'scale-95'
+          }`}
         role="dialog"
         aria-modal="true"
       >
@@ -318,18 +435,16 @@ const AppBar = () => {
 
   const SignupModal = () => (
     <div
-      className={`fixed inset-0 flex z-50 items-center justify-center ${
-        showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      } transition-opacity duration-300`}
+      className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        } transition-opacity duration-300`}
     >
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setShowSignupModal(false)}
       />
-      <div 
-        className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${
-          showSignupModal ? 'scale-100' : 'scale-95'
-        }`}
+      <div
+        className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${showSignupModal ? 'scale-100' : 'scale-95'
+          }`}
       >
         <div className="px-8 pt-8 pb-6 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200 scrollbar-track-transparent hover:scrollbar-thumb-red-300">
           <div className="flex justify-between items-center mb-6">
@@ -380,7 +495,7 @@ const AppBar = () => {
               <input
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="Email"
                 className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
               />
@@ -389,7 +504,7 @@ const AppBar = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="Password (min. 8 characters)"
                   className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                 />
@@ -406,41 +521,41 @@ const AppBar = () => {
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Name"
                   className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                 />
                 <input
                   type="text"
                   value={formData.surname}
-                  onChange={(e) => setFormData({...formData, surname: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
                   placeholder="Surname"
                   className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                 />
               </div>
 
               <div className="flex space-x-2">
-                <select 
+                <select
                   className="w-24 px-2 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                   value={formData.countryCode}
-                  onChange={(e) => setFormData({...formData, countryCode: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
                 >
                   <option>+92</option>
                 </select>
                 <input
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="Telephone number"
                   className="flex-1 px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <select 
+                <select
                   className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                   value={formData.country}
-                  onChange={(e) => setFormData({...formData, country: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                 >
                   <option value="">Select country</option>
                   {/* Add more country options here */}
@@ -448,7 +563,7 @@ const AppBar = () => {
                 <input
                   type="text"
                   value={formData.postalCode}
-                  onChange={(e) => setFormData({...formData, postalCode: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
                   placeholder="Postal code"
                   className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
                 />
@@ -459,7 +574,7 @@ const AppBar = () => {
                   type="checkbox"
                   id="terms"
                   checked={formData.agreeToTerms}
-                  onChange={(e) => setFormData({...formData, agreeToTerms: e.target.checked})}
+                  onChange={(e) => setFormData({ ...formData, agreeToTerms: e.target.checked })}
                   className="rounded border-red-200 text-red-500 focus:ring-red-200"
                 />
                 <label htmlFor="terms" className="text-sm text-gray-600">
@@ -490,7 +605,7 @@ const AppBar = () => {
 
   return (
     <>
-      <header 
+      <header
         className={`sticky top-0 w-full bg-white border-b-2 border-gray-100 z-40 shadow-lg transition-all duration-300 
           ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}
       >
@@ -500,15 +615,15 @@ const AppBar = () => {
               {/* Logo and Left Menu Items */}
               <div className="flex items-center">
                 <div className="flex-shrink-0 flex items-center">
-                <Link href="/" className="text-xl font-bold text-white">
-                  <Image
-                    src="/Logo/logo.png.png"
-                    alt="Logo"
-                    width={100}
-                    height={50}
-                    className="inline-block"
-                  />
-                </Link>
+                  <Link href="/" className="text-xl font-bold text-white">
+                    <Image
+                      src="/Logo/logo.png.png"
+                      alt="Logo"
+                      width={100}
+                      height={50}
+                      className="inline-block"
+                    />
+                  </Link>
                   <span className="text-gray-600 text-2xl mx-5">|</span>
                 </div>
                 <div className="hidden md:block">
@@ -526,7 +641,7 @@ const AppBar = () => {
                       Best Deals
                     </Link>
                     <div className="relative text-black">
-                      <ServicesDropdown className="hover:text-red-400"/>
+                      <ServicesDropdown color="white" className="hover:text-red-400" />
                     </div>
                     <Link
                       href="/importproces"
@@ -552,40 +667,40 @@ const AppBar = () => {
 
               {/* Right Menu Items */}
               <div className="flex items-center space-x-4">
-              <Heart className="text-gray-100 hover:text-red-500 cursor-pointer" />
-              <Select
-                options={languageOptions}
-                defaultValue={languageOptions[0]}
-                styles={customStyles}
-                formatOptionLabel={(option) => (
-                  <div className="flex items-center">
-                    {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
-                    <span className="ml-2">{option.label}</span>
-                  </div>
-                )}
-                isSearchable={false}
-              />
+                <Heart className="text-gray-100 hover:text-red-500 cursor-pointer" />
+                <Select
+                  options={languageOptions}
+                  defaultValue={languageOptions[0]}
+                  styles={customStyles}
+                  formatOptionLabel={(option) => (
+                    <div className="flex items-center">
+                      {option.flag && <img src={option.flag} alt="" className="w-5 h-5 rounded-full" />}
+                      <span className="ml-2">{option.label}</span>
+                    </div>
+                  )}
+                  isSearchable={false}
+                />
 
-              {/* User Icon with Dropdown - Desktop Only */}
-              {/* User Icon with Dropdown - Desktop Only */}
-              <UserDropdown
-                setShowLoginModal={setShowLoginModal}
-                setShowSignupModal={setShowSignupModal}
-              />
-              {/* Mobile Menu Button */}
-              <div className="md:hidden">
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-300 transition-colors"
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  aria-expanded="false"
-                >
-                  <span className="sr-only">Open main menu</span>
-                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                {/* User Icon with Dropdown - Desktop Only */}
+                {/* User Icon with Dropdown - Desktop Only */}
+                <UserDropdown
+                  setShowLoginModal={setShowLoginModal}
+                  setShowSignupModal={setShowSignupModal}
+                />
+                {/* Mobile Menu Button */}
+                <div className="md:hidden">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-300 transition-colors"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-expanded="false"
+                  >
+                    <span className="sr-only">Open main menu</span>
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
           </div>
 
           {/* Mobile Menu */}

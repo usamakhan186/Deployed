@@ -1,6 +1,13 @@
 "use client"
 
 const GuaranteeSection = () => {
+  const handleInspectionClick = () => {
+    // Assuming your PDF is stored in the public folder
+    window.open('/inspectionDetail (1).pdf', '_blank');
+    // You can also specify a complete URL if the PDF is hosted elsewhere
+    // window.open('https://example.com/path/to/inspection-details.pdf', '_blank');
+  };
+
   return (
     <section className="bg-gray-50">
       {/* Top Section */}
@@ -28,9 +35,12 @@ const GuaranteeSection = () => {
             You know exactly what you are buying ahead of time, and we guarantee the condition
             as stated in the certificate. CarAudit is our mechanic on your side.
           </p>
-          <button className="mt-6 px-6 py-3 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-2">
+          <button 
+            onClick={handleInspectionClick}
+            className="mt-6 px-6 py-3 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-2"
+          >
             More about Inspection
-            {/* <svg
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
               fill="none"
@@ -43,11 +53,12 @@ const GuaranteeSection = () => {
                 strokeWidth={2}
                 d="M19 9l-7 7-7-7"
               />
-            </svg> */}
+            </svg>
           </button>
         </div>
       </div>
 
+      {/* Rest of the component remains the same */}
       {/* Bottom Section */}
       <div className="container mx-auto px-6 lg:px-12 mt-12 w-full h-64 ">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -130,8 +141,5 @@ const GuaranteeSection = () => {
     </section>
   );
 };
-
-
-
 
 export default GuaranteeSection;
