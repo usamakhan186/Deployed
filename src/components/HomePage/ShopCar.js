@@ -200,10 +200,7 @@ const CarBrowseOptions = () => {
 
         {renderContent()}
 
-        <button className="flex items-center justify-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors duration-200">
-          <span>See all {activeView}</span>
-          <ChevronDown className="w-4 h-4" />
-        </button>
+        
       </div>
     </div>
   );

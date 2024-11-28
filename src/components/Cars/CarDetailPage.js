@@ -21,9 +21,15 @@ import {
     Info,
     Eye,
     EyeOff,
+    BarChart,
     Phone,
+    Car,
+    Clock
+
 
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 
 
 // New Checkout Sidebar Component
@@ -82,9 +88,609 @@ const GuaranteeCard = () => {
     );
 };
 
+const CarTabs = () => {
+    const [activeTab, setActiveTab] = useState('details');
+
+    const tabs = [
+        { id: 'details', label: 'Details' },
+        { id: 'features', label: 'Features' },
+        { id: 'howItWorks', label: 'How it works' },
+        { id: 'priceHistory', label: 'Price History', hasIcon: true },
+        { id: 'priceMap', label: 'Price map' },
+        { id: 'financing', label: 'Financing' }
+    ];
+
+    return (
+        <div className="lg:w-[65%] px-6 border-b border-gray-200">
+            <div className="flex space-x-1 overflow-x-auto">
+                {tabs.map((tab) => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`
+                            whitespace-nowrap px-4 py-2.5 text-sm font-medium 
+                            ${activeTab === tab.id
+                                ? 'text-red-500 border-b-2 border-red-500'
+                                : 'text-gray-500 hover:text-gray-700'}
+                            transition-colors duration-150 ease-in-out
+                            flex items-center gap-1.5
+                        `}
+                    >
+                        {tab.label}
+                        {tab.hasIcon && (
+                            <div className="bg-orange-100 rounded p-0.5">
+                                <BarChart className="w-3 h-3 text-orange-500" />
+                            </div>
+                        )}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
+const HowItWorks = () => {
+    const [activeCard, setActiveCard] = useState(0);
+
+    const steps = [
+        {
+            title: "Check the car first, decide later",
+            description: "For each car, we first arrange an inspection, which results in a complete report on the technical condition of the car. Only then do you decide whether you want to buy the car.",
+            image: "/CheckcAR.webp"
+        },
+        {
+            title: "We keep the guarantee!",
+            description: "We don't doubt the cars you buy from us, but for your peace of mind, we'll give you a 6-month warranty on the essentials - engine, transmission, differential - in addition to the warranty on hidden defects. If you still don't like the car, you can return it to us within 14 days of receipt.",
+            image: "/guarantee.webp"
+        },
+        {
+            title: "Delivery time",
+            description: "We can deliver most of our cars within 14 working days of ordering, payment confirmation, and receipt of documents. Depending on the specific location and compliance with legal deadlines for administrative processing, which varies by country, the expected delivery time may be longer.",
+            image: "/delivery.webp"
+        }
+    ];
+
+    const handleNext = () => {
+        setActiveCard((prev) => (prev + 1) % steps.length);
+    };
+
+    const handlePrevious = () => {
+        setActiveCard((prev) => (prev - 1 + steps.length) % steps.length);
+    };
+
+    return (
+        <div className="mt-8 lg:mt-12 px-4 lg:px-0">
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-6 lg:mb-8">How it works</h2>
+
+            <div className="space-y-4 lg:space-y-6">
+                {/* Mobile View (Single Card) */}
+                <div className="block lg:hidden">
+                    <div className="bg-white rounded-lg p-6 shadow-md border border-red-100">
+                        <div className="relative h-32 mb-4">
+                            <img
+                                src={steps[activeCard].image}
+                                alt={steps[activeCard].title}
+                                className="object-contain w-full h-full rounded-full"
+                            />
+                        </div>
+
+                        <h3 className="text-lg font-bold mb-3 text-red-500">
+                            {steps[activeCard].title}
+                        </h3>
+
+                        <p className="text-sm text-[#4a5578] leading-relaxed">
+                            {steps[activeCard].description}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Desktop View */}
+                <div className="hidden lg:grid grid-cols-3 gap-6">
+                    {steps.map((step, index) => (
+                        <div
+                            key={index}
+                            className={`
+                                bg-white rounded-lg p-6 shadow-md
+                                ${index === activeCard ?
+                                    'border border-red-100 bg-red-50/5 hover:shadow-lg' :
+                                    'border border-transparent'
+                                }
+                            `}
+                        >
+                            <div className="relative h-32 w-32 mx-auto mb-4 rounded-full overflow-hidden bg-white shadow-md">
+                                <img
+                                    src={step.image}
+                                    alt={step.title}
+                                    className="object-contain w-full h-full "
+                                />
+                            </div>
+
+                            <h3 className={`
+                                text-lg font-bold mb-3
+                                ${index === activeCard ? 'text-red-500' : 'text-[#1e2b4d]'}
+                            `}>
+                                {step.title}
+                            </h3>
+
+                            <p className="text-sm text-[#4a5578] leading-relaxed">
+                                {step.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Navigation Dots */}
+                <div className="flex justify-center gap-2">
+                    {steps.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setActiveCard(index)}
+                            className={`
+                                w-2 h-2 rounded-full 
+                                ${index === activeCard ? 'bg-red-500' : 'bg-gray-200'}
+                            `}
+                        />
+                    ))}
+                </div>
+
+                {/* Navigation Arrows */}
+                <div className="flex justify-center gap-4">
+                    <button
+                        onClick={handlePrevious}
+                        className="p-2 rounded-lg bg-red-50/85 hover:bg-red-100"
+                        aria-label="Previous"
+                    >
+                        <ChevronLeft className="w-5 h-5 text-gray-600" />
+                    </button>
+                    <button
+                        onClick={handleNext}
+                        className="p-2 rounded-lg bg-red-50/85 hover:bg-red-100"
+                        aria-label="Next"
+                    >
+                        <ChevronRight className="w-5 h-5 text-gray-600" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const PriceHistory = () => {
+    return (
+        <div className="mt-12 px-4 lg:px-0">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">Price History</h2>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="mb-2">
+                    <div className="text-sm font-semibold text-red-500">NO PRICE CHANGE</div>
+                    <div className="text-lg text-[#1e2b4d]">1 day on Fast cars</div>
+                </div>
+
+                {/* Price Chart */}
+                <div className="relative mt-8 mb-4">
+                    {/* Y-axis labels */}
+                    <div className="absolute -left-16 top-0 h-full flex flex-col justify-between text-sm text-gray-500">
+                        <span>651 000</span>
+                        <span>650 000</span>
+                        <span>649 000</span>
+                    </div>
+
+                    {/* Chart area */}
+                    <div className="relative h-32 ml-2">
+                        {/* Grid lines */}
+                        <div className="absolute inset-0 flex flex-col justify-between">
+                            <div className="border-t border-gray-200 w-full h-0" />
+                            <div className="border-t border-gray-200 w-full h-0" />
+                            <div className="border-t border-gray-200 w-full h-0" />
+                        </div>
+
+                        {/* Price line */}
+                        <div className="absolute top-1/2 w-full h-0.5 bg-red-500" />
+
+                        {/* Price points */}
+                        <div className="absolute top-1/2 -translate-y-1/2 left-0">
+                            <div className="bg-red-500 text-white px-3 py-1 rounded-md text-sm">
+                                649 990
+                            </div>
+                        </div>
+                        <div className="absolute top-1/2 -translate-y-1/2 right-0">
+                            <div className="bg-red-500 text-white px-3 py-1 rounded-md text-sm">
+                                649 990
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* X-axis labels */}
+                    <div className="flex justify-between mt-2 text-sm text-gray-500">
+                        <div className="flex items-center">
+                            <span>CZK</span>
+                            <span className="ml-2">11/2024</span>
+                        </div>
+                        <span>11/2024</span>
+                    </div>
+                </div>
+
+                {/* Disclaimer */}
+                <div className="mt-8 text-sm text-gray-600 text-center">
+                    We play fair, so we
+                    <span className="font-semibold"> do not include changes in the exchange rate in the development of the car's price; </span>
+                    the data given only reflect changes on the seller's side.
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const PriceMap = () => {
+    // Sample data points for the scatter plot
+    const dataPoints = [
+        { price: 1000000, mileage: 115500, type: 'comparable' },
+        { price: 800000, mileage: 115500, type: 'comparable' },
+        { price: 750000, mileage: 115500, type: 'comparable' },
+        { price: 700000, mileage: 126000, type: 'comparable' },
+        { price: 650000, mileage: 136500, type: 'chosen' },
+        { price: 600000, mileage: 126000, type: 'compared' },
+        { price: 600000, mileage: 147000, type: 'comparable' },
+        { price: 550000, mileage: 157500, type: 'comparable' },
+    ];
+
+    const chartData = {
+        minPrice: 600000,
+        maxPrice: 700000,
+        mileageRange: [0, 200000],
+        comparableCars: [
+            {
+                id: 1,
+                name: "BMW 320d Touring Advantage xD 5W",
+                price: 649990,
+                priceWithoutVat: 536990,
+                mileage: "83,813 km",
+                year: "10/2021",
+                power: "140 kW",
+                transmission: "Automatic",
+                engine: "4.7 l/100km",
+                fuel: "Diesel",
+                features: [
+                    "Multifunction steering wheel",
+                    "Rain sensor",
+                    "Parking sensors",
+                    "Traffic sign recognition"
+                ],
+                image: "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fG1lcmNlZGVzJTIwZTUzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
+            },
+            {
+                id: 2,
+                name: "BMW 320d Touring Sport Line xD 5W",
+                price: 688990,
+                priceWithoutVat: 569990,
+                mileage: "74,916 km",
+                year: "12/2021",
+                power: "140 kW",
+                transmission: "Automatic",
+                engine: "4.7 l/100km",
+                fuel: "Diesel",
+                features: [
+                    "LED headlights",
+                    "Heated seats",
+                    "Head up display",
+                    "Integrated child seats"
+                ],
+                image: "https://images.unsplash.com/photo-1517153295259-74eb0b416cee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGJtdyUyMGxhdGVzdHxlbnwwfHwwfHx8MA%3D%3D"
+            }
+        ]
+    };
+
+    return (
+        <div className="mt-12 px-4 lg:px-0">
+            <h2 className="text-2xl font-bold text-[#1e2b4d] mb-8">Price map</h2>
+
+            {/* Chart Section */}
+            <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+                <p className="text-gray-600 mb-8">
+                    This car compared to others in it's category.
+                </p>
+
+                {/* Chart Container */}
+                <div className="relative h-[400px] w-full mb-8">
+                    {/* Y-axis grid lines and labels */}
+                    <div className="absolute left-16 top-0 bottom-8 w-[calc(100%-4rem)] border-l border-gray-200">
+                        {[1200000, 1000000, 800000, 600000, 400000].map((value, index) => (
+                            <div key={index} className="relative h-1/4">
+                                <div className="absolute -left-16 top-0 text-sm text-gray-500">
+                                    {(value / 1000).toLocaleString()} 000
+                                </div>
+                                <div className="absolute left-0 right-0 top-0 border-t border-gray-200" />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* X-axis labels */}
+                    <div className="absolute bottom-0 left-16 right-8 flex justify-between text-sm text-gray-500">
+                        {[115500, 126000, 136500, 147000, 157500].map((value, index) => (
+                            <div key={index} className="text-center">
+                                {(value / 1000).toFixed(0)} 500 km
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Scatter Plot Points */}
+                    <div className="absolute left-16 top-0 bottom-8 right-8">
+                        {dataPoints.map((point, index) => {
+                            const xPos = ((point.mileage - 115500) / (157500 - 115500)) * 100;
+                            const yPos = ((1200000 - point.price) / 800000) * 100;
+
+                            return (
+                                <div
+                                    key={index}
+                                    className={`absolute w-3 h-3 rounded-full transform -translate-x-1/2 -translate-y-1/2
+                                        ${point.type === 'chosen' ? 'bg-red-500' :
+                                            point.type === 'compared' ? 'bg-orange-400' :
+                                                'bg-gray-300'}`}
+                                    style={{
+                                        left: `${xPos}%`,
+                                        top: `${yPos}%`
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Legend */}
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-red-500" />
+                        <span className="text-sm text-gray-600 uppercase">Your chosen car</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-orange-400" />
+                        <span className="text-sm text-gray-600 uppercase">Compared with</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Comparable Cars Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {chartData.comparableCars.map(car => (
+                    <div key={car.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img
+                            src={car.image}
+                            alt={car.name}
+                            className="w-full h-48 object-cover"
+                        />
+                        <div className="p-4">
+                            <h3 className="font-bold text-lg text-[#1e2b4d] mb-2">{car.name}</h3>
+                            <div className="flex justify-between items-baseline mb-4">
+                                <div className="text-xl font-bold text-red-500">
+                                    CZK {car.price.toLocaleString()}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                    without VAT CZK {car.priceWithoutVat.toLocaleString()}
+                                </div>
+                            </div>
+
+                            {/* Car Specs */}
+                            <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <Car className="w-4 h-4" />
+                                    <span>{car.mileage}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <span>{car.year}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <Settings className="w-4 h-4" />
+                                    <span>{car.power}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <Gauge className="w-4 h-4" />
+                                    <span>{car.transmission}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <span>{car.engine}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <span>{car.fuel}</span>
+                                </div>
+                            </div>
+
+                            {/* Features */}
+                            <div className="flex flex-wrap gap-2">
+                                {car.features.map((feature, index) => (
+                                    <span
+                                        key={index}
+                                        className="px-2 py-1 bg-red-50/85 text-xs text-red-500 rounded-full"
+                                    >
+                                        {feature}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const Financing = () => {
+    const [loanType, setLoanType] = useState('lowInstallment');
+    const [months, setMonths] = useState(48);
+    const [downPayment, setDownPayment] = useState(30);
+    const carPrice = 649990; // Example price
+
+    const calculateLoanDetails = (type) => {
+        const downPaymentAmount = (carPrice * downPayment) / 100;
+        const loanAmount = carPrice - downPaymentAmount;
+
+        if (type === 'lowInstallment') {
+            return {
+                percentage: 91.4,
+                rate: '7.79 / 8.07',
+                monthly: 6592,
+                lastPayment: Math.round(loanAmount * 0.41)
+            };
+        } else {
+            return {
+                percentage: 8.6,
+                rate: '8.19',
+                monthly: 11412,
+                lastPayment: 0
+            };
+        }
+    };
+
+    const loanDetails = calculateLoanDetails(loanType);
+
+    return (
+        <div className="mt-12 px-4 lg:px-0">
+            <h2 className="text-2xl font-bold text-[#1e2b4d] mb-8">Financing</h2>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+                {/* Fast loans banner */}
+                <div className="flex items-center gap-2 mb-6 text-sm text-gray-600">
+                    <Clock className="w-4 h-4" />
+                    Fair loans approved within 30 minutes
+                </div>
+
+                {/* Loan Type Toggle */}
+                <div className="grid grid-cols-2 gap-2 mb-8">
+                    <button
+                        onClick={() => setLoanType('lowInstallment')}
+                        className={`py-3 rounded text-center transition-colors 
+                            ${loanType === 'lowInstallment'
+                                ? 'bg-red-500 text-white'
+                                : 'bg-gray-100 text-gray-700'}`}
+                    >
+                        Low installment
+                        <span className="text-xs block">
+                            {loanDetails.percentage}% choose low payments
+                        </span>
+                    </button>
+                    <button
+                        onClick={() => setLoanType('regularLoan')}
+                        className={`py-3 rounded text-center transition-colors
+                            ${loanType === 'regularLoan'
+                                ? 'bg-red-500 text-white'
+                                : 'bg-gray-100 text-gray-700'}`}
+                    >
+                        Regular loan
+                        <span className="text-xs block">
+                            {100 - loanDetails.percentage}% choose fixed payment
+                        </span>
+                    </button>
+                </div>
+
+                {/* Payback Period Slider */}
+                <div className="mb-8">
+                    <div className="flex justify-between mb-2">
+                        <span className="text-sm font-medium">Payback period</span>
+                        <span className="text-sm text-gray-600">{months} months</span>
+                    </div>
+                    <div className="relative">
+                        <input
+                            type="range"
+                            min="12"
+                            max="72"
+                            step="12"
+                            value={months}
+                            onChange={(e) => setMonths(Number(e.target.value))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"
+                        />
+                        <div className="flex justify-between mt-2 text-xs text-gray-400">
+                            <span>12</span>
+                            <span>24</span>
+                            <span>36</span>
+                            <span>48</span>
+                            <span>60</span>
+                            <span>72</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Down Payment Slider */}
+                <div className="mb-8">
+                    <div className="flex justify-between mb-2">
+                        <span className="text-sm font-medium">
+                            Down payment (%)
+                            <span className="text-gray-400 ml-1">
+                                {downPayment}% = CZK {((carPrice * downPayment) / 100).toLocaleString()}
+                            </span>
+                        </span>
+                    </div>
+                    <div className="relative">
+                        <input
+                            type="range"
+                            min="0"
+                            max="60"
+                            step="5"
+                            value={downPayment}
+                            onChange={(e) => setDownPayment(Number(e.target.value))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"
+                        />
+                        <div className="flex justify-between mt-2 text-xs text-gray-400">
+                            {[0, 20, 40, 60].map(value => (
+                                <span key={value}>{value}%</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Payment Details */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                    <div className="grid grid-cols-4 gap-4 text-sm mb-4">
+                        <div>
+                            <div className="text-gray-500 uppercase text-xs">Downpayment (30%)</div>
+                            <div className="font-medium">CZK {((carPrice * downPayment) / 100).toLocaleString()}</div>
+                        </div>
+                        <div>
+                            <div className="text-gray-500 uppercase text-xs">Installment</div>
+                            <div className="font-medium">{months}</div>
+                        </div>
+                        <div>
+                            <div className="text-gray-500 uppercase text-xs">Interest rate / APR</div>
+                            <div className="font-medium">{loanDetails.rate}%</div>
+                        </div>
+                        <div>
+                            <div className="text-gray-500 uppercase text-xs">Monthly</div>
+                            <div className="font-medium">CZK {loanDetails.monthly.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    {loanType === 'lowInstallment' && (
+                        <div className="text-center">
+                            <div className="text-gray-500 uppercase text-xs">Last payment</div>
+                            <div className="text-lg font-medium">CZK {loanDetails.lastPayment.toLocaleString()}</div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Help Link */}
+                <button className="text-red-500 text-sm text-center w-full mb-6">
+                    How does the {loanType === 'lowInstallment' ? 'Low Installment' : 'Regular loan'} Financing work?
+                </button>
+
+                {/* Need Advice Section */}
+                <div className="text-center">
+                    <div className="text-sm text-gray-600 mb-2">Need some advice?</div>
+                    <a href="tel:+420244034700" className="text-red-500 flex items-center justify-center gap-2">
+                        <Phone className="w-4 h-4" />
+                        +420 244 034 700
+                    </a>
+                </div>
+
+                {/* Disclaimer */}
+                <div className="text-xs text-gray-500 text-center mt-6">
+                    The calculated amount is only a ballpark figure and does not represent a binding commercial quote.
+                    The exact installment amount and interest rate may vary between providers depending on the final calculation.
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 
 const CheckoutSidebar = () => {
+    const router = useRouter();
     const [isServicesExpanded, setIsServicesExpanded] = useState(false);
     const [isFinancingModalOpen, setIsFinancingModalOpen] = useState(false)
     const [showSignupModal, setShowSignupModal] = useState(false);
@@ -112,13 +718,10 @@ const CheckoutSidebar = () => {
     };
 
     const handleBuyClick = () => {
-        if (!isLoggedIn) {
-            setShowSignupModal(true);
-        } else {
-            // Handle purchase logic
-            console.log('Proceeding with purchase...');
-        }
+        // Navigate to checkout page
+        router.push('/checkout');
     };
+
     const FinancingModal = ({ isOpen, onClose }) => {
         const [selectedOption, setSelectedOption] = useState('lowInstallment');
         const [monthsRange, setMonthsRange] = useState(48);
@@ -776,6 +1379,7 @@ const CarDetailPage = () => {
 
             <div className="max-w-7xl mx-auto px-4 lg:px-8">
                 <GuaranteeCard />
+                <CarTabs />
 
                 {/* New flexbox container for main content and sidebar */}
                 <div className="flex flex-col lg:flex-row gap-8">
@@ -808,6 +1412,11 @@ const CarDetailPage = () => {
                                 ))}
                             </div>
                         </div>
+                        <HowItWorks />
+                        <PriceHistory />
+                        <PriceMap />
+                        <Financing />
+
                     </div>
 
                     {/* Checkout Sidebar */}
@@ -818,6 +1427,8 @@ const CarDetailPage = () => {
                     </div>
                 </div>
             </div>
+
+
 
 
 

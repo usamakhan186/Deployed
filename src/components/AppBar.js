@@ -526,13 +526,13 @@ const Navbar = () => {
                 <div className="flex items-center space-x-1">
                   <Link
                     href="/cars"
-                    className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-white hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Search
                   </Link>
                   <Link
                     href="/bestdealss"
-                    className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-white hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Best Deals
                   </Link>
@@ -541,19 +541,19 @@ const Navbar = () => {
                   </div>
                   <Link
                       href="/importproces"
-                      className="text-black hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="text-white hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Import process
                     </Link>
                   <Link
                     href="/blog"
-                    className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-white hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     News
                   </Link>
                   <Link
                     href="/about"
-                    className="text-white hover:text-gray-900 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-white hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     About
                   </Link>
@@ -609,7 +609,7 @@ const Navbar = () => {
                 Best Deals
               </Link>
               <div className="relative">
-                <ServicesDropdown />
+                <ServicesDropdown/>
               </div>
               <Link href="/import__process" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Import process

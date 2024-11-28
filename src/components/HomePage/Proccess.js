@@ -1,5 +1,6 @@
 import React from 'react';
 import process from "@/assets/process.png"
+import Link from 'next/link'; 
 
 const DreamCarBanner = () => {
   return (
@@ -14,10 +15,12 @@ const DreamCarBanner = () => {
             Aliquam in hendrerit urna.
           </p>
           <div className="flex justify-start md:justify-start space-x-4">
-            <button className="bg-[#FF5A5F] hover:bg-[#E54850] text-white font-bold py-3 px-6 rounded-md">
-              Get your car
-            </button>
-            
+            <Link href="/cars" passHref>
+              <button className="bg-[#FF5A5F] hover:bg-[#E54850] text-white font-bold py-3 px-6 rounded-md">
+                Get your car
+              </button>
+            </Link>
+
           </div>
         </div>
         <div className="md:w-[50%] flex justify-center sm:mt-0 mt-12">

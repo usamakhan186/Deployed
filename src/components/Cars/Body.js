@@ -26,8 +26,6 @@ const CarCard = ({ car }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
 
-
-
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % car.images.length);
   };
@@ -147,7 +145,10 @@ const CarCard = ({ car }) => {
             <div className="flex items-center gap-1.5 text-gray-600">
               <MapPin className="w-3.5 h-3.5" />
               <span className="text-xs">Germany, delivery:</span>
-              <button className="text-red-600 text-xs font-medium underline hover:text-red-700">
+              <button 
+                onClick={(e) => e.preventDefault()}
+                className="text-red-600 text-xs font-medium underline hover:text-red-700"
+              >
                 Enter ZIP code
               </button>
             </div>
@@ -162,14 +163,12 @@ const CarCard = ({ car }) => {
 
           {/* Import and Financing Options */}
           <div className="mt-4 flex flex-col gap-2">
-            <div className="text-sm text-gray-600">
-              <span className="font-medium">Estimated import cost:</span> €{(car.price * 0.1).toFixed(2)}
-            </div>
-            <div className="text-sm text-gray-600">
-              <span className="font-medium">Financing from:</span> €{(car.price / 60).toFixed(2)}/month
-            </div>
             <button
-              onClick={() => setIsOptionsModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsOptionsModalOpen(true);
+              }}
               className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm self-start"
             >
               View Options
@@ -184,7 +183,6 @@ const CarCard = ({ car }) => {
         </div>
       </div>
     </Link>
-
   );
 };
 
