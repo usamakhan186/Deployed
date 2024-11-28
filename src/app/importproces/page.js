@@ -1,84 +1,146 @@
 import React from 'react';
-import { FileText, Download, ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronRight, Clock, EuroIcon, FileCheck, Truck, ClipboardCheck, PhoneCall } from 'lucide-react';
 import AppBar from '@/components/AppBar2';
-
+import Footer from '@/components/HomePage/Footer';
 
 const ImportProcessPage = () => {
-    return (
-        <div className="min-h-screen bg-white">
-           <AppBar/>
-            {/* Header with navigation */}
-            <div className="border-b">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                    <div className="flex items-center">
-                        <ChevronLeft className="h-5 w-5 text-gray-400 mr-2" />
-                        <h1 className="text-2xl font-bold text-red-500">Import Process Documentation</h1>
-                    </div>
-                </div>
-            </div>
+  const steps = [
+    {
+      title: "Initial Consultation",
+      icon: <PhoneCall className="w-8 h-8 text-red-500" />,
+      description: "Schedule a consultation with our experts to discuss your requirements and preferences for importing your dream car from Europe."
+    },
+    {
+      title: "Vehicle Selection",
+      icon: <ClipboardCheck className="w-8 h-8 text-red-500" />,
+      description: "Browse through our extensive network of European dealers and select your desired vehicle based on make, model, and specifications."
+    },
+    {
+      title: "Documentation",
+      icon: <FileCheck className="w-8 h-8 text-red-500" />,
+      description: "We handle all necessary paperwork including registration, customs clearance, and compliance certificates for a smooth import process."
+    },
+    {
+      title: "Transport & Delivery",
+      icon: <Truck className="w-8 h-8 text-red-500" />,
+      description: "Safe and secure transportation of your vehicle from Europe to your desired location with real-time tracking updates."
+    }
+  ];
 
-            {/* Main content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    {/* Sidebar */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-4">
-                            {/* Search */}
-                            <div className="relative mb-6">
-                                <input 
-                                    type="text" 
-                                    placeholder="Search in document"
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-red-500 outline-none"
-                                />
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            </div>
+  const benefits = [
+    {
+      title: "Wide Selection",
+      description: "Access to extensive European car markets with diverse options"
+    },
+    {
+      title: "Cost Effective",
+      description: "Competitive prices and transparent fee structure"
+    },
+    {
+      title: "Quality Assured",
+      description: "All vehicles undergo thorough inspection and verification"
+    },
+    {
+      title: "Expert Support",
+      description: "Dedicated team to assist you throughout the process"
+    }
+  ];
+ 
+  
 
-                            {/* Table of contents */}
-                            <nav className="space-y-1">
-                                <h2 className="font-semibold text-gray-900 mb-2">Table of Contents</h2>
-                                <a href="#overview" className="block px-3 py-2 text-red-500 bg-red-50 rounded-lg">Overview</a>
-                                <a href="#requirements" className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">Requirements</a>
-                                <a href="#process" className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">Import Process</a>
-                                <a href="#documentation" className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">Required Documentation</a>
-                                <a href="#timeline" className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">Timeline</a>
-                                <a href="#costs" className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">Costs & Fees</a>
-                            </nav>
-
-                            {/* Download button */}
-                            <button className="mt-6 w-full flex items-center justify-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-                                <Download className="h-5 w-5 mr-2" />
-                                Download PDF
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* PDF viewer */}
-                    <div className="lg:col-span-3 bg-gray-50 rounded-lg min-h-[800px] p-8">
-                        <div className="bg-white shadow-lg rounded-lg p-6 min-h-[700px]">
-                            {/* PDF content goes here */}
-                            <div className="prose max-w-none">
-                                {/* Replace with actual PDF viewer component */}
-                                <h2 id="overview" className="text-xl font-bold text-gray-900 mb-4">Overview</h2>
-                                <p className="text-gray-600 mb-6">Your PDF content will be displayed here...</p>
-                            </div>
-                        </div>
-
-                        {/* Navigation buttons */}
-                        <div className="flex justify-between mt-6">
-                            <button className="flex items-center px-4 py-2 text-gray-600 hover:text-red-500">
-                                <ChevronLeft className="h-5 w-5 mr-1" />
-                                Previous
-                            </button>
-                            <button className="flex items-center px-4 py-2 text-gray-600 hover:text-red-500">
-                                Next
-                                <ChevronRight className="h-5 w-5 ml-1" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="min-h-screen bg-gray-50">
+        <AppBar/>
+      {/* Hero Section */}
+      <div className="bg-white">
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Import Your Dream Car from Europe
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl">
+            Experience a seamless car importing process with our expert guidance and support at every step.
+          </p>
         </div>
-    );
+      </div>
+
+      {/* Process Steps */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
+          Our Import Process
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((step, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+              <div className="mb-4">{step.icon}</div>
+              <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
+              <p className="text-gray-600">{step.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="bg-red-50/95 text-white py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center text-red-500">
+            Why Choose Our Import Service
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {benefits.map((benefit, index) => (
+              <div key={index} className="text-center">
+                <h3 className="text-xl text-black font-semibold mb-3">{benefit.title}</h3>
+                <p className="text-zinc-500">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          Frequently Asked Questions
+        </h2>
+        <div className="max-w-3xl mx-auto space-y-6">
+          {[
+            {
+              q: "How long does the import process take?",
+              a: "The typical import process takes 4-6 weeks, depending on the vehicle location and shipping method."
+            },
+            {
+              q: "What documents are required?",
+              a: "Required documents include proof of ownership, vehicle registration, customs declaration, and compliance certificates."
+            },
+            {
+              q: "Are there any additional costs?",
+              a: "Additional costs may include customs duties, VAT, transport insurance, and registration fees. We provide a detailed cost breakdown upfront."
+            }
+          ].map((faq, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-2">{faq.q}</h3>
+              <p className="text-gray-600">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-red-500 text-white py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to Import Your Dream Car?
+          </h2>
+          <p className="text-xl mb-8">
+            Contact our team today and let us help you bring your perfect car from Europe
+          </p>
+          <button className="bg-white text-red-500 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            Get Started
+          </button>
+        </div>
+      </div>
+      <Footer/>
+    </div>
+  );
 };
 
 export default ImportProcessPage;
