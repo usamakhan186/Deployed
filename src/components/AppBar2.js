@@ -252,12 +252,310 @@ const ServicesDropdown = () => {
   );
 };
 
+const LoginModal = ({ 
+  showLoginModal, 
+  setShowLoginModal, 
+  setShowSignupModal, 
+  email, 
+  setEmail, 
+  password, 
+  setPassword, 
+  showPassword, 
+  setShowPassword, 
+  handleLogin 
+}) => (
+  <div
+    className={`fixed inset-0 flex z-50 items-center justify-center ${showLoginModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      } transition-opacity duration-300`}
+  >
+    <div
+      className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      onClick={() => setShowLoginModal(false)}
+    />
+
+    <div
+      className={`relative bg-red-50/85 rounded-lg w-full max-w-md transform transition-all duration-300 ${showLoginModal ? 'scale-100' : 'scale-95'
+        }`}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="px-8 pt-8 pb-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-red-600">Welcome back</h2>
+          <button
+            onClick={() => setShowLoginModal(false)}
+            className="text-gray-400 hover:text-gray-500 transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div className="text-sm text-gray-600">
+            Don't have an account yet?{' '}
+            <button
+              onClick={() => {
+                setShowLoginModal(false);
+                setShowSignupModal(true);
+              }}
+              className="text-red-500 hover:text-red-600 font-semibold"
+            >
+              Register here
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-2">
+            <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
+              <span className="text-sm font-medium text-gray-600">Google</span>
+            </button>
+            <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
+              <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="w-6 h-6 mr-2" />
+              <span className="text-sm font-medium text-gray-600">Facebook</span>
+            </button>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
+            </div>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <div className="mt-1">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="mt-1 relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <Link href="/forgot-password" className="text-red-500 text-sm font-medium">
+                Forgot your password?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full px-4 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SignupModal = ({ 
+  showSignupModal, 
+  setShowSignupModal, 
+  setShowLoginModal, 
+  formData, 
+  setFormData, 
+  showPassword, 
+  setShowPassword, 
+  handleSignup 
+}) => (
+  <div
+    className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      } transition-opacity duration-300`}
+  >
+    <div
+      className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      onClick={() => setShowSignupModal(false)}
+    />
+
+    <div
+      className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${showSignupModal ? 'scale-100' : 'scale-95'
+        }`}
+    >
+      <div className="px-8 pt-8 pb-6 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200 scrollbar-track-transparent hover:scrollbar-thumb-red-300">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-red-600">Create Account</h2>
+          <button
+            onClick={() => setShowSignupModal(false)}
+            className="text-gray-400 hover:text-gray-500 transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div className="text-sm text-gray-600">
+            Already have an account?{' '}
+            <button
+              onClick={() => {
+                setShowSignupModal(false);
+                setShowLoginModal(true);
+              }}
+              className="text-red-500 hover:text-red-600 font-semibold"
+            >
+              Login here
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-2">
+            <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
+              <span className="text-sm font-medium text-gray-600">Google</span>
+            </button>
+            <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
+              <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="w-5 h-5 mr-2" />
+              <span className="text-sm font-medium text-gray-600">Facebook</span>
+            </button>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
+            </div>
+          </div>
+
+          <form onSubmit={handleSignup} className="space-y-4">
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="Email"
+              className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                placeholder="Password (min. 8 characters)"
+                className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Name"
+                className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+              />
+              <input
+                type="text"
+                value={formData.surname}
+                onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
+                placeholder="Surname"
+                className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+              />
+            </div>
+
+            <div className="flex space-x-2">
+              <select
+                className="w-24 px-2 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+                value={formData.countryCode}
+                onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
+              >
+                <option>+92</option>
+              </select>
+              <input
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="Telephone number"
+                className="flex-1 px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <select
+                className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+              >
+                <option value="">Select country</option>
+              </select>
+              <input
+                type="text"
+                value={formData.postalCode}
+                onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
+                placeholder="Postal code"
+                className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
+              />
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={formData.agreeToTerms}
+                onChange={(e) => setFormData({ ...formData, agreeToTerms: e.target.checked })}
+                className="rounded border-red-200 text-red-500 focus:ring-red-200"
+              />
+              <label htmlFor="terms" className="text-sm text-gray-600">
+                I agree to the processing of{' '}
+                <a href="#" className="text-red-500 hover:text-red-600">
+                  personal data
+                </a>
+                .
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full px-4 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+              Register
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const AppBar = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
-  // const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -274,7 +572,6 @@ const AppBar = () => {
     agreeToTerms: false,
     countryCode: '+92'
   });
-
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -293,23 +590,6 @@ const AppBar = () => {
     };
   }, [showLoginModal, showSignupModal]);
 
-  let hideDropdownTimeout;
-
-  const handleMouseEnter = () => {
-    clearTimeout(hideDropdownTimeout);
-    setIsDropdownVisible(true);
-  };
-
-  const handleMouseLeave = () => {
-    hideDropdownTimeout = setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 200);
-  };
-
-  useEffect(() => {
-    return () => clearTimeout(hideDropdownTimeout);
-  }, []);
-
   const handleLogin = (e) => {
     e.preventDefault();
     console.log('Login attempt with:', { email, password });
@@ -320,284 +600,41 @@ const AppBar = () => {
     console.log('Signup attempt with:', formData);
   };
 
-  const LoginModal = () => (
-    <div
-      className={`fixed inset-0 flex z-50 items-center justify-center ${showLoginModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        } transition-opacity duration-300`}
-    >
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={() => setShowLoginModal(false)}
-      />
-      <div
-        className={`relative bg-red-50/85 rounded-lg w-full max-w-md transform transition-all duration-300 ${showLoginModal ? 'scale-100' : 'scale-95'
-          }`}
-        role="dialog"
-        aria-modal="true"
-      >
-        <div className="px-8 pt-8 pb-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-red-600">Welcome back</h2>
-            <button
-              onClick={() => setShowLoginModal(false)}
-              className="text-gray-400 hover:text-gray-500 transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      borderRadius: '9999px',
+      padding: '2px 4px',
+      minWidth: '80px',
+      backgroundColor: 'transparent',
+      border: 'none',
+      boxShadow: 'none',
+    }),
+    option: (provided) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '8px 12px',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      color: isScrolled ? 'black' : 'white',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+      border: '1px solid #e5e7eb',
+    }),
+  };
 
-          <div className="space-y-4">
-            <div className="text-sm text-gray-600">
-              Don't have an account yet?{' '}
-              <button
-                onClick={() => {
-                  setShowLoginModal(false);
-                  setShowSignupModal(true);
-                }}
-                className="text-red-500 hover:text-red-600 font-semibold"
-              >
-                Register here
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-2">
-              <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
-                <span className="text-sm font-medium text-gray-600">Google</span>
-              </button>
-              <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
-                <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="w-5 h-5 mr-2" />
-                <span className="text-sm font-medium text-gray-600">Facebook</span>
-              </button>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
-              </div>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <div className="mt-1">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                    className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="mt-1 relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="text-right">
-                <Link href="/forgot-password" className="text-red-500 text-sm font-medium">
-                  Forgot your password?
-                </Link>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full px-4 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              >
-                Login
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const SignupModal = () => (
-    <div
-      className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        } transition-opacity duration-300`}
-    >
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={() => setShowSignupModal(false)}
-      />
-      <div
-        className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${showSignupModal ? 'scale-100' : 'scale-95'
-          }`}
-      >
-        <div className="px-8 pt-8 pb-6 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200 scrollbar-track-transparent hover:scrollbar-thumb-red-300">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-red-600">Create Account</h2>
-            <button
-              onClick={() => setShowSignupModal(false)}
-              className="text-gray-400 hover:text-gray-500 transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            <div className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <button
-                onClick={() => {
-                  setShowSignupModal(false);
-                  setShowLoginModal(true);
-                }}
-                className="text-red-500 hover:text-red-600 font-semibold"
-              >
-                Login here
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-2">
-              <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
-                <span className="text-sm font-medium text-gray-600">Google</span>
-              </button>
-              <button className="flex items-center justify-center px-4 py-2.5 border border-red-400 rounded-lg hover:bg-red-50 transition-colors">
-                <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="w-5 h-5 mr-2" />
-                <span className="text-sm font-medium text-gray-600">Facebook</span>
-              </button>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 text-gray-500 bg-red-50/85">or via e-mail</span>
-              </div>
-            </div>
-
-            <form onSubmit={handleSignup} className="space-y-4">
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="Email"
-                className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-              />
-
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  placeholder="Password (min. 8 characters)"
-                  className="w-full px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Name"
-                  className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                />
-                <input
-                  type="text"
-                  value={formData.surname}
-                  onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
-                  placeholder="Surname"
-                  className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                />
-              </div>
-
-              <div className="flex space-x-2">
-                <select
-                  className="w-24 px-2 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                  value={formData.countryCode}
-                  onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                >
-                  <option>+92</option>
-                </select>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="Telephone number"
-                  className="flex-1 px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <select
-                  className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                  value={formData.country}
-                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                >
-                  <option value="">Select country</option>
-                  {/* Add more country options here */}
-                </select>
-                <input
-                  type="text"
-                  value={formData.postalCode}
-                  onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
-                  placeholder="Postal code"
-                  className="px-4 py-3 border bg-red-50/70 border-red-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-transparent outline-none transition-all"
-                />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={formData.agreeToTerms}
-                  onChange={(e) => setFormData({ ...formData, agreeToTerms: e.target.checked })}
-                  className="rounded border-red-200 text-red-500 focus:ring-red-200"
-                />
-                <label htmlFor="terms" className="text-sm text-gray-600">
-                  I agree to the processing of{' '}
-                  <a href="#" className="text-red-500 hover:text-red-600">
-                    personal data
-                  </a>
-                  .
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full px-4 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              >
-                Register
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const languageOptions = [
+    { value: 'EN', label: 'English', flag: '/flags/en.png' },
+    { value: 'ES', label: 'Español', flag: '/flags/es.png' },
+  ];
 
   if (!mounted) {
     return null;
@@ -640,8 +677,8 @@ const AppBar = () => {
                     >
                       Best Deals
                     </Link>
-                    <div className="relative text-black">
-                      <ServicesDropdown color="white" className="hover:text-red-400" />
+                    <div className="relative">
+                      <ServicesDropdown />
                     </div>
                     <Link
                       href="/importproces"
@@ -667,7 +704,7 @@ const AppBar = () => {
 
               {/* Right Menu Items */}
               <div className="flex items-center space-x-4">
-                <Heart className="text-gray-100 hover:text-red-500 cursor-pointer" />
+                <Heart className="text-gray-600 hover:text-red-500 cursor-pointer" />
                 <Select
                   options={languageOptions}
                   defaultValue={languageOptions[0]}
@@ -681,13 +718,11 @@ const AppBar = () => {
                   isSearchable={false}
                 />
 
-                {/* User Icon with Dropdown - Desktop Only */}
-                {/* User Icon with Dropdown - Desktop Only */}
                 <UserDropdown
                   setShowLoginModal={setShowLoginModal}
                   setShowSignupModal={setShowSignupModal}
                 />
-                {/* Mobile Menu Button */}
+
                 <div className="md:hidden">
                   <button
                     type="button"
@@ -712,9 +747,9 @@ const AppBar = () => {
               <Link href="/bestdealss" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Best Deals
               </Link>
-              <Link href="/services" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
-                Services
-              </Link>
+              <div>
+                <ServicesDropdown />
+              </div>
               <Link href="/import__process" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base">
                 Import process
               </Link>
@@ -746,10 +781,34 @@ const AppBar = () => {
           </div>
         </nav>
       </header>
-      <LoginModal />
-      <SignupModal />
+
+      {/* Render modals with props */}
+      <LoginModal
+        showLoginModal={showLoginModal}
+        setShowLoginModal={setShowLoginModal}
+        setShowSignupModal={setShowSignupModal}
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        showPassword={showPassword}
+        setShowPassword={setShowPassword}
+        handleLogin={handleLogin}
+      />
+
+      <SignupModal
+        showSignupModal={showSignupModal}
+        setShowSignupModal={setShowSignupModal}
+        setShowLoginModal={setShowLoginModal}
+        formData={formData}
+        setFormData={setFormData}
+        showPassword={showPassword}
+        setShowPassword={setShowPassword}
+        handleSignup={handleSignup}
+      />
     </>
   );
 };
 
 export default AppBar;
+

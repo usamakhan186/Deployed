@@ -449,7 +449,7 @@ const PriceMap = () => {
             </div>
 
             {/* Comparable Cars Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="hidden md:grid md:grid-cols-2 gap-6">
                 {chartData.comparableCars.map(car => (
                     <div key={car.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
                         <img
@@ -687,6 +687,245 @@ const Financing = () => {
     );
 };
 
+const MobileCheckoutBar = () => {
+    const router = useRouter();
+    const [isServicesExpanded, setIsServicesExpanded] = useState(false);
+    const [isFinancingModalOpen, setIsFinancingModalOpen] = useState(false);
+    const [showSignupModal, setShowSignupModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showServicesModal, setShowServicesModal] = useState(false);
+    const [formData, setFormData] = useState({
+      email: '',
+      password: '',
+      name: '',
+      surname: '',
+      countryCode: '+34',
+      phone: '',
+      country: '',
+      postalCode: '',
+      agreeToTerms: false
+    });
+  
+    const handleSignup = (e) => {
+      e.preventDefault();
+      setIsLoggedIn(true);
+      setShowSignupModal(false);
+    };
+  
+    const handleBuyClick = () => {
+      router.push('/checkout');
+    };
+  
+    // Reusable Modal Component
+    const Modal = ({ isOpen, onClose, children }) => (
+      <div className={`fixed inset-0 z-50 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-xl max-h-[90vh] overflow-y-auto transform transition-transform duration-300 ease-out">
+          {children}
+        </div>
+      </div>
+    );
+  
+    // Services Modal Content
+    const ServicesModal = () => (
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-bold">Services</h2>
+          <button onClick={() => setShowServicesModal(false)}>
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span>CarAudit™</span>
+            <span>€79</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <span>Car registration</span>
+              <Info className="w-4 h-4 ml-1 text-gray-400" />
+            </div>
+            <span>€80</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <span>Administration Fee</span>
+              <Info className="w-4 h-4 ml-1 text-gray-400" />
+            </div>
+            <span>€30</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <span>Import MOT</span>
+              <Info className="w-4 h-4 ml-1 text-gray-400" />
+            </div>
+            <span>€175</span>
+          </div>
+        </div>
+      </div>
+    );
+  
+    // Financing Modal
+    const FinancingModal = () => {
+      const [selectedOption, setSelectedOption] = useState('lowInstallment');
+      const [monthsRange, setMonthsRange] = useState(48);
+      const [downPayment, setDownPayment] = useState(0);
+  
+      return (
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-bold">Financing</h2>
+            <button onClick={() => setIsFinancingModalOpen(false)}>
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+  
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div
+              className={`relative rounded-lg p-3 cursor-pointer ${
+                selectedOption === 'lowInstallment' ? 'bg-red-500' : 'bg-gray-100'
+              }`}
+              onClick={() => setSelectedOption('lowInstallment')}
+            >
+              <div className="flex items-center mb-1">
+                <span className={`text-sm font-medium ${
+                  selectedOption === 'lowInstallment' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  Low installment
+                </span>
+                <span className="ml-1 px-1 text-xs bg-orange-500 text-white rounded">NEW</span>
+              </div>
+              <span className={`text-xs ${
+                selectedOption === 'lowInstallment' ? 'text-white/80' : 'text-gray-600'
+              }`}>
+                14.4% choose low payments
+              </span>
+            </div>
+  
+            <div
+              className={`relative rounded-lg p-3 cursor-pointer ${
+                selectedOption === 'regularLoan' ? 'bg-red-500' : 'bg-gray-100'
+              }`}
+              onClick={() => setSelectedOption('regularLoan')}
+            >
+              <div className="flex items-center mb-1">
+                <span className={`text-sm font-medium ${
+                  selectedOption === 'regularLoan' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  Regular loan
+                </span>
+              </div>
+              <span className={`text-xs ${
+                selectedOption === 'regularLoan' ? 'text-white/80' : 'text-gray-600'
+              }`}>
+                8.8% choose fixed payments
+              </span>
+            </div>
+          </div>
+  
+          {/* Rest of your financing modal content */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Payback period
+              </label>
+              <input
+                type="range"
+                min="12"
+                max="60"
+                step="12"
+                value={monthsRange}
+                onChange={(e) => setMonthsRange(e.target.value)}
+                className="w-full accent-red-500"
+              />
+            </div>
+  
+            <div className="bg-gray-50 rounded-lg p-3">
+              <div className="grid grid-cols-3 gap-3 text-xs mb-3">
+                <div>
+                  <div className="text-gray-600">DOWN PAYMENT</div>
+                  <div className="font-medium">€3,000</div>
+                </div>
+                <div>
+                  <div className="text-gray-600">MONTHLY</div>
+                  <div className="font-medium">€170</div>
+                </div>
+                <div>
+                  <div className="text-gray-600">TOTAL</div>
+                  <div className="font-medium">€27,663</div>
+                </div>
+              </div>
+            </div>
+  
+            <button className="w-full bg-red-500 text-white py-2.5 rounded-lg flex items-center justify-center">
+              <span>Next</span>
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </button>
+          </div>
+        </div>
+      );
+    };
+  
+    return (
+      <>
+        {/* Fixed bottom bar */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="text-sm text-gray-600">Total price</div>
+              <div className="text-xl font-bold">€27,663</div>
+              <div className="text-xs text-gray-500">incl. services (€364)</div>
+            </div>
+            <button 
+              onClick={() => setShowServicesModal(true)}
+              className="text-red-500 text-sm underline"
+            >
+              View details
+            </button>
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={handleBuyClick}
+              className="flex-1 bg-red-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-600 flex items-center justify-center"
+            >
+              <ShoppingCart className="w-5 h-5 mr-2" />
+              Buy now
+            </button>
+            <button
+              onClick={() => setIsFinancingModalOpen(true)}
+              className="flex-1 border border-gray-200 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 flex items-center justify-center"
+            >
+              <CreditCard className="w-5 h-5 mr-2" />
+              €170/mo
+            </button>
+          </div>
+        </div>
+  
+        {/* Services Modal */}
+        <Modal 
+          isOpen={showServicesModal} 
+          onClose={() => setShowServicesModal(false)}
+        >
+          <ServicesModal />
+        </Modal>
+  
+        {/* Financing Modal */}
+        <Modal 
+          isOpen={isFinancingModalOpen} 
+          onClose={() => setIsFinancingModalOpen(false)}
+        >
+          <FinancingModal />
+        </Modal>
+  
+        {/* Bottom padding to prevent content from being hidden behind the fixed bar */}
+        <div className="lg:hidden h-32"></div>
+      </>
+    );
+  };
 
 
 const CheckoutSidebar = () => {
@@ -1420,72 +1659,81 @@ const CarDetailPage = () => {
                     </div>
 
                     {/* Checkout Sidebar */}
-                    <div className="lg:w-[380px]">
+                    <div className="hidden lg:block lg:w-[380px]">
                         <div className="sticky top-24">
                             <CheckoutSidebar />
                         </div>
                     </div>
                 </div>
+
+                {/* Mobile Checkout Bar */}
+                <MobileCheckoutBar
+                    price={649990}
+                    monthlyPayment="€170"
+                />
             </div>
+        
 
 
 
 
 
 
-            {/* Modal Viewer */}
-            {modalOpen && (
-                <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+            {/* Modal Viewer */ }
+    {
+        modalOpen && (
+            <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+                <button
+                    onClick={closeModal}
+                    className="absolute right-4 top-4 text-white hover:text-gray-300 z-50"
+                >
+                    <X className="w-8 h-8" />
+                </button>
+
+                <div className="h-full flex items-center justify-center relative w-full">
+                    <img
+                        src={images[selectedImage]}
+                        alt={`Car view ${selectedImage + 1}`}
+                        className="max-h-[85vh] max-w-[85vw] object-contain"
+                    />
+
+                    <div className="absolute bottom-4 right-4 bg-black/50 px-4 py-2 rounded-lg">
+                        <span className="text-white text-sm">
+                            {selectedImage + 1} / {images.length}
+                        </span>
+                    </div>
+
                     <button
-                        onClick={closeModal}
-                        className="absolute right-4 top-4 text-white hover:text-gray-300 z-50"
+                        onClick={() => navigateImage('prev')}
+                        className="absolute left-4 p-2 bg-white/10 rounded-lg hover:bg-white/20"
                     >
-                        <X className="w-8 h-8" />
+                        <ChevronLeft className="w-8 h-8 text-white" />
                     </button>
 
-                    <div className="h-full flex items-center justify-center relative w-full">
-                        <img
-                            src={images[selectedImage]}
-                            alt={`Car view ${selectedImage + 1}`}
-                            className="max-h-[85vh] max-w-[85vw] object-contain"
-                        />
-
-                        <div className="absolute bottom-4 right-4 bg-black/50 px-4 py-2 rounded-lg">
-                            <span className="text-white text-sm">
-                                {selectedImage + 1} / {images.length}
-                            </span>
-                        </div>
-
-                        <button
-                            onClick={() => navigateImage('prev')}
-                            className="absolute left-4 p-2 bg-white/10 rounded-lg hover:bg-white/20"
-                        >
-                            <ChevronLeft className="w-8 h-8 text-white" />
-                        </button>
-
-                        <button
-                            onClick={() => navigateImage('next')}
-                            className="absolute right-4 p-2 bg-white/10 rounded-lg hover:bg-white/20"
-                        >
-                            <ChevronRight className="w-8 h-8 text-white" />
-                        </button>
-                    </div>
-
-                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2">
-                        {images.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setSelectedImage(index)}
-                                className={`w-2 h-2 rounded-full transition-colors ${selectedImage === index ? 'bg-white' : 'bg-white/50'
-                                    }`}
-                            />
-                        ))}
-                    </div>
+                    <button
+                        onClick={() => navigateImage('next')}
+                        className="absolute right-4 p-2 bg-white/10 rounded-lg hover:bg-white/20"
+                    >
+                        <ChevronRight className="w-8 h-8 text-white" />
+                    </button>
                 </div>
-            )}
 
-            <style>
-                {`
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2">
+                    {images.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setSelectedImage(index)}
+                            className={`w-2 h-2 rounded-full transition-colors ${selectedImage === index ? 'bg-white' : 'bg-white/50'
+                                }`}
+                        />
+                    ))}
+                </div>
+            </div>
+        )
+    }
+
+    <style>
+        {`
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
@@ -1494,10 +1742,10 @@ const CarDetailPage = () => {
             scrollbar-width: none;
         }
     `}
-            </style>
-            {/* <GuaranteeCard />
+    </style>
+    {/* <GuaranteeCard />
             <AppBar /> */}
-        </div>
+        </div >
     );
 };
 
