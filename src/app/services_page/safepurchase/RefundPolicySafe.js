@@ -1,26 +1,176 @@
 import React from 'react';
 import { Phone, Mail, Check, Minus, ChevronDown } from 'lucide-react';
 
-const HeroSection = () => (
-  <div className="bg-white px-8 py-12">
-    <div className="max-w-6xl mx-auto flex justify-between items-center">
-      <div className="w-1/2">
-        <h1 className="text-6xl font-bold text-navy-900 mb-4">
-          Financing without worries, choices without compromise
-        </h1>
-        <p className="text-gray-600 mb-6">
-          We can even arrange imported car financing, allowing you to choose from a wide range of cars across Europe.
+const FinancingCalculator = () => {
+  const [activeTab, setActiveTab] = React.useState('low'); // 'low' or 'regular'
+
+  return (
+    <div id="financing-calculator" className="bg-white py-16">
+      <div className="max-w-6xl mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-4">Financing through Fast Car</h2>
+        <p className="text-center text-gray-600 mb-8">
+          Our favourable financing makes car purchase affordable for anyone. Just choose your
+          favourite car and a financing plan to suit your needs.
         </p>
-        <button className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-700">
-          I want to hire purchase
-        </button>
-      </div>
-      <div className="w-1/2 relative">
-        <img src="https://media.istockphoto.com/id/1490837411/photo/cartoon-car-and-contract-on-the-blue-background-3d-rendering.jpg?s=1024x1024&w=is&k=20&c=bk0Nbajby1TfryctCrXl7OC_dyT8pKzFFvcbgIATFZc=" alt="Car illustration" className="w-full" />
+
+        <div className="flex justify-center gap-4 mb-8">
+          <button
+            onClick={() => setActiveTab('low')}
+            className={`px-6 py-3 rounded-lg transition-colors ${
+              activeTab === 'low' 
+                ? 'bg-red-500 text-white' 
+                : 'bg-gray-100 text-gray-600'
+            }`}
+          >
+            Low Installment
+            {activeTab === 'low' && (
+              <span className="ml-2 bg-yellow-500 text-xs px-2 py-1 rounded">NEW</span>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('regular')}
+            className={`px-6 py-3 rounded-lg transition-colors ${
+              activeTab === 'regular' 
+                ? 'bg-red-500 text-white' 
+                : 'bg-gray-100 text-gray-600'
+            }`}
+          >
+            Regular loan
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-red-500 text-white rounded-2xl p-8">
+            <div className="mb-4">
+              <div className="text-sm mb-1">Monthly Installment</div>
+              <div className="text-3xl font-bold mb-4">
+                {activeTab === 'low' ? '5 090 KČ' : '12 511 KČ'}
+              </div>
+            </div>
+            
+            <div className="text-xl font-bold mb-4">
+              {activeTab === 'low' ? 'Low Installment' : 'Regular loan'}
+            </div>
+            
+            <ul className="space-y-2">
+              {activeTab === 'low' ? (
+                <>
+                  <li className="flex items-center gap-2">
+                    <Check size={20} className="text-white" />
+                    <span>Flexible conditions</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check size={20} className="text-white" />
+                    <span>Low installments</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check size={20} className="text-white" />
+                    <span>Option for refinancing</span>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="flex items-center gap-2">
+                    <Check size={20} className="text-white" />
+                    <span>Even installments</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check size={20} className="text-white" />
+                    <span>Up to 84 months loan duration</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check size={20} className="text-white" />
+                    <span>No extra charge at the end</span>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+
+          <div className="bg-gray-50 rounded-2xl p-8">
+            <div className="text-sm text-gray-600 mb-4 flex justify-center">
+              <h1 className='text-xl'>Sample calculation for ŠKODA Kodiaq 2018*</h1>
+            </div>
+            
+            <div className="mb-4 flex justify-center">
+              <img 
+                src="https://images.unsplash.com/photo-1670395353134-b42af1dd2d53?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                alt="Škoda Kodiaq" 
+                className="w-[17vw] h-[12vw] rounded-lg object-cover"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <span className="text-gray-600">CAR PRICE</span>
+                <span className="font-bold">500 000 KČ</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">DOWNPAYMENT</span>
+                <span className="font-bold">
+                  {activeTab === 'low' ? '30 % / 150 000 KČ' : '0 % / 0 KČ'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">PAYBACK PERIOD</span>
+                <span className="font-bold">48 months / {activeTab === 'low' ? '5 090' : '12 511'} KČ</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">THE LAST PAYMENT</span>
+                <span className="font-bold">
+                  {activeTab === 'low' ? '42.09 % / 20 449 KČ' : 'No final payment'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p className="text-center text-sm text-gray-500 mt-4">
+          *This calculation is a model example, not a binding quote. Please use the contact form below to get your specific calculation of
+          installments and interest rates.
+        </p>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+const HeroSection = () => {
+  const scrollToCalculator = () => {
+    document.getElementById('financing-calculator').scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+  };
+
+  return (
+    <div className="bg-white px-8 py-12">
+      <div className="max-w-6xl mx-auto flex justify-between items-center">
+        <div className="w-1/2">
+          <h1 className="text-6xl font-bold text-navy-900 mb-4">
+            Financing without worries, choices without compromise
+          </h1>
+          <p className="text-gray-600 mb-6">
+            We can even arrange imported car financing, allowing you to choose from a wide range of cars across Europe.
+          </p>
+          <button 
+            onClick={scrollToCalculator}
+            className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300 flex items-center gap-2"
+          >
+            I want to hire purchase
+          </button>
+        </div>
+        <div className="w-1/2 relative">
+          <img 
+            src="https://media.istockphoto.com/id/1490837411/photo/cartoon-car-and-contract-on-the-blue-background-3d-rendering.jpg?s=1024x1024&w=is&k=20&c=bk0Nbajby1TfryctCrXl7OC_dyT8pKzFFvcbgIATFZc=" 
+            alt="Car illustration" 
+            className="w-full rounded-lg shadow-lg"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 
 const StatsSection = () => (
   <div className="bg-gray-50 py-16">
@@ -160,6 +310,7 @@ const CarFinancingPage = () => (
   <div className="min-h-screen">
     <HeroSection />
     <StatsSection />
+    <FinancingCalculator />
     <ComparisonTable />
     <ProcessSteps />
     <FAQ />
