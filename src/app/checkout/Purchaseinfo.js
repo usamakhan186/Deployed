@@ -21,7 +21,7 @@ const MobileSlider = ({ slides, currentSlide, onClose, onNext, onPrev }) => {
       <div className="p-4 h-[calc(100vh-140px)] overflow-y-auto">
         <div className="space-y-6">
           {/* Image */}
-          <div className="relative aspect-square w-full max-w-sm mx-auto">
+          <div className="relative aspect- w-full max-w-sm mx-auto">
             <img
               src={currentSlideData.image}
               alt={currentSlideData.title}

@@ -5,7 +5,7 @@ const HeroSection = () => (
   <div className="bg-white px-8 py-12">
     <div className="max-w-6xl mx-auto flex justify-between items-center">
       <div className="w-1/2">
-        <h1 className="text-4xl font-bold text-navy-900 mb-4">
+        <h1 className="text-6xl font-bold text-navy-900 mb-4">
           Financing without worries, choices without compromise
         </h1>
         <p className="text-gray-600 mb-6">

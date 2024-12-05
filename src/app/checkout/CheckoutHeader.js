@@ -1,5 +1,4 @@
 "use client";
-
 import React from 'react';
 import { ChevronLeft, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -10,17 +9,20 @@ const CheckoutHeader = ({ carData }) => {
     const router = useRouter();
 
     const handleStepClick = (stepId) => {
-        const element = document.getElementById(stepId);
+        const element = document.getElementById(`step${stepId}`);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
+          });
         }
-    };
+      };
 
-    const steps = [
-        { number: 1, label: 'Payment method', id: 'payment-method' },
-        { number: 2, label: 'Car condition check', id: 'car-condition' },
-        { number: 3, label: 'Delivery', id: 'delivery' },
-        { number: 4, label: 'Payment', id: 'payment' }
+      const steps = [
+        { number: 1, label: 'Payment method', id: 'step1' },
+        { number: 2, label: 'Car condition check', id: 'step2' },
+        { number: 3, label: 'Delivery', id: 'step3' },
+        { number: 4, label: 'Payment', id: 'step4' }
     ];
 
     return (

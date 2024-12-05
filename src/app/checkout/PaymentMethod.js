@@ -124,7 +124,7 @@ const BankTransferForm = () => {
         <h4 className="font-medium text-[#1E1B39] mb-4">What happens after ordering the inspection</h4>
         <div className="space-y-4">
           {/* Step 1 */}
-          <div className="flex gap-3">
+          <div id="step1" className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">1</div>
             <div>
               <p className="font-medium text-[#1E1B39] text-sm md:text-base">We get the car VIN from the dealer</p>
@@ -136,7 +136,7 @@ const BankTransferForm = () => {
           </div>
 
           {/* Step 2 */}
-          <div className="flex gap-3">
+          <div id="step2" className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">2</div>
             <div>
               <p className="font-medium text-[#1E1B39] text-sm md:text-base">We arrange a visit by a mechanic</p>
@@ -145,7 +145,7 @@ const BankTransferForm = () => {
           </div>
 
           {/* Step 3 */}
-          <div className="flex gap-3">
+          <div id="step3" className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">3</div>
             <div>
               <p className="font-medium text-[#1E1B39] text-sm md:text-base">In the case of a tax-deductible car, we check,</p>
@@ -154,7 +154,7 @@ const BankTransferForm = () => {
           </div>
 
           {/* Step 4 */}
-          <div className="flex gap-3">
+          <div id="step4" className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">4</div>
             <div>
               <p className="font-medium text-[#1E1B39] text-sm md:text-base">You receive an inspection report</p>

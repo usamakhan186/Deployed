@@ -5,8 +5,8 @@ const HeroSection = () => {
     <div className="relative">
       {/* Background with diagonal cut */}
       <div className="relative min-h-[600px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FC4F3F] to-[#DC2626] transform -skew-y-6 origin-top-left scale-110">
-          <div className="absolute inset-0 bg-[url('/modernbuilding.jpg')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-right from-red-500 to-[#FEF5F5] transform -skew-y-6 origin-top-left scale-110">
+          <div className="absolute inset-0 bg-[url('/modernbuilding.jpg')] bg-cover bg-center mix-blend-overlay opacity-10"></div>
         </div>
 
         {/* Content Container */}
@@ -30,9 +30,7 @@ const HeroSection = () => {
                 <button className="px-8 py-3 bg-white text-[#FC4F3F] font-semibold rounded-lg hover:bg-gray-100 transition-colors">
                   Buy a Car
                 </button>
-                <button className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
-                  Sell Your Car
-                </button>
+                
               </div>
             </div>
 
