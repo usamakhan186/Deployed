@@ -5,14 +5,108 @@ import car from '@/assets/car.jpg';
 import Link from "next/link";
 
 const HeroSection = () => {
-  const formFields = [
-    { label: "Make", placeholder: "Select make" },
-    { label: "Model", placeholder: "Choose model" },
-    { label: "Mileage", placeholder: "Select mileage" },
-    { label: "Registration from", placeholder: "Select year" },
-    { label: "Price up to", placeholder: "Select price" },
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedMake, setSelectedMake] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
+
+  const makes = [
+    "Abarth",
+    "Acura",
+    "Aixam",
+    "Alfa Romeo",
+    "Alpina",
+    "Aston Martin",
+    "Audi",
+    "BMW",
+
+    
   ];
   
+  const modelsByMake = {
+    "Abarth": ["500", "595", "595C", "695", "124 Spider"],
+    "Acura": ["ILX", "MDX", "NSX", "RDX", "TLX", "RSX", "TSX"],
+    "Aixam": ["City", "Crossline", "Coupe", "GTO", "Roadline"],
+    "Alfa Romeo": ["Giulia", "Stelvio", "Giulietta", "4C", "Tonale", "Brera", "Spider"],
+    "Alpina": ["B3", "B4", "B5", "B6", "B7", "B8", "D3", "D4", "D5", "XD3", "XD4"],
+    "Aston Martin": ["DB11", "DBS", "DBX", "Vantage", "Valkyrie", "Vulcan"],
+    "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q2", "Q3", "Q5", "Q7", "Q8", "TT", "R8"],
+    "BMW": ["1 Series", "2 Series", "3 Series", "4 Series", "5 Series", "6 Series", "7 Series", "8 Series", "X1", "X2", "X3", "X4", "X5", "X6", "X7", "Z4", "i3", "i4", "i7", "i8", "iX"],
+    "Bugatti": ["Chiron", "Veyron", "Divo", "La Voiture Noire", "Centodieci", "Bolide"],
+    "Cadillac": ["CT4", "CT5", "Escalade", "XT4", "XT5", "XT6", "LYRIQ"],
+    "Chevrolet": ["Camaro", "Corvette", "Malibu", "Silverado", "Suburban", "Tahoe", "Bolt", "Blazer"],
+    "Chrysler": ["300", "Pacifica", "Voyager", "Town & Country"],
+    "Citroen": ["C3", "C4", "C5", "Berlingo", "SpaceTourer", "C3 Aircross", "C5 Aircross"],
+    "Cupra": ["Ateca", "Formentor", "Leon", "Born", "Tavascan"],
+    "Dacia": ["Duster", "Logan", "Sandero", "Spring", "Jogger", "Bigster"],
+    "Daewoo": ["Lanos", "Matiz", "Nubira", "Leganza", "Tacuma", "Kalos"],
+    "Daihatsu": ["Charade", "Copen", "Sirion", "Terios", "Rocky", "Move"],
+    "Dodge": ["Challenger", "Charger", "Durango", "Ram", "Journey", "Hornet"]
+  };
+  
+
+  const years = Array.from({ length: 25 }, (_, i) => 2024 - i);
+  
+  const mileageRanges = [
+    "0 - 10,000 km",
+    "10,000 - 30,000 km",
+    "30,000 - 60,000 km",
+    "60,000 - 100,000 km",
+    "100,000+ km"
+  ];
+
+  const priceRanges = [
+    "Up to €10,000",
+    "€10,000 - €20,000",
+    "€20,000 - €30,000",
+    "€30,000 - €50,000",
+    "€50,000 - €75,000",
+    "€75,000+"
+  ];
+
+  const basicFormFields = [
+    { 
+      label: "Make",
+      placeholder: "Select make",
+      options: makes,
+      value: selectedMake,
+      onChange: (e) => {
+        setSelectedMake(e.target.value);
+        setSelectedModel("");  // Reset model when make changes
+      }
+    },
+    { 
+      label: "Model",
+      placeholder: "Choose model",
+      options: selectedMake ? modelsByMake[selectedMake] || [] : [],
+      value: selectedModel,
+      onChange: (e) => setSelectedModel(e.target.value)  // Remove disabled state
+    },
+    { 
+      label: "Registration from",
+      placeholder: "Select year",
+      options: years,
+      value: "",
+      onChange: () => {}
+    }
+];
+
+
+  const advancedFormFields = [
+    { 
+      label: "Mileage",
+      placeholder: "Select mileage",
+      options: mileageRanges,
+      value: "",
+      onChange: () => {}
+    },
+    { 
+      label: "Price up to",
+      placeholder: "Select price",
+      options: priceRanges,
+      value: "",
+      onChange: () => {}
+    }
+  ];
 
   const stats = [
     { value: 54000, label: "Cars traded" },
@@ -42,6 +136,38 @@ const HeroSection = () => {
     return () => intervals.forEach(clearInterval);
   }, []);
 
+  const toggleAdvanced = () => {
+    setShowAdvanced(!showAdvanced);
+  };
+  const renderSelect = (field) => (
+    <div className="relative">
+      <select 
+        className="w-full appearance-none bg-white border border-gray-200 rounded px-3 py-1.5 text-sm text-gray-900"
+        value={field.value}
+        onChange={field.onChange}
+      >
+        <option value="" className="text-gray-500">
+          {field.placeholder}
+        </option>
+        {field.options && field.options.map((option) => (
+          <option 
+            key={option} 
+            value={option}
+            className="py-1"
+          >
+            {option}
+          </option>
+        ))}
+      </select>
+      <ChevronDown 
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" 
+        size={14}
+      />
+    </div>
+  );
+  
+
+  // Rest of your component remains the same
   return (
     <>
       {/* Mobile View */}
@@ -56,7 +182,7 @@ const HeroSection = () => {
           }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-30" />
-          <div className="relative  pt-6 px-4 text-center">
+          <div className="relative pt-6 px-4 text-center">
             <h1 className="text-xl mt-14 font-bold text-white leading-tight">
               We import cars
               <br />
@@ -65,18 +191,19 @@ const HeroSection = () => {
           </div>
         </div>
         
-        <div className="px-4 -mt-16 relative ">
+        <div className="px-4 -mt-16 relative">
           <div className="max-w-md mx-auto">
             <div className="bg-white rounded-2xl p-4 shadow-lg">
               <div className="space-y-3">
-                {formFields.map((field) => (
+                {basicFormFields.map((field) => (
                   <div key={field.label}>
-                    <div className="relative">
-                      <select className="w-full border border-gray-200 rounded-lg p-2.5 appearance-none bg-white text-sm">
-                        <option value="">{field.placeholder}</option>
-                      </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                    </div>
+                    {renderSelect(field)}
+                  </div>
+                ))}
+
+                {showAdvanced && advancedFormFields.map((field) => (
+                  <div key={field.label}>
+                    {renderSelect(field)}
                   </div>
                 ))}
 
@@ -96,8 +223,11 @@ const HeroSection = () => {
                   1 043 923 Offers
                 </button>
 
-                <button className="w-full text-red-500 hover:text-red-600 flex items-center justify-center gap-1 text-sm">
-                  Advanced search <ChevronDown size={16} />
+                <button 
+                  onClick={toggleAdvanced}
+                  className="w-full text-red-500 hover:text-red-600 flex items-center justify-center gap-1 text-sm"
+                >
+                  Advanced search <ChevronDown size={16} className={`transform transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
                 </button>
 
                 <div className="flex items-center justify-center gap-2 pt-2">
@@ -134,7 +264,7 @@ const HeroSection = () => {
                       We import cars, <br /> From Europe
                     </h1>
                     <p className="text-[#E4E4E4] max-w-lg leading-relaxed">
-                    Looking for a reliable used car? We specialize in importing high-quality, professionally inspected vehicles from Europe, ensuring you drive away with confidence. Experience exceptional service and unbeatable value with every car we sell!
+                      Looking for a reliable used car? We specialize in importing high-quality, professionally inspected vehicles from Europe, ensuring you drive away with confidence. Experience exceptional service and unbeatable value with every car we sell!
                     </p>
                   </div>
 
@@ -158,22 +288,25 @@ const HeroSection = () => {
                         Personalize your search
                       </h2>
                       <div className="bg-red-100 p-1 rounded-lg">
-                        
                       </div>
                     </div>
 
                     <div className="grid gap-4 grid-cols-2 mb-6">
-                      {formFields.map((field) => (
+                      {basicFormFields.map((field) => (
                         <div key={field.label} className="space-y-1.5">
                           <label className="block text-gray-700 text-sm">
                             {field.label}
                           </label>
-                          <div className="relative">
-                            <select className="w-full border border-gray-200 rounded-lg p-2.5 appearance-none bg-white text-sm">
-                              <option value="">{field.placeholder}</option>
-                            </select>
-                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                          </div>
+                          {renderSelect(field)}
+                        </div>
+                      ))}
+
+                      {showAdvanced && advancedFormFields.map((field) => (
+                        <div key={field.label} className="space-y-1.5">
+                          <label className="block text-gray-700 text-sm">
+                            {field.label}
+                          </label>
+                          {renderSelect(field)}
                         </div>
                       ))}
 
@@ -189,17 +322,19 @@ const HeroSection = () => {
                         </label>
                       </div>
                     </div>
+                    
+                    <Link href="/cars">
+                      <button className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors text-sm mb-6">
+                        1 043 923 Offers
+                      </button>
+                    </Link>
 
-                    <button href="/cars" className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors text-sm mb-6">
-                      1 043 923 Offers
+                    <button 
+                      onClick={toggleAdvanced}
+                      className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm mb-6"
+                    >
+                      Advanced search <ChevronDown size={16} className={`transform transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
                     </button>
-
-                   <Link href="/cars">
-                   <button className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm mb-6">
-                      Advanced search <ChevronDown size={16} />
-                    </button>
-                   </Link>
-
 
                     <div className="bg-red-50 p-4 rounded-lg">
                       <div className="text-sm text-gray-600 mb-1">

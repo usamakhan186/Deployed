@@ -13,12 +13,12 @@ const HeroSection = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
-            <div className="text-white space-y-6">
-              <p className="text-sm md:text-base font-medium uppercase tracking-wider">
+            <div className=" space-y-6">
+              <p className=" text-black text-sm md:text-base font-medium uppercase tracking-wider">
                 CARS FROM ALL OVER EUROPE AT YOUR REACH
               </p>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className=" text-black text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                 We are a European online marketplace
               </h1>
               
@@ -27,7 +27,7 @@ const HeroSection = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button className="px-8 py-3 bg-white text-[#FC4F3F] font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                <button className="px-8 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors">
                   Buy a Car
                 </button>
                 
