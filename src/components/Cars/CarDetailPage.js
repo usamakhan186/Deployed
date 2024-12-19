@@ -1624,8 +1624,149 @@ const CarDetailPage = () => {
 
     return (
         <div className='bg-white'>
-            {/* Your existing header sections */}
-            {/* ... */}
+            <div className="md:hidden relative">
+    <div className="absolute top-4 left-4 z-10">
+        <button onClick={() => window.location.href = '/cars'} className="p-2 bg-white/90 rounded-lg shadow-lg">
+            <ChevronLeft className="h-6 w-6 text-[#1a224f] stroke-[1.5]" />
+        </button>
+    </div>
+    <div className="absolute top-4 right-4 z-10">
+        <button className="p-2 bg-white/90 rounded-lg shadow-lg ml-2">
+            <Share className="h-6 w-6 text-[#1a224f] stroke-[1.5]" />
+        </button>
+    </div>
+</div>
+
+{/* Desktop Header Section */}
+<div className="hidden md:block max-w-7xl mx-auto  px-8 py-4">
+    <div className="flex items-center justify-between mb-5 mt-4">
+        <div className="flex items-center">
+            <ChevronLeft className="h-6 w-6 text-[#1a224f] stroke-[1.5] mr-1" />
+            <h1 className="text-[28px] font-bold text-red-600/70 tracking-[-0.5px]">
+                Suzuki SX4 S-Cross 95 kW
+            </h1>
+        </div>
+        <div className="flex items-center space-x-6 mt-4">
+            <button className="flex items-center text-red-500 hover:text-red-600">
+                <Heart className="h-5 w-5 mr-1.5 stroke-[1.5]" />
+                <span className="text-[14px] font-medium underline underline-offset-2">Favorites</span>
+            </button>
+            <button className="flex items-center text-red-500 hover:text-red-600">
+                <Share className="h-5 w-5 mr-1.5 stroke-[1.5]" />
+                <span className="text-[14px] font-medium underline underline-offset-2">Share</span>
+            </button>
+        </div>
+    </div>
+
+    <div className="flex flex-wrap items-center gap-x-6 mb-4">
+        {specs.map((spec, index) => (
+            <div key={index} className="flex items-center text-[#4a5578]">
+                <span className="mr-1.5 size-4">{spec.icon}</span>
+                <span className="text-[14px] font-bold">{spec.text}</span>
+            </div>
+        ))}
+    </div>
+
+    <div className="flex flex-wrap gap-2 mb-3">
+        {features.map((feature, index) => (
+            <span
+                key={index}
+                className="px-3 py-1.5 bg-red-100/70 text-red-600/80 rounded-lg text-[14px] font-medium"
+            >
+                {feature}
+            </span>
+        ))}
+    </div>
+</div>
+
+{/* Image Slider Section */}
+<div className="relative w-full px-10 py-6 bg-white">
+    <div
+        ref={scrollRef}
+        className="flex overflow-x-auto gap-6 scrollbar-hide scroll-smooth"
+    >
+        {images.map((image, index) => (
+            <div
+                key={index}
+                onClick={() => openModal(index)}
+                className="relative flex-shrink-0 w-full sm:w-[calc(50%-12px)] group cursor-pointer"
+                style={{ aspectRatio: '16/10' }}
+            >
+                {/* Image Container */}
+                <div className="relative h-full w-full overflow-hidden rounded-xl">
+                    <img
+                        src={image}
+                        alt={`Car view ${index + 1}`}
+                        className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                    />
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Image Counter Badge */}
+                    <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium text-gray-700">
+                        {index + 1}/{images.length}
+                    </div>
+
+                    {/* Quick View Button */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button className="bg-white/90 backdrop-blur-sm text-gray-800 px-4 py-2 rounded-lg font-medium transform hover:scale-105 transition-transform">
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+
+    {/* Navigation Buttons */}
+    {showLeftArrow && (
+        <button
+            onClick={() => scroll('left')}
+            className="absolute left-12 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+        >
+            <ChevronLeft className="w-6 h-6 text-gray-800" />
+        </button>
+    )}
+
+    {showRightArrow && (
+        <button
+            onClick={() => scroll('right')}
+            className="absolute right-12 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+        >
+            <ChevronRight className="w-6 h-6 text-gray-800" />
+        </button>
+    )}
+
+    {/* Progress Dots */}
+    
+</div>
+
+{/* Mobile/Tablet Content Section */}
+<div className="md:hidden px-4 py-6">
+    <h1 className="text-2xl font-bold text-red-600/70 tracking-[-0.5px] mb-4">
+        Suzuki SX4 S-Cross 95 kW
+    </h1>
+
+    <div className="flex flex-wrap items-center gap-4 mb-6">
+        {specs.map((spec, index) => (
+            <div key={index} className="flex items-center text-[#4a5578]">
+                <span className="mr-1.5 size-4">{spec.icon}</span>
+                <span className="text-[14px] font-bold">{spec.text}</span>
+            </div>
+        ))}
+    </div>
+
+    <div className="flex flex-wrap gap-2">
+        {features.map((feature, index) => (
+            <span
+                key={index}
+                className="px-3 py-1.5 bg-red-100/70 text-red-600/80 rounded-lg text-[14px] font-medium"
+            >
+                {feature}
+            </span>
+        ))}
+    </div>
+</div>
 
             <div className="max-w-7xl mx-auto px-4 lg:px-8">
                 <GuaranteeCard />
