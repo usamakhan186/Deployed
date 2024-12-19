@@ -601,7 +601,7 @@ const AppBar = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userDropdownVisible, setUserDropdownVisible] = useState(false);
-  const [showForm, setShowForm] = useState(false); 
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -819,69 +819,70 @@ const AppBar = () => {
           </div>
 
           {userDropdownVisible && (
-            <div className="md:hidden fixed inset-0 bg-white z-50">
-              <div className="flex flex-col h-full">
-                <div className="p-4 flex justify-end border-b">
-                  <button
-                    onClick={() => setUserDropdownVisible(false)}
-                    className="text-gray-600"
-                  >
-                    <X size={24} />
-                  </button>
-                </div>
-                <div className="p-4">
-                  <Link href="/cars?tab=saved">
-                    <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
-                      <BookmarkIcon className="h-4 w-4 mr-3 text-gray-500" />
-                      <span>Saved searches</span>
-                    </button>
-                  </Link>
-                  <Link href="/cars?tab=history">
-                    <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
-                      <Clock className="h-4 w-4 mr-3 text-gray-500" />
-                      <span>Last searches</span>
-                    </button>
-                  </Link>
-                  <Link href="/favourite-cars">
-                    <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
-                      <Heart className="h-4 w-4 mr-3 text-gray-500" />
-                      <span>Favorite cars</span>
-                    </button>
-                  </Link>
-                  <Link href="/orders-in-progress">
-                    <div className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
-                      <ShoppingCart className="h-4 w-4 mr-3 text-gray-500" />
-                      <span>Orders in progress</span>
-                    </div>
-                  </Link>
-
-                  <div className="mt-8">
-                    <button
-                      onClick={() => {
-                        setUserDropdownVisible(false);
-                        setShowLoginModal(true);
-                      }}
-                      className="w-full mb-4 px-4 py-2 text-white bg-[#EF4444] rounded-md hover:bg-[#D93C0B] transition-colors"
-                    >
-                      Login
-                    </button>
-                    <div className="text-sm text-gray-500 text-center">
-                      Don't have an account?{' '}
-                      <button
-                        onClick={() => {
-                          setUserDropdownVisible(false);
-                          setShowSignupModal(true);
-                        }}
-                        className="text-red-500 hover:text-red-600 ml-1"
-                      >
-                        Register
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+         <div className="absolute right-0 mt-6 w-64 bg-white rounded-md shadow-lg py-2 z-20">
+         <Link 
+           href="/cars?tab=saved" 
+           className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+           onClick={() => setIsDropdownVisible(false)}
+         >
+           <BookmarkIcon className="h-4 w-4 mr-3 text-gray-500" />
+           <span>Saved searches</span>
+         </Link>
+       
+         <Link 
+           href="/cars?tab=history" 
+           className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+           onClick={() => setIsDropdownVisible(false)}
+         >
+           <Clock className="h-4 w-4 mr-3 text-gray-500" />
+           <span>Last searches</span>
+         </Link>
+       
+         <Link 
+           href="/favourite-cars" 
+           className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+           onClick={() => setIsDropdownVisible(false)}
+         >
+           <Heart className="h-4 w-4 mr-3 text-gray-500" />
+           <span>Favorite cars</span>
+         </Link>
+       
+         <Link 
+           href="/orders-in-progress" 
+           className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+           onClick={() => setIsDropdownVisible(false)}
+         >
+           <ShoppingCart className="h-4 w-4 mr-3 text-gray-500" />
+           <span>Orders in progress</span>
+         </Link>
+       
+         <div className="px-4 py-3 border-t border-gray-100">
+           <button
+             onClick={() => {
+               setIsDropdownVisible(false);
+               setShowLoginModal(true);
+             }}
+             className="w-full mb-2 px-4 py-2 text-white bg-[#EF4444] rounded-md hover:bg-red-600 transition-colors"
+           >
+             Login
+           </button>
+       
+           <div className="text-sm text-gray-500 text-center">
+             Don't have an account?
+             <button
+               onClick={() => {
+                 setIsDropdownVisible(false);
+                 setShowSignupModal(true);
+               }}
+               className="text-red-500 hover:text-red-600 ml-1"
+             >
+               Register
+             </button>
+           </div>
+         </div>
+       </div>
+       )}
+     
 
         </nav>
 
@@ -899,7 +900,7 @@ const AppBar = () => {
         showPassword={showPassword}
         setShowPassword={setShowPassword}
         handleLogin={handleLogin}
-        
+
       />
 
       <SignupModal

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { Search, Filter, Heart, Info, ChevronRight, X,Calendar,Gauge,MapPin } from 'lucide-react';
+import { Search, Filter, Heart, Info, ChevronRight, X, Calendar, Gauge, MapPin } from 'lucide-react';
 import NextImage from 'next/image';
 
 const BestDealsPage = () => {
@@ -43,6 +43,10 @@ const BestDealsPage = () => {
 
   const formatPrice = (price) => {
     return `€${parseInt(price).toLocaleString()}`;
+  };
+
+  const navigateToCarDetails = () => {
+    router.push('/cars/car');
   };
 
   const deals = [
@@ -190,9 +194,10 @@ const BestDealsPage = () => {
           {extendedDeals.map((car, index) => (
             <div
               key={`${car.id}-${index}`}
-              className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1"
+              className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer"
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => navigateToCarDetails(car.id)}
             >
               {/* Enhanced Image Section */}
               <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl">
@@ -202,16 +207,22 @@ const BestDealsPage = () => {
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
+
                 {/* Premium Badge */}
                 <div className="absolute top-3 left-3">
                   <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg transform -translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                     Save €{(car.originalPrice - car.price).toLocaleString()}
                   </div>
                 </div>
-                
+
                 {/* Wishlist Button */}
-                <button className="absolute top-3 right-3 p-2.5 bg-white/95 rounded-full shadow-lg transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-red-50">
+                <button
+                  className="absolute top-3 right-3 p-2.5 bg-white/95 rounded-full shadow-lg transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-red-50"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent navigation when clicking the heart
+                    // Add wishlist functionality here
+                  }}
+                >
                   <Heart size={20} className="text-gray-600 hover:text-red-500 transition-colors" />
                 </button>
               </div>
@@ -256,7 +267,10 @@ const BestDealsPage = () => {
                 </div>
 
                 {/* Enhanced CTA Button */}
-                <button className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-3 px-4 rounded-xl hover:from-red-700 hover:to-red-600 transition-all duration-300 flex items-center justify-center group/btn">
+                <button
+                  className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-3 px-4 rounded-xl hover:from-red-700 hover:to-red-600 transition-all duration-300 flex items-center justify-center group/btn"
+                  onClick={() => navigateToCarDetails(car.id)}
+                >
                   View Details
                   <ChevronRight size={18} className="ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
                 </button>

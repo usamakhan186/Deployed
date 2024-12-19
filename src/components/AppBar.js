@@ -100,8 +100,8 @@ const ServicesDropdown = ({ isScrolled }) => {
       {/* Dropdown Menu */}
       <div
         className={`absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition-all duration-200 ${isOpen
-            ? 'opacity-100 translate-y-0 visible'
-            : 'opacity-0 -translate-y-2 invisible'
+          ? 'opacity-100 translate-y-0 visible'
+          : 'opacity-0 -translate-y-2 invisible'
           }`}
       >
         <div className="py-1">
@@ -133,7 +133,7 @@ const ServicesDropdown = ({ isScrolled }) => {
 };
 
 
-const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
+const UserDropdown = ({ setShowLoginModal, setShowSignupModal, isScrolled }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   let hideDropdownTimeout;
 
@@ -159,8 +159,8 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
       onMouseLeave={handleMouseLeave}
     >
       <div className="flex items-center cursor-pointer">
-        <CircleUser className="h-6 w-6 text-white" />
-        <ChevronDown className="text-white" />
+        <CircleUser className={`h-6 w-6 ${isScrolled ? 'text-gray-600' : 'text-white'}`} />
+        <ChevronDown className={isScrolled ? 'text-gray-600' : 'text-white'} />
       </div>
 
       {isDropdownVisible && (
@@ -701,6 +701,7 @@ const Navbar = () => {
 
             <div className="flex items-center space-x-4">
               <Heart className={`${isScrolled ? 'text-gray-600' : 'text-gray-100'} hover:text-red-500`} />
+              {/* Replace this existing button with the new one */}
               <button
                 onClick={() => setUserDropdownVisible(!userDropdownVisible)}
                 className={`p-2 rounded-full ${isScrolled ? 'text-gray-600' : 'text-white'}`}
@@ -783,6 +784,7 @@ const Navbar = () => {
               <UserDropdown
                 setShowLoginModal={setShowLoginModal}
                 setShowSignupModal={setShowSignupModal}
+                isScrolled={isScrolled}
               />
             </div>
           </div>
