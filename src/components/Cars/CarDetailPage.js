@@ -100,83 +100,84 @@ const CarTabs = () => {
     const financingRef = useRef(null);
   
     const tabs = [
-      { id: 'details', label: 'Details', ref: detailsRef },
-      { id: 'features', label: 'Features', ref: featuresRef },
-      { id: 'howItWorks', label: 'How it works', ref: howItWorksRef },
-      { id: 'priceHistory', label: 'Price History', hasIcon: true, ref: priceHistoryRef },
-      { id: 'priceMap', label: 'Price map', ref: priceMapRef },
-      { id: 'financing', label: 'Financing', ref: financingRef }
-    ];
+        { id: 'details', label: 'Details', ref: detailsRef },
+        { id: 'features', label: 'Features', ref: featuresRef },
+        { id: 'howItWorks', label: 'How it works', ref: howItWorksRef },
+        { id: 'priceHistory', label: 'Price History', hasIcon: true, ref: priceHistoryRef },
+        { id: 'priceMap', label: 'Price map', ref: priceMapRef },
+        { id: 'financing', label: 'Financing', ref: financingRef }
+      ];
   
     // Handle scroll events to update active tab
     useEffect(() => {
-      const handleScroll = () => {
-        const scrollPosition = window.scrollY + 100; // Offset for header
-  
-        for (const tab of tabs) {
-          if (tab.ref.current) {
-            const element = tab.ref.current;
-            const offsetTop = element.offsetTop;
-            const offsetBottom = offsetTop + element.offsetHeight;
-  
-            if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-              setActiveTab(tab.id);
-              break;
+        const handleScroll = () => {
+          const scrollPosition = window.scrollY + 100; // Offset for header
+    
+          for (const tab of tabs) {
+            if (tab.ref.current) {
+              const element = tab.ref.current;
+              const offsetTop = element.offsetTop;
+              const offsetBottom = offsetTop + element.offsetHeight;
+    
+              if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+                setActiveTab(tab.id);
+                break;
+              }
             }
           }
+        };
+    
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+    
+      const handleTabClick = (tabId) => {
+        setActiveTab(tabId);
+        const tab = tabs.find(t => t.id === tabId);
+        if (tab && tab.ref.current) {
+          const headerOffset = 80; // Adjust based on your header height
+          const elementPosition = tab.ref.current.offsetTop;
+          const offsetPosition = elementPosition - headerOffset;
+    
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
         }
       };
-  
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-  
-    const handleTabClick = (tabId) => {
-      setActiveTab(tabId);
-      const tab = tabs.find(t => t.id === tabId);
-      if (tab && tab.ref.current) {
-        const headerOffset = 80; // Adjust based on your header height
-        const elementPosition = tab.ref.current.offsetTop;
-        const offsetPosition = elementPosition - headerOffset;
-  
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    };
-  
+    
 
-    return (
+      return (
         <div className="sticky top-0 bg-white z-30 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex space-x-1 overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => handleTabClick(tab.id)}
-                className={`
-                  whitespace-nowrap px-4 py-2.5 text-sm font-medium 
-                  ${activeTab === tab.id 
-                    ? 'text-red-500 border-b-2 border-red-500'
-                    : 'text-gray-500 hover:text-gray-700'}
-                  transition-colors duration-150 ease-in-out
-                  flex items-center gap-1.5
-                `}
-              >
-                {tab.label}
-                {tab.hasIcon && (
-                  <div className="bg-orange-100 rounded p-0.5">
-                    <BarChart className="w-3 h-3 text-orange-500" />
-                  </div>
-                )}
-              </button>
-            ))}
+          <div className="max-w-7xl mx-auto px-4 lg:px-8">
+            <div className="flex space-x-1 overflow-x-auto">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`
+                    whitespace-nowrap px-4 py-2.5 text-sm font-medium 
+                    ${activeTab === tab.id 
+                      ? 'text-red-500 border-b-2 border-red-500'
+                      : 'text-gray-500 hover:text-gray-700'}
+                    transition-colors duration-150 ease-in-out
+                    flex items-center gap-1.5
+                  `}
+                >
+                  {tab.label}
+                  {tab.hasIcon && (
+                    <div className="bg-orange-100 rounded p-0.5">
+                      <BarChart className="w-3 h-3 text-orange-500" />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    );
-};
+      );
+    };
+    
 const HowItWorks = () => {
     const [activeCard, setActiveCard] = useState(0);
 
@@ -1446,14 +1447,13 @@ const CheckoutSidebar = () => {
 };
 
 const CarDetailPage = () => {
-    // Existing image slider state
     const scrollRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(0);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
 
-    // New refs for section navigation
+    // Add refs for scroll navigation
     const detailsRef = useRef(null);
     const featuresRef = useRef(null);
     const howItWorksRef = useRef(null);
@@ -1512,7 +1512,6 @@ const CarDetailPage = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Existing image slider effects
     useEffect(() => {
         const handleKeyPress = (event) => {
             if (event.key === 'ArrowLeft') {
@@ -1547,7 +1546,6 @@ const CarDetailPage = () => {
         };
     }, []);
 
-    // Image slider functions
     const scroll = (direction) => {
         const container = scrollRef.current;
         if (container) {
@@ -1556,6 +1554,21 @@ const CarDetailPage = () => {
                 left: direction === 'left'
                     ? container.scrollLeft - imageWidth
                     : container.scrollLeft + imageWidth,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    const handleTabClick = (tabId) => {
+        setActiveTab(tabId);
+        const tab = tabs.find(t => t.id === tabId);
+        if (tab && tab.ref.current) {
+            const headerOffset = 80;
+            const elementPosition = tab.ref.current.offsetTop;
+            const offsetPosition = elementPosition - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
                 behavior: 'smooth'
             });
         }
@@ -1577,22 +1590,6 @@ const CarDetailPage = () => {
             setSelectedImage((prev) => (prev + 1) % images.length);
         } else {
             setSelectedImage((prev) => (prev - 1 + images.length) % images.length);
-        }
-    };
-
-    // New section navigation function
-    const handleTabClick = (tabId) => {
-        setActiveTab(tabId);
-        const tab = tabs.find(t => t.id === tabId);
-        if (tab && tab.ref.current) {
-            const headerOffset = 80;
-            const elementPosition = tab.ref.current.offsetTop;
-            const offsetPosition = elementPosition - headerOffset;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
         }
     };
 
@@ -1625,7 +1622,6 @@ const CarDetailPage = () => {
         </div>
     );
 
-    // Rest of your existing JSX remains the same, just add refs to sections
     return (
         <div className='bg-white'>
             {/* Your existing header sections */}
@@ -1640,13 +1636,27 @@ const CarDetailPage = () => {
                         {/* Details Section */}
                         <div ref={detailsRef} className="mt-8">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">Details</h2>
-                            {/* Your existing details content */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {specs.map((spec, index) => (
+                                    <div key={index} className="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-100">
+                                        <div className="text-gray-400">{spec.icon}</div>
+                                        <span className="text-gray-700">{spec.text}</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Features Section */}
                         <div ref={featuresRef} className="mt-12">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">Features</h2>
-                            {/* Your existing features content */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {features.map((feature, index) => (
+                                    <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                                        <Check className="w-5 h-5 text-green-500" />
+                                        <span className="text-gray-700">{feature}</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         {/* How it Works Section */}
@@ -1685,8 +1695,57 @@ const CarDetailPage = () => {
                 />
             </div>
 
-            {/* Modal Viewer - your existing modal code */}
-            {/* ... */}
+            {/* Modal Viewer - Keep your existing modal code */}
+            {modalOpen && (
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+        <button
+            onClick={closeModal}
+            className="absolute right-4 top-4 text-white hover:text-gray-300 z-50"
+        >
+            <X className="w-8 h-8" />
+        </button>
+
+        <div className="h-full flex items-center justify-center relative w-full">
+            <img
+                src={images[selectedImage]}
+                alt={`Car view ${selectedImage + 1}`}
+                className="max-h-[85vh] max-w-[85vw] object-contain"
+            />
+
+            <div className="absolute bottom-4 right-4 bg-black/50 px-4 py-2 rounded-lg">
+                <span className="text-white text-sm">
+                    {selectedImage + 1} / {images.length}
+                </span>
+            </div>
+
+            <button
+                onClick={() => navigateImage('prev')}
+                className="absolute left-4 p-2 bg-white/10 rounded-lg hover:bg-white/20"
+            >
+                <ChevronLeft className="w-8 h-8 text-white" />
+            </button>
+
+            <button
+                onClick={() => navigateImage('next')}
+                className="absolute right-4 p-2 bg-white/10 rounded-lg hover:bg-white/20"
+            >
+                <ChevronRight className="w-8 h-8 text-white" />
+            </button>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2">
+            {images.map((_, index) => (
+                <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                        selectedImage === index ? 'bg-white' : 'bg-white/50'
+                    }`}
+                />
+            ))}
+        </div>
+    </div>
+)}
 
             <style>
                 {`

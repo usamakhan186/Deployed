@@ -267,13 +267,7 @@ const BestDealsPage = () => {
                 </div>
 
                 {/* Enhanced CTA Button */}
-                <button
-                  className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-3 px-4 rounded-xl hover:from-red-700 hover:to-red-600 transition-all duration-300 flex items-center justify-center group/btn"
-                  onClick={() => navigateToCarDetails(car.id)}
-                >
-                  View Details
-                  <ChevronRight size={18} className="ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
-                </button>
+                
               </div>
             </div>
           ))}
