@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Phone, Mail, Check, Minus, ChevronDown, InfoIcon, HelpCircle } from 'lucide-react'
+import { Phone, Mail, Check, Minus,Plus, ChevronDown, InfoIcon, HelpCircle, Star} from 'lucide-react'
 
 
 const HeroSection = () => {
@@ -138,6 +138,15 @@ const FinanceCalculator = () => {
     };
   };
 
+  const handleSliderChange = (e, setValue) => {
+    const value = Number(e.target.value);
+    const min = Number(e.target.min);
+    const max = Number(e.target.max);
+    const progress = ((value - min) / (max - min)) * 100;
+    e.target.style.setProperty('--range-progress', `${progress}%`);
+    setValue(value);
+  };
+
   return (
     <div id="financing-calculator" className="w-full min-h-screen bg-white py-12 lg:py-16 px-4 lg:px-16">
       <div className="max-w-[1280px] mx-auto">
@@ -211,14 +220,12 @@ const FinanceCalculator = () => {
                     min="100"
                     max="1000"
                     value={monthlyPayment}
-                    onChange={(e) => setMonthlyPayment(Number(e.target.value))}
+                    onChange={(e) => handleSliderChange(e, setMonthlyPayment)}
                     className="range-slider"
-                    style={{
-                      background: `linear-gradient(to right, rgb(239 68 68) ${monthlyPayment / 10}%, #E2E8F0 ${monthlyPayment / 10}%)`
-                    }}
                   />
                 </div>
               </div>
+
 
               {/* Payback Period */}
               <div className="mb-10">
@@ -308,48 +315,126 @@ const FinanceCalculator = () => {
 };
 
 
-const ComparisonTable = () => (
-  <div className="py-16 bg-white">
-    <div className="max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-12">Why finance through Fast Cars?</h2>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="border-b py-4 font-medium"></div>
-        <div className="border-b py-4 font-medium text-center">Fast Cars</div>
-        <div className="border-b py-4 font-medium text-center">The usual method</div>
 
-        {[
-          {
-            label: 'Available cars',
-            Fast: 'Unlimited selection from vehicles from all over Europe.',
-            usual: 'Cars registered in the Czech Republic only.'
-          },
-          {
-            label: 'Process',
-            Fast: 'We will sort out the financing right at the time of purchase. You will learn right away how much you can borrow.',
-            usual: 'Before choosing your car, you need to check if and how much you can borrow from the bank.'
-          },
-          {
-            label: 'Time',
-            Fast: 'Online application form, approval in minutes.',
-            usual: 'At least 3 visits to the bank, approval within days.'
-          }
-        ].map((row) => (
-          <React.Fragment key={row.label}>
-            <div className="border-b py-4">{row.label}</div>
-            <div className="border-b py-4 flex items-start gap-2">
-              <Check className="text-green-500 w-5 h-5 mt-1 flex-shrink-0" />
-              <span>{row.carvago}</span>
+
+
+const ComparisonTable = () => {
+  const features = [
+    {
+      label: 'Available cars',
+      fastCars: 'Unlimited selection from vehicles from all over Europe.',
+      usual: 'Cars registered in the Czech Republic only.',
+      icon: 'car'
+    },
+    {
+      label: 'Process',
+      fastCars: 'We will sort out the financing right at the time of purchase. You will learn right away how much you can borrow.',
+      usual: 'Before choosing your car, you need to check if and how much you can borrow from the bank.',
+      icon: 'process'
+    },
+    {
+      label: 'Time',
+      fastCars: 'Online application form, approval in minutes.',
+      usual: 'At least 3 visits to the bank, approval within days.',
+      icon: 'time'
+    },
+    {
+      label: 'Convenience',
+      fastCars: 'Everything is done online from the comfort of your home.',
+      usual: 'You\'ll spend a lot of time visiting the bank.',
+      icon: 'convenience'
+    },
+    {
+      label: 'Financing of services',
+      fastCars: 'We will arrange the car financing, including services.',
+      usual: 'The bank will only loan the price of the car itself.',
+      icon: 'finance'
+    }
+  ];
+
+  return (
+    <div className="py-24 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Why finance through Fast Cars?
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Experience the future of car financing with our premium service
+          </p>
+        </div>
+
+        <div className="relative">
+          {/* Decorative Elements */}
+          <div className="absolute -top-6 -right-6 w-24 h-24 bg-red-50 rounded-full blur-2xl" />
+          <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-red-50 rounded-full blur-2xl" />
+
+          {/* Main Content */}
+          <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            {/* Header */}
+            <div className="grid grid-cols-3 gap-4 p-6 bg-gray-50 border-b border-gray-100">
+              <div className="text-lg font-semibold text-gray-400">Feature Comparison</div>
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-1 bg-red-50 rounded-full">
+                  <Star className="w-4 h-4 text-red-500 fill-red-500" />
+                  <span className="text-lg font-semibold text-red-500">Fast Cars</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <span className="text-lg font-medium text-gray-400">Traditional Method</span>
+              </div>
             </div>
-            <div className="border-b py-4 flex items-start gap-2">
-              <Minus className="text-gray-400 w-5 h-5 mt-1 flex-shrink-0" />
-              <span>{row.usual}</span>
+
+            {/* Features */}
+            <div className="divide-y divide-gray-100">
+              {features.map((feature, index) => (
+                <div 
+                  key={feature.label}
+                  className="grid grid-cols-3 gap-4 p-6 group hover:bg-gray-50 transition-colors duration-300"
+                >
+                  <div className="font-semibold text-gray-900">{feature.label}</div>
+                  
+                  <div className="relative">
+                    <div className="flex items-start gap-3 p-4 rounded-xl bg-white group-hover:bg-red-50 transition-colors duration-300 shadow-sm">
+                      <Check className="w-5 h-5 mt-1 text-red-500 flex-shrink-0" />
+                      <span className="text-gray-600">{feature.fastCars}</span>
+                      <div className="absolute inset-0 border border-transparent group-hover:border-red-100 rounded-xl transition-colors duration-300" />
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3 p-4">
+                    <Minus className="w-5 h-5 mt-1 text-gray-400 flex-shrink-0" />
+                    <span className="text-gray-500">{feature.usual}</span>
+                  </div>
+                </div>
+              ))}
             </div>
-          </React.Fragment>
-        ))}
+
+            {/* Footer */}
+            <div className="p-6 bg-gray-50 border-t border-gray-100">
+              <div className="flex justify-center gap-8">
+                <div className="flex items-center gap-2 text-red-500 font-medium">
+                  <Check className="w-5 h-5" />
+                  Premium Features
+                </div>
+                <div className="flex items-center gap-2 text-red-500 font-medium">
+                  <Check className="w-5 h-5" />
+                  24/7 Support
+                </div>
+                <div className="flex items-center gap-2 text-red-500 font-medium">
+                  <Check className="w-5 h-5" />
+                  Fast Approval
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+
 
 const ProcessSteps = () => (
   <div className="bg-white py-16">
@@ -390,38 +475,126 @@ const ProcessSteps = () => (
   </div>
 );
 
-const FAQ = () => (
-  <div className="bg-white py-16">
-    <div className="max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-8">FAQ</h2>
-      <div className="space-y-4">
-        {[
-          'Can I terminate the loan agreement prematurely?',
-          'Can I finance a vehicle of any age?'
-        ].map((question) => (
-          <button key={question} className="w-full bg-white border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50">
-            <span>{question}</span>
-            <ChevronDown className="w-5 h-5" />
-          </button>
-        ))}
+const FAQItem = ({ question, answer, isOpen, onClick }) => (
+  <div className="mb-4">
+    <button
+      onClick={onClick}
+      className={`w-full text-left p-6 bg-white rounded-2xl flex items-center justify-between transition-all duration-300 group hover:shadow-lg ${
+        isOpen ? 'shadow-lg' : 'shadow-md'
+      }`}
+    >
+      <span className={`font-semibold text-lg ${isOpen ? 'text-red-500' : 'text-gray-800'}`}>
+        {question}
+      </span>
+      <div className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+        {isOpen ? (
+          <Minus className="w-6 h-6 text-red-500" />
+        ) : (
+          <Plus className="w-6 h-6 text-gray-400 group-hover:text-red-500" />
+        )}
       </div>
-
-      <div className="mt-16">
-        <h3 className="text-2xl font-bold text-center mb-8">Do you need advice?</h3>
-        <div className="flex justify-center gap-8">
-          <a href="tel:+420244034700" className="flex items-center gap-2 text-red-500">
-            <Phone className="w-5 h-5" />
-            +420 244 034 700
-          </a>
-          <a href="mailto:financing@fastcar.com" className="flex items-center gap-2 text-grey">
-            <Mail className="w-5 h-5" />
-            financing@fastcar.com
-          </a>
-        </div>
-      </div>
+    </button>
+    {/* Answer Panel */}
+    <div
+      className={`overflow-hidden transition-all duration-300 bg-white rounded-2xl mt-2 ${
+        isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+      }`}
+    >
+      <div className="p-6 text-gray-600 leading-relaxed">{answer}</div>
     </div>
   </div>
 );
+
+const FAQ = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const faqData = [
+    {
+      question: "Can I terminate the loan agreement prematurely?",
+      answer: "Of course, you can. The easiest way is to call the Customer Service of the financial institution and express your interest in the early termination of the loan agreement. They will send you the necessary documents, the final calculation, and advise you on how to proceed."
+    },
+    {
+      question: "Can I finance a vehicle of any age?",
+      answer: "With Fast Cars, you can finance a vehicle up to a maximum of 10 years from the first registration. In the case of an older vehicle, the vehicle must be paid for in cash."
+    },
+    {
+      question: "What documents do I need for financing?",
+      answer: "You'll need: Valid ID, Proof of income (last 3 months), Proof of address, Bank statements (last 3 months). For self-employed individuals, additional documentation may be required."
+    },
+    {
+      question: "What is the maximum loan amount available?",
+      answer: "The maximum loan amount depends on various factors including your income, credit history, and the vehicle's value. We offer flexible financing options up to €100,000 for qualified applicants."
+    },
+    {
+      question: "Is there a minimum down payment required?",
+      answer: "Yes, typically we require a minimum down payment of 20% of the vehicle's purchase price. However, this may vary based on your credit profile and the specific financing program."
+    }
+  ];
+
+  return (
+    <div className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* FAQ Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+          <p className="text-lg text-gray-600">Everything you need to know about our car financing services</p>
+        </div>
+
+        {/* FAQ Items */}
+        <div className="space-y-6">
+          {faqData.map((faq, index) => (
+            <FAQItem
+              key={index}
+              question={faq.question}
+              answer={faq.answer}
+              isOpen={openIndex === index}
+              onClick={() => setOpenIndex(openIndex === index ? null : index)}
+            />
+          ))}
+        </div>
+
+        {/* Need Advice Section */}
+        <div className="mt-20">
+          <h3 className="text-2xl font-bold text-center text-gray-900 mb-12">Do you need advice?</h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Call Us Card */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-red-50 rounded-full">
+                  <Phone className="w-6 h-6 text-red-500" />
+                </div>
+                <div>
+                  <div className="font-medium text-gray-500 mb-1">Call us</div>
+                  <a href="tel:+420246034700" className="text-lg font-semibold text-gray-900 hover:text-red-500 transition-colors">
+                    +420 246 034 700
+                  </a>
+                  <div className="text-sm text-gray-500 mt-1">Mo-Su 8 am-8 pm</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Email Card */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-red-50 rounded-full">
+                  <Mail className="w-6 h-6 text-red-500" />
+                </div>
+                <div>
+                  <div className="font-medium text-gray-500 mb-1">Email</div>
+                  <a href="mailto:financing@fastcars.com" className="text-lg font-semibold text-gray-900 hover:text-red-500 transition-colors">
+                    financing@fastcars.com
+                  </a>
+                  <div className="text-sm text-gray-500 mt-1">&nbsp;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const CarFinancingPage = () => (
   <div className="min-h-screen">

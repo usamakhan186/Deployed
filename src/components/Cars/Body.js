@@ -90,7 +90,7 @@ const CarCard = ({ car }) => {
         {/* Content Section */}
         <div className="flex-1 p-3 flex flex-col gap-y-2">
           <div className='flex justify-between'>
-            <h3 className="text-base font-bold text-red-500 mb-2">{car.name}</h3>
+          <h3 className="text-xl font-bold text-red-500 mb-2 tracking-wide hover:text-red-600 transition-colors">{car.name}</h3>
             <img
               src="/Logo/logo.png.png"
               alt="Logo"
@@ -192,7 +192,7 @@ const CarList = () => {
   const cars = [
     {
       id: 1,
-      name: "bmw   Cooper 100 kW",
+      name: "BMW  Cooper 100 kW",
       images: [
         "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGF1ZGklMjBhNXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fG1lcmNlZGVzJTIwZTUzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",

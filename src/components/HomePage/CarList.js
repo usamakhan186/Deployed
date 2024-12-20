@@ -437,8 +437,6 @@ const CarListings = () => {
                       <Heart className="w-4 h-4 text-red-500" />
                       <span className="text-sm font-medium text-gray-600">{car.watchers} Watchers</span>
                     </div>
-                    
-                    
                   </div>
                 </div>
               </div>
