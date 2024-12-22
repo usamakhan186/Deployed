@@ -6,7 +6,12 @@ import {
     Plus, Edit3, Trash2, RefreshCcw, X,
     ChevronDown, Search, Bell, AlertCircle,
     FileText, Calendar, PlusCircle, Filter,
-    ChevronLeft, ChevronRight, Power, Fuel, Image as ImageIcon,
+    ChevronLeft, ChevronRight, Power, Fuel, Image as ImageIcon,MoreVertical,
+    CheckCircle,
+    XCircle,
+    AlertTriangle,
+    Clock,
+    Eye
 } from 'lucide-react';
 import { useAuth } from './auth-components';
 
@@ -38,15 +43,28 @@ const AdminDashboard = () => {
 
     const [orders, setOrders] = useState([
         {
-            id: "ORD-2024-001",
-            vehicle: "Mercedes-Benz A 200 d",
-            customer: "John Doe",
-            status: "Pending",
-            totalPrice: 647765,
-            services: ["Home Delivery", "Import MOT"],
-            date: "2024-03-20"
+          id: "ORD-2024-001",
+          vehicle: "Mercedes-Benz A 200 d",
+          customer: "John Doe",
+          customerEmail: "john@example.com",
+          customerPhone: "+34 123 456 789",
+          status: "Pending",
+          totalPrice: 647765,
+          services: ["Home Delivery", "Import MOT"],
+          date: "2024-03-20",
+          paymentStatus: "Paid",
+          deliveryAddress: "123 Main St, Madrid, Spain",
+          notes: "",
+          timeline: [
+            { status: "Order Placed", date: "2024-03-20", time: "10:30" },
+            { status: "Payment Received", date: "2024-03-20", time: "11:45" }
+          ]
         }
-    ]);
+      ]);
+      const [selectedOrder, setSelectedOrder] = useState(null);
+const [showOrderModal, setShowOrderModal] = useState(false);
+const [orderFilter, setOrderFilter] = useState('all');
+const [searchTerm, setSearchTerm] = useState('');
 
     // Statistics for dashboard
     const [stats, setStats] = useState({
@@ -55,6 +73,191 @@ const AdminDashboard = () => {
         totalRevenue: 15789650,
         pendingDeliveries: 12
     });
+
+    const handleUpdateOrderStatus = (orderId, newStatus) => {
+        setOrders(prevOrders =>
+          prevOrders.map(order => {
+            if (order.id === orderId) {
+              const timeline = [
+                ...order.timeline,
+                {
+                  status: newStatus,
+                  date: new Date().toISOString().split('T')[0],
+                  time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                }
+              ];
+              return { ...order, status: newStatus, timeline };
+            }
+            return order;
+          })
+        );
+      };
+      
+      const handleDeleteOrder = (orderId) => {
+        if (window.confirm('Are you sure you want to delete this order?')) {
+          setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
+        }
+      };
+      
+      const handleCancelOrder = (orderId) => {
+        if (window.confirm('Are you sure you want to cancel this order?')) {
+          handleUpdateOrderStatus(orderId, 'Cancelled');
+        }
+      };
+      
+      const handleUpdateOrderNotes = (orderId, notes) => {
+        setOrders(prevOrders =>
+          prevOrders.map(order =>
+            order.id === orderId ? { ...order, notes } : order
+          )
+        );
+      }; 
+      const filteredOrders = orders.filter(order => {
+        const matchesSearch = (
+          order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.vehicle.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        const matchesFilter = orderFilter === 'all' || order.status.toLowerCase() === orderFilter.toLowerCase();
+        return matchesSearch && matchesFilter;
+      });
+      
+      // Order Details Modal Component
+      const OrderDetailsModal = ({ isOpen, onClose, order }) => {
+        if (!isOpen || !order) return null;
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg w-full max-w-4xl m-4 max-h-[90vh] overflow-y-auto">
+                <div className="border-b p-6 flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Order Details - {order.id}</h2>
+                  <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                
+                <div className="p-6 space-y-6">
+                  {/* Customer Information */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Customer Information</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500">Name</p>
+                        <p className="font-medium">{order.customer}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Email</p>
+                        <p className="font-medium">{order.customerEmail}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Phone</p>
+                        <p className="font-medium">{order.customerPhone}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Delivery Address</p>
+                        <p className="font-medium">{order.deliveryAddress}</p>
+                      </div>
+                    </div>
+                  </div>
+        
+                  {/* Order Details */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Order Details</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500">Vehicle</p>
+                        <p className="font-medium">{order.vehicle}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Total Price</p>
+                        <p className="font-medium">CZK {order.totalPrice.toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Services</p>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {order.services.map((service, index) => (
+                            <span key={index} className="px-2 py-1 bg-gray-100 rounded-full text-sm">
+                              {service}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Payment Status</p>
+                        <p className={`font-medium ${
+                          order.paymentStatus === 'Paid' ? 'text-green-600' : 'text-yellow-600'
+                        }`}>
+                          {order.paymentStatus}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+        
+                  {/* Order Timeline */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Order Timeline</h3>
+                    <div className="space-y-4">
+                      {order.timeline.map((event, index) => (
+                        <div key={index} className="flex items-start space-x-3">
+                          <div className="p-2 bg-gray-50 rounded-full">
+                            <Clock className="w-4 h-4 text-gray-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">{event.status}</p>
+                            <p className="text-xs text-gray-500">
+                              {event.date} at {event.time}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+        
+                  {/* Notes Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Notes</h3>
+                    <textarea
+                      value={order.notes}
+                      onChange={(e) => handleUpdateOrderNotes(order.id, e.target.value)}
+                      className="w-full h-32 p-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                      placeholder="Add notes about this order..."
+                    />
+                  </div>
+        
+                  {/* Action Buttons */}
+                  <div className="flex justify-end space-x-3">
+                    <button
+                      onClick={() => {
+                        handleUpdateOrderStatus(order.id, 'Processing');
+                        onClose();
+                      }}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                      Mark as Processing
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleUpdateOrderStatus(order.id, 'Completed');
+                        onClose();
+                      }}
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                      Mark as Completed
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleCancelOrder(order.id);
+                        onClose();
+                      }}
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    >
+                      Cancel Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        };
 
     const handleUpdateVehicle = (vehicleId, updates) => {
         setVehicles(prevVehicles =>
@@ -774,83 +977,110 @@ const AdminDashboard = () => {
 
                     {/* Orders Tab Content */}
                     {activeTab === 'orders' && (
-                        <div className="bg-white rounded-lg shadow">
-                            <div className="p-6">
-                                <div className="flex justify-between items-center mb-6">
-                                    <div className="flex items-center space-x-4">
-                                        <div className="relative">
-                                            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                            <input
-                                                type="text"
-                                                placeholder="Search orders..."
-                                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                                            />
-                                        </div>
-                                        <select className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                                            <option>All Status</option>
-                                            <option>Pending</option>
-                                            <option>Processing</option>
-                                            <option>Completed</option>
-                                            <option>Cancelled</option>
-                                        </select>
-                                    </div>
-                                </div>
+  <div className="bg-white rounded-lg shadow">
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search orders..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+          <select
+            value={orderFilter}
+            onChange={(e) => setOrderFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
 
-                                {/* Orders Table */}
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead>
-                                            <tr className="text-left text-sm text-gray-500 border-b border-gray-200">
-                                                <th className="pb-3 font-medium">Order ID</th>
-                                                <th className="pb-3 font-medium">Vehicle</th>
-                                                <th className="pb-3 font-medium">Customer</th>
-                                                <th className="pb-3 font-medium">Total Price</th>
-                                                <th className="pb-3 font-medium">Status</th>
-                                                <th className="pb-3 font-medium">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {orders.map(order => (
-                                                <tr key={order.id} className="border-b border-gray-100">
-                                                    <td className="py-4">
-                                                        <div className="font-medium text-gray-800">{order.id}</div>
-                                                    </td>
-                                                    <td className="py-4">
-                                                        <div className="text-gray-800">{order.vehicle}</div>
-                                                    </td>
-                                                    <td className="py-4">
-                                                        <div className="text-gray-800">{order.customer}</div>
-                                                    </td>
-                                                    <td className="py-4">
-                                                        <div className="text-gray-800">CZK {order.totalPrice.toLocaleString()}</div>
-                                                    </td>
-                                                    <td className="py-4">
-                                                        <span className="px-3 py-1 text-sm font-medium rounded-full bg-yellow-50 text-yellow-600">
-                                                            {order.status}
-                                                        </span>
-                                                    </td>
-                                                    <td className="py-4">
-                                                        <div className="flex space-x-2">
-                                                            <button
-                                                                className="p-2 text-gray-400 hover:text-blue-500"
-                                                            >
-                                                                <RefreshCcw className="w-5 h-5" />
-                                                            </button>
-                                                            <button
-                                                                className="p-2 text-gray-400 hover:text-red-500"
-                                                            >
-                                                                <X className="w-5 h-5" />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+      {/* Orders Table */}
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="text-left text-sm text-gray-500 border-b border-gray-200">
+              <th className="pb-3 font-medium">Order ID</th>
+              <th className="pb-3 font-medium">Vehicle</th>
+              <th className="pb-3 font-medium">Customer</th>
+              <th className="pb-3 font-medium">Total Price</th>
+              <th className="pb-3 font-medium">Status</th>
+              <th className="pb-3 font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredOrders.map(order => (
+              <tr key={order.id} className="border-b border-gray-100">
+                <td className="py-4">
+                  <div className="font-medium text-gray-800">{order.id}</div>
+                  <div className="text-sm text-gray-500">{order.date}</div>
+                </td>
+                <td className="py-4">
+                  <div className="text-gray-800">{order.vehicle}</div>
+                </td>
+                <td className="py-4">
+                  <div className="text-gray-800">{order.customer}</div>
+                  <div className="text-sm text-gray-500">{order.customerEmail}</div>
+                </td>
+                <td className="py-4">
+                  <div className="text-gray-800">CZK {order.totalPrice.toLocaleString()}</div>
+                </td>
+                <td className="py-4">
+                  <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                    order.status === 'Pending' ? 'bg-yellow-50 text-yellow-600' :
+                    order.status === 'Processing' ? 'bg-blue-50 text-blue-600' :
+                    order.status === 'Completed' ? 'bg-green-50 text-green-600' :
+                    'bg-red-50 text-red-600'
+                  }`}>
+                    {order.status}
+                  </span>
+                </td>
+                <td className="py-4">
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => {
+                        setSelectedOrder(order);
+                        setShowOrderModal(true);
+                      }}
+                      className="p-2 text-gray-400 hover:text-blue-500"
+                      title="View Details"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleUpdateOrderStatus(order.id, 'Processing')}
+                      className="p-2 text-gray-400 hover:text-blue-500"
+                      title="Mark as Processing"
+                    >
+                      <RefreshCcw className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleCancelOrder(order.id)}
+                      className="p-2 text-gray-400 hover:text-red-500"
+                      title="Cancel Order"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+)}
 
                     {/* Pricing Tab Content */}
                     {activeTab === 'pricing' && (
@@ -891,6 +1121,15 @@ const AdminDashboard = () => {
                 vehicle={selectedVehicle}
                 onUpdate={handleUpdateVehicle}
             />
+
+<OrderDetailsModal
+  isOpen={showOrderModal}
+  onClose={() => {
+    setShowOrderModal(false);
+    setSelectedOrder(null);
+  }}
+  order={selectedOrder}
+/>
 
             <AddVehicleModal
                 isOpen={showAddVehicleModal}

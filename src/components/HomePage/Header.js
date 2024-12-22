@@ -91,22 +91,44 @@ const HeroSection = () => {
 ];
 
 
-  const advancedFormFields = [
-    { 
-      label: "Mileage",
-      placeholder: "Select mileage",
-      options: mileageRanges,
-      value: "",
-      onChange: () => {}
-    },
-    { 
-      label: "Price up to",
-      placeholder: "Select price",
-      options: priceRanges,
-      value: "",
-      onChange: () => {}
-    }
-  ];
+const advancedFormFields = [
+  {
+    label: "Mileage range",
+    type: "range",
+    fields: [
+      {
+        placeholder: "Min mileage",
+        value: "",
+        onChange: () => {},
+        type: "number"
+      },
+      {
+        placeholder: "Max mileage",
+        value: "",
+        onChange: () => {},
+        type: "number"
+      }
+    ]
+  },
+  {
+    label: "Price range",
+    type: "range",
+    fields: [
+      {
+        placeholder: "Min price",
+        value: "",
+        onChange: () => {},
+        type: "number"
+      },
+      {
+        placeholder: "Max price",
+        value: "",
+        onChange: () => {},
+        type: "number"
+      }
+    ]
+  }
+];
 
   const stats = [
     { value: 54000, label: "Cars traded" },
@@ -165,6 +187,21 @@ const HeroSection = () => {
       />
     </div>
   );
+  const renderRangeInputs = (field) => (
+    <div className="flex gap-2">
+      {field.fields.map((input, index) => (
+        <div key={index} className="flex-1">
+          <input
+            type={input.type}
+            placeholder={input.placeholder}
+            value={input.value}
+            onChange={input.onChange}
+            className="w-full appearance-none bg-white border border-gray-200 rounded px-3 py-1.5 text-sm text-gray-900"
+          />
+        </div>
+      ))}
+    </div>
+  );
   
 
   // Rest of your component remains the same
@@ -201,11 +238,14 @@ const HeroSection = () => {
                   </div>
                 ))}
 
-                {showAdvanced && advancedFormFields.map((field) => (
-                  <div key={field.label}>
-                    {renderSelect(field)}
-                  </div>
-                ))}
+{showAdvanced && advancedFormFields.map((field) => (
+  <div key={field.label} className="space-y-1.5">
+    <label className="block text-gray-700 text-sm">
+      {field.label}
+    </label>
+    {field.type === "range" ? renderRangeInputs(field) : renderSelect(field)}
+  </div>
+))}
 
                 <div className="flex items-center">
                   <label className="flex items-center cursor-pointer">
@@ -301,14 +341,14 @@ const HeroSection = () => {
                         </div>
                       ))}
 
-                      {showAdvanced && advancedFormFields.map((field) => (
-                        <div key={field.label} className="space-y-1.5">
-                          <label className="block text-gray-700 text-sm">
-                            {field.label}
-                          </label>
-                          {renderSelect(field)}
-                        </div>
-                      ))}
+{showAdvanced && advancedFormFields.map((field) => (
+  <div key={field.label} className="space-y-1.5 col-span-2">
+    <label className="block text-gray-700 text-sm">
+      {field.label}
+    </label>
+    {field.type === "range" ? renderRangeInputs(field) : renderSelect(field)}
+  </div>
+))}
 
                       <div className="flex items-center">
                         <label className="flex items-center cursor-pointer">
