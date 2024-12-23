@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
         
         TokenManager.setTokens(accessToken, refreshToken);
         setUser({ email: adminCredentials.email, role: 'admin' });
-        router.push('/admin/dashboard');
+        router.push('/admin');
         return true;
       } else {
         throw new Error('Invalid credentials');

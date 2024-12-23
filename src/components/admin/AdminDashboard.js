@@ -22,6 +22,8 @@ const AdminDashboard = () => {
     const [showServiceModal, setShowServiceModal] = useState(false);
     const { user, logout } = useAuth();
     const [selectedVehicle, setSelectedVehicle] = useState(null);
+    // Add this near your other useState declarations at the top
+    const [selectedService, setSelectedService] = useState(null);
     const [vehicles, setVehicles] = useState([
         {
             id: 1,
@@ -32,11 +34,11 @@ const AdminDashboard = () => {
             services: {
                 carAudit: 1990,
                 homeDelivery: 15005,
-                fuel: 0,
+                
                 importMOT: 4490,
                 adminFee: 800,
                 registration: 1990,
-                warranty: 0
+                
             }
         }
     ]);
@@ -112,6 +114,16 @@ const [searchTerm, setSearchTerm] = useState('');
           )
         );
       }; 
+      const handleUpdateServicePrice = (serviceName, newPrice) => {
+        setVehicles(prevVehicles => prevVehicles.map(vehicle => ({
+            ...vehicle,
+            services: {
+                ...vehicle.services,
+                [serviceName]: newPrice
+            }
+        })));
+    };
+    
       const filteredOrders = orders.filter(order => {
         const matchesSearch = (
           order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -276,33 +288,52 @@ const [searchTerm, setSearchTerm] = useState('');
     };
 
     // Modal Components
-    const PriceModal = ({ isOpen, onClose, vehicle, onUpdate }) => {
-        const [basePrice, setBasePrice] = useState(vehicle?.basePrice || 0);
-        const [vat, setVat] = useState(21); // Default VAT rate
-
+    const PriceModal = ({ isOpen, onClose, vehicle, onUpdate, selectedService }) => {
+        const [basePrice, setBasePrice] = useState('');
+        const [vat, setVat] = useState(21);
+    
+        useEffect(() => {
+            if (selectedService && vehicle) {
+                // If editing a service price
+                setBasePrice(vehicle.services[selectedService].toString());
+            } else if (vehicle) {
+                // If editing vehicle base price
+                setBasePrice(vehicle.basePrice.toString());
+            }
+        }, [vehicle, selectedService]);
+    
         const handleSave = () => {
-            // Calculate new price without VAT
-            const priceWithoutVAT = Math.round(basePrice / (1 + (vat / 100)));
-
-            // Call the update function passed from parent
-            onUpdate(vehicle.id, {
-                basePrice: Number(basePrice),
-                priceWithoutVAT,
-                vat
-            });
-
+            if (selectedService) {
+                // Handle service price update
+                handleUpdateServicePrice(selectedService, Number(basePrice));
+            } else {
+                // Handle vehicle price update
+                const priceWithoutVAT = Math.round(Number(basePrice) / (1 + (vat / 100)));
+                onUpdate(vehicle.id, {
+                    basePrice: Number(basePrice),
+                    priceWithoutVAT,
+                    vat
+                });
+            }
             onClose();
         };
-
+    
         if (!isOpen) return null;
-
+    
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div className="bg-white rounded-lg p-6 w-full max-w-lg">
-                    <h3 className="text-lg font-bold mb-4">Edit Price Details</h3>
+                    <h3 className="text-lg font-bold mb-4">
+                        {selectedService 
+                            ? `Edit ${selectedService.replace(/([A-Z])/g, ' $1').trim()} Price`
+                            : 'Edit Price Details'
+                        }
+                    </h3>
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Base Price (CZK)</label>
+                            <label className="block text-sm font-medium text-gray-700">
+                                {selectedService ? 'Service Price (CZK)' : 'Base Price (CZK)'}
+                            </label>
                             <input
                                 type="number"
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500"
@@ -310,15 +341,17 @@ const [searchTerm, setSearchTerm] = useState('');
                                 onChange={(e) => setBasePrice(e.target.value)}
                             />
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">VAT (%)</label>
-                            <input
-                                type="number"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500"
-                                value={vat}
-                                onChange={(e) => setVat(e.target.value)}
-                            />
-                        </div>
+                        {!selectedService && (
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">VAT (%)</label>
+                                <input
+                                    type="number"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500"
+                                    value={vat}
+                                    onChange={(e) => setVat(e.target.value)}
+                                />
+                            </div>
+                        )}
                         <div className="pt-4 flex justify-end space-x-3">
                             <button
                                 onClick={onClose}
@@ -1084,43 +1117,47 @@ const [searchTerm, setSearchTerm] = useState('');
 
                     {/* Pricing Tab Content */}
                     {activeTab === 'pricing' && (
-                        <div className="bg-white rounded-lg shadow p-6">
-                            <h3 className="text-lg font-bold mb-4">Service Pricing</h3>
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {Object.entries(vehicles[0].services).map(([service, price]) => (
-                                        <div key={service} className="p-4 border rounded-lg">
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-gray-700 capitalize">
-                                                    {service.replace(/([A-Z])/g, ' $1').trim()}
-                                                </span>
-                                                <span className="font-medium">CZK {price.toLocaleString()}</span>
-                                            </div>
-                                            <button
-                                                className="mt-2 text-sm text-red-500 hover:text-red-600"
-                                                onClick={() => setShowPriceModal(true)}
-                                            >
-                                                Edit Price
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+    <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-lg font-bold mb-4">Service Pricing</h3>
+        <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {Object.entries(vehicles[0].services).map(([service, price]) => (
+                    <div key={service} className="p-4 border rounded-lg">
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-700 capitalize">
+                                {service.replace(/([A-Z])/g, ' $1').trim()}
+                            </span>
+                            <span className="font-medium">CZK {price.toLocaleString()}</span>
                         </div>
-                    )}
+                        <button
+                            className="mt-2 text-sm text-red-500 hover:text-red-600"
+                            onClick={() => {
+                                setSelectedService(service);
+                                setShowPriceModal(true);
+                            }}
+                        >
+                            Edit Price
+                        </button>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+)}
                 </div>
             </div>
 
             {/* Modals */}
             <PriceModal
-                isOpen={showPriceModal}
-                onClose={() => {
-                    setShowPriceModal(false);
-                    setSelectedVehicle(null);
-                }}
-                vehicle={selectedVehicle}
-                onUpdate={handleUpdateVehicle}
-            />
+    isOpen={showPriceModal}
+    onClose={() => {
+        setShowPriceModal(false);
+        setSelectedService(null);
+    }}
+    vehicle={vehicles[0]}
+    onUpdate={handleUpdateVehicle}
+    selectedService={selectedService}
+/>
 
 <OrderDetailsModal
   isOpen={showOrderModal}
