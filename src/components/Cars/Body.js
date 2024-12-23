@@ -155,14 +155,14 @@ const CarCard = ({ car }) => {
 
             <div className="text-right">
               <div className="text-lg font-bold text-gray-900">€{car.price.toLocaleString()}</div>
-              <div className="text-xs text-gray-500">
+              {/* <div className="text-xs text-gray-500">
                 €{car.priceWithoutVat.toLocaleString()} without VAT
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Import and Financing Options */}
-          <div className="mt-4 flex flex-col gap-2">
+          {/* <div className="mt-4 flex flex-col gap-2">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -173,7 +173,7 @@ const CarCard = ({ car }) => {
             >
               View Options
             </button>
-          </div>
+          </div> */}
 
           <OptionsModal
             car={car}
@@ -214,7 +214,7 @@ const CarList = () => {
         "LED headlights"
       ],
       price: 25749,
-      priceWithoutVat: 21280,
+      
       logo: "/Logo/logo.png"
     },
     {

@@ -88,20 +88,27 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal }) => {
 
       {isDropdownVisible && (
         <div className="absolute right-0 mt-6 w-64 bg-white rounded-md shadow-lg py-2 z-20">
+          <Link href="cars?tab=saved">
           <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
             <BookmarkIcon className="h-4 w-4 mr-3 text-gray-500" />
             <span>Saved searches</span>
           </button>
+          </Link>
+          
 
+          <Link href="/cars?tab=history">
           <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
             <Clock className="h-4 w-4 mr-3 text-gray-500" />
             <span>Last searches</span>
           </button>
-
+          </Link>
+         <Link href="/favourite-cars">
           <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
             <Heart className="h-4 w-4 mr-3 text-gray-500" />
             <span>Favorite cars</span>
           </button>
+          </Link>
+          
 
           <Link href="/orders-in-progress">
             <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">

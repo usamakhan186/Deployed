@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-    Car, Package, Settings, Users, DollarSign,
+    Car, LayoutDashboard, Package, Settings, Users, DollarSign,
     Plus, Edit3, Trash2, RefreshCcw, X,
     ChevronDown, Search, Bell, AlertCircle,
     FileText, Calendar, PlusCircle, Filter,
@@ -842,7 +842,7 @@ const [searchTerm, setSearchTerm] = useState('');
                     <nav className="p-4">
                         <div className="space-y-1">
                             {[
-                                { id: 'dashboard', icon: Car, label: 'Dashboard' },
+                                { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
                                 { id: 'vehicles', icon: Car, label: 'Vehicles' },
                                 { id: 'orders', icon: Package, label: 'Orders' },
 

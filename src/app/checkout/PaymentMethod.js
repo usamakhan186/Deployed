@@ -1149,6 +1149,31 @@ const BankTransferForm = () => {
 
 const PaymentMethod = () => {
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [activeSteps, setActiveSteps] = useState({
+    payment: false,
+    carAudit: false,
+    delivery: false,
+    additionalServices: false
+  });
+
+  const handleStepActivation = (payment) => {
+    if (payment === 'bank') {
+      setActiveSteps({
+        payment: true,
+        carAudit: true,
+        delivery: false,
+        additionalServices: false
+      });
+    } else if (payment === 'financing') {
+      setActiveSteps({
+        payment: true,
+        carAudit: false,
+        delivery: false,
+        additionalServices: false
+      });
+    }
+    setSelectedPayment(payment);
+  };
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-[#F8F9FE]">
@@ -1163,13 +1188,14 @@ const PaymentMethod = () => {
         <div className="bg-white p-4 rounded-xl shadow-sm">
           <h2 className="text-lg font-medium text-[#1E1B39] mb-4">Are you interested in financing?</h2>
           <div className="space-y-3">
-            <button
-              onClick={() => setSelectedPayment('financing')}
-              className={`w-full p-4 border rounded-xl text-left transition-all ${selectedPayment === 'financing'
-                ? 'border-2 border-red-500 bg-red-50'
-                : 'border-gray-200'
-                }`}
-            >
+          <button
+  onClick={() => handleStepActivation('financing')}
+  className={`w-full p-4 border rounded-xl text-left transition-all ${
+    selectedPayment === 'financing'
+      ? 'border-2 border-red-500 bg-red-50'
+      : 'border-gray-200'
+  }`}
+>
               <div className="flex items-center gap-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPayment === 'financing' ? 'border-red-500' : 'border-gray-300'
                   }`}>
@@ -1180,12 +1206,13 @@ const PaymentMethod = () => {
             </button>
 
             <button
-              onClick={() => setSelectedPayment('bank')}
-              className={`w-full p-4 border rounded-xl text-left transition-all ${selectedPayment === 'bank'
-                ? 'border-2 border-red-500 bg-red-50'
-                : 'border-gray-200'
-                }`}
-            >
+  onClick={() => handleStepActivation('bank')}
+  className={`w-full p-4 border rounded-xl text-left transition-all ${
+    selectedPayment === 'bank'
+      ? 'border-2 border-red-500 bg-red-50'
+      : 'border-gray-200'
+  }`}
+>
               <div className="flex items-center gap-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPayment === 'bank' ? 'border-red-500' : 'border-gray-300'
                   }`}>
@@ -1204,71 +1231,114 @@ const PaymentMethod = () => {
 
 
       {/* Steps Section */}
-      <div className="space-y-6">
-        {/* Step 2 */}
-        <div>
-          <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
-          <div className="bg-white p-4 rounded-xl shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-                <Check className="w-4 h-4 text-gray-400" />
-              </div>
-              <span className="text-[15px] text-[#1E1B39]">CarAudit™ vehicle inspection</span>
-            </div>
-          </div>
+      {/* Steps Section */}
+<div className="space-y-6">
+  {/* Step 2 */}
+  <div>
+    <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
+    <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ease-in-out ${
+      activeSteps.carAudit ? 'bg-red-50 border-2 border-red-500' : ''
+    }`}>
+      <div className="flex items-center gap-3">
+        <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors duration-300 ${
+          activeSteps.carAudit ? 'bg-red-500' : 'bg-gray-100'
+        }`}>
+          <Check className={`w-4 h-4 ${
+            activeSteps.carAudit ? 'text-white' : 'text-gray-400'
+          }`} />
         </div>
+        <span className={`text-[15px] ${
+          activeSteps.carAudit ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
+        }`}>
+          CarAudit™ vehicle inspection
+        </span>
+      </div>
+    </div>
+  </div>
 
-        {/* Step 3 */}
-        <div>
-          <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
-          <div className="space-y-3">
-            <div className="bg-white p-4 rounded-xl shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Check className="w-4 h-4 text-gray-400" />
-                </div>
-                <span className="text-[15px] text-[#1E1B39]">Delivery</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-4 rounded-xl shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Check className="w-4 h-4 text-gray-400" />
-                </div>
-                <span className="text-[15px] text-[#1E1B39]">Additional Services</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-4 rounded-xl shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Check className="w-4 h-4 text-gray-400" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[15px] text-[#1E1B39]">Fast Guard</span>
-                  <span className="text-xs text-red-500 bg-red-50 px-2 py-0.5 rounded">
-                    RECOMMENDED
-                  </span>
-                </div>
-              </div>
-            </div>
+  {/* Step 3 */}
+  <div>
+    <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
+    <div className="space-y-3">
+      <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
+        activeSteps.delivery ? 'bg-red-50 border-2 border-red-500' : ''
+      }`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+            activeSteps.delivery ? 'bg-red-500' : 'bg-gray-100'
+          }`}>
+            <Check className={`w-4 h-4 ${
+              activeSteps.delivery ? 'text-white' : 'text-gray-400'
+            }`} />
           </div>
+          <span className={`text-[15px] ${
+            activeSteps.delivery ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
+          }`}>Delivery</span>
         </div>
+      </div>
 
-        {/* Step 4 */}
-        <div>
-          <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
-          <div className="bg-white p-4 rounded-xl shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-                <Check className="w-4 h-4 text-gray-400" />
-              </div>
-              <span className="text-[15px] text-[#1E1B39]">Payment</span>
-            </div>
+      <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
+        activeSteps.additionalServices ? 'bg-red-50 border-2 border-red-500' : ''
+      }`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+            activeSteps.additionalServices ? 'bg-red-500' : 'bg-gray-100'
+          }`}>
+            <Check className={`w-4 h-4 ${
+              activeSteps.additionalServices ? 'text-white' : 'text-gray-400'
+            }`} />
+          </div>
+          <span className={`text-[15px] ${
+            activeSteps.additionalServices ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
+          }`}>Additional Services</span>
+        </div>
+      </div>
+
+      <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
+        activeSteps.additionalServices ? 'bg-red-50 border-2 border-red-500' : ''
+      }`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+            activeSteps.additionalServices ? 'bg-red-500' : 'bg-gray-100'
+          }`}>
+            <Check className={`w-4 h-4 ${
+              activeSteps.additionalServices ? 'text-white' : 'text-gray-400'
+            }`} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`text-[15px] ${
+              activeSteps.additionalServices ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
+            }`}>Fast Guard</span>
+            <span className="text-xs text-red-500 bg-red-50 px-2 py-0.5 rounded">
+              RECOMMENDED
+            </span>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  {/* Step 4 */}
+  <div>
+    <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
+    <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
+      activeSteps.payment ? 'bg-red-50 border-2 border-red-500' : ''
+    }`}>
+      <div className="flex items-center gap-3">
+        <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+          activeSteps.payment ? 'bg-red-500' : 'bg-gray-100'
+        }`}>
+          <Check className={`w-4 h-4 ${
+            activeSteps.payment ? 'text-white' : 'text-gray-400'
+          }`} />
+        </div>
+        <span className={`text-[15px] ${
+          activeSteps.payment ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
+        }`}>Payment</span>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   );
 };

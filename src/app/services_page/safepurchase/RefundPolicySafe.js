@@ -92,7 +92,8 @@ const HeroSection = () => {
 
           {/* Button */}
           <button
-            className="w-full bg-[#4355F9] text-white py-4 rounded-lg flex items-center justify-center gap-2 text-base font-medium mb-6"
+            onClick={scrollToCalculator}
+            className="w-full bg-[#4355F9] text-white bg-red-500 hover:bg-red-600 py-4 rounded-lg flex items-center justify-center gap-2 text-base font-medium mb-6"
           >
             I want a hire purchase <ChevronDown className="w-5 h-5" />
           </button>
