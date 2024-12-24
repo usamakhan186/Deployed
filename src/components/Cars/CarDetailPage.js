@@ -1680,49 +1680,32 @@ const CarDetailPage = () => {
 </div>
 
 {/* Image Slider Section */}
-<div className="relative w-full px-10 py-6 bg-white">
+<div className="relative w-full max-w-7xl mx-auto px-8 py-6 bg-white">
     <div
         ref={scrollRef}
-        className="flex overflow-x-auto gap-6 scrollbar-hide scroll-smooth"
+        className="flex overflow-x-auto gap-6 scrollbar-hide scroll-smooth w-full"
     >
         {images.map((image, index) => (
             <div
                 key={index}
                 onClick={() => openModal(index)}
-                className="relative flex-shrink-0 w-full sm:w-[calc(50%-12px)] group cursor-pointer"
-                style={{ aspectRatio: '16/10' }}
+                className="relative flex-shrink-0 w-[calc(50%-12px)] group cursor-pointer"
             >
-                {/* Image Container */}
-                <div className="relative h-full w-full overflow-hidden rounded-xl">
+                <div className="relative w-full pb-[62.5%] overflow-hidden rounded-xl">
                     <img
                         src={image}
                         alt={`Car view ${index + 1}`}
-                        className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
                     />
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
-                    {/* Image Counter Badge */}
-                    <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium text-gray-700">
-                        {index + 1}/{images.length}
-                    </div>
-
-                    {/* Quick View Button */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button className="bg-white/90 backdrop-blur-sm text-gray-800 px-4 py-2 rounded-lg font-medium transform hover:scale-105 transition-transform">
-                            Quick View
-                        </button>
-                    </div>
                 </div>
             </div>
         ))}
     </div>
 
-    {/* Navigation Buttons */}
     {showLeftArrow && (
         <button
             onClick={() => scroll('left')}
-            className="absolute left-12 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
         >
             <ChevronLeft className="w-6 h-6 text-gray-800" />
         </button>
@@ -1731,14 +1714,11 @@ const CarDetailPage = () => {
     {showRightArrow && (
         <button
             onClick={() => scroll('right')}
-            className="absolute right-12 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
         >
             <ChevronRight className="w-6 h-6 text-gray-800" />
         </button>
     )}
-
-    {/* Progress Dots */}
-    
 </div>
 
 {/* Mobile/Tablet Content Section */}

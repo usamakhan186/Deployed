@@ -945,6 +945,36 @@ const [searchTerm, setSearchTerm] = useState('');
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Orders</h3>
+                                        <table className="w-full">
+                                            <thead>
+                                                <tr className="text-left text-sm text-gray-500">
+                                                    <th className="pb-3 font-medium">Order ID</th>
+                                                    <th className="pb-3 font-medium">Customer</th>
+                                                    <th className="pb-3 font-medium">Status</th>
+                                                    <th className="pb-3 font-medium">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {orders.map((order) => (
+                                                    <tr key={order.id} className="border-t border-gray-100">
+                                                        <td className="py-3 text-sm">{order.id}</td>
+                                                        <td className="py-3 text-sm">{order.customer}</td>
+                                                        <td className="py-3 text-sm">
+                                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${order.status === 'Pending' ? 'bg-yellow-50 text-yellow-600' :
+                                                                order.status === 'Completed' ? 'bg-green-50 text-green-600' :
+                                                                    'bg-gray-50 text-gray-600'
+                                                                }`}>
+                                                                {order.status}
+                                                            </span>
+                                                        </td>
+                                                        <td className="py-3 text-sm">CZK {order.totalPrice.toLocaleString()}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div>
                                     <RecentActivity />

@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Phone, Mail, Check, Minus,Plus, ChevronDown, InfoIcon, HelpCircle, Star} from 'lucide-react'
 
 
@@ -129,6 +129,15 @@ const FinanceCalculator = () => {
   const [paybackPeriod, setPaybackPeriod] = useState(48);
   const [downPayment, setDownPayment] = useState(30);
 
+  useEffect(() => {
+    // Initialize default slider colors on mount
+    const monthlySlider = document.querySelector('input[type="range"]');
+    if (monthlySlider) {
+      const progress = ((monthlyPayment - 100) / (1000 - 100)) * 100;
+      monthlySlider.style.setProperty('--range-progress', `${progress}%`);
+    }
+  }, []);
+
   const calculateLoanDetails = () => {
     const carPrice = 11601;
     const downPaymentAmount = (carPrice * downPayment) / 100;
@@ -139,14 +148,15 @@ const FinanceCalculator = () => {
     };
   };
 
-  const handleSliderChange = (e, setValue) => {
+  const handleSliderChange = (e, setter) => {
     const value = Number(e.target.value);
     const min = Number(e.target.min);
     const max = Number(e.target.max);
     const progress = ((value - min) / (max - min)) * 100;
     e.target.style.setProperty('--range-progress', `${progress}%`);
-    setValue(value);
+    setter(value);
   };
+  
 
   return (
     <div id="financing-calculator" className="w-full min-h-screen bg-white py-12 lg:py-16 px-4 lg:px-16">
@@ -211,19 +221,22 @@ const FinanceCalculator = () => {
 
               {/* Monthly Payment */}
               <div className="mb-10">
-                <div className="flex justify-between mb-3">
-                  <span className="text-[14px] text-[#64748B]">Monthly payment</span>
-                  <span className="text-[14px] font-semibold">€{monthlyPayment}</span>
-                </div>
-                <div className="slider-container">
-                  <input
-                    type="range"
-                    min="100"
-                    max="1000"
-                    value={monthlyPayment}
-                    onChange={(e) => handleSliderChange(e, setMonthlyPayment)}
-                    className="range-slider"
-                  />
+              <div className="flex justify-between mb-3">
+          <span className="text-[14px] text-[#64748B]">Monthly payment</span>
+          <span className="text-[14px] font-semibold">€{monthlyPayment}</span>
+        </div>
+        <div className="slider-container">
+          <input
+            type="range"
+            min="100"
+            max="1000"
+            value={monthlyPayment}
+            onChange={(e) => handleSliderChange(e, setMonthlyPayment)}
+            className="range-slider"
+            style={{
+              background: `linear-gradient(to right, rgb(239 68 68) ${((monthlyPayment - 100) / (1000 - 100)) * 100}%, #E2E8F0 ${((monthlyPayment - 100) / (1000 - 100)) * 100}%)`
+            }}
+          />
                 </div>
               </div>
 

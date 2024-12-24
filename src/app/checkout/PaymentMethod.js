@@ -979,7 +979,7 @@ const BankTransferForm = () => {
     <div className="bg-white rounded-lg p-4 md:p-6 space-y-4 md:space-y-6 mb-6 md:mb-8">
       {/* Car inspection info */}
       <div>
-        <h3 className="text-lg font-medium text-[#1E1B39] mb-3">CarAudit™ vehicle inspection</h3>
+       
         <p className="text-sm md:text-base text-gray-600">
           We want you to buy a car in the best possible condition and this is why we have to first of all
           thoroughly inspect the chosen car. You receive a details inspection report on the technical condition

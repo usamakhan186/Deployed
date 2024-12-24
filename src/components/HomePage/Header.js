@@ -96,38 +96,42 @@ const HeroSection = () => {
 
   const advancedFormFields = [
     {
-      label: "Mileage range",
+      label: "Mileage range ",
       type: "range",
       fields: [
         {
-          placeholder: "Min mileage",
+          placeholder: "Min mileage (km)",
           value: mileageRange.min,
           onChange: (e) => setMileageRange(prev => ({ ...prev, min: e.target.value })),
-          type: "number"
+          type: "number",
+          suffix: "km"
         },
         {
-          placeholder: "Max mileage",
+          placeholder: "Max mileage (km)",
           value: mileageRange.max,
           onChange: (e) => setMileageRange(prev => ({ ...prev, max: e.target.value })),
-          type: "number"
+          type: "number",
+          suffix: "km"
         }
       ]
     },
     {
-      label: "Price range",
+      label: "Price range ",
       type: "range",
       fields: [
         {
-          placeholder: "Min price",
+          placeholder: "Min price (€)",
           value: priceRange.min,
           onChange: (e) => setPriceRange(prev => ({ ...prev, min: e.target.value })),
-          type: "number"
+          type: "number",
+          prefix: "€"
         },
         {
-          placeholder: "Max price",
+          placeholder: "Max price (€)",
           value: priceRange.max,
           onChange: (e) => setPriceRange(prev => ({ ...prev, max: e.target.value })),
-          type: "number"
+          type: "number",
+          prefix: "€"
         }
       ]
     }

@@ -166,12 +166,12 @@ const OrdersInProgress = () => {
 
                                         {/* Action Buttons */}
                                         <div className="flex justify-end space-x-3">
+                                            <Link href="/cars/car">
                                             <button className="px-4 py-2 text-sm text-red-500 hover:text-red-600 font-medium">
                                                 View Details
                                             </button>
-                                            <button className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
-                                                Contact Dealer
-                                            </button>
+                                            </Link>
+                                            
                                         </div>
                                     </div>
                                 </div>
