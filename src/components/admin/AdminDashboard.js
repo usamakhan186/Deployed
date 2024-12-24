@@ -425,12 +425,40 @@ const [searchTerm, setSearchTerm] = useState('');
 
         const handleImageUpload = (e) => {
             const files = Array.from(e.target.files);
-            setImages(files);
-
-            // Create previews
-            const previews = files.map(file => URL.createObjectURL(file));
-            setImagesPreviews(previews);
+            setImages(prevImages => [...prevImages, ...files]);
+        
+            // Create previews for new files
+            const newPreviews = files.map(file => URL.createObjectURL(file));
+            setImagesPreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
         };
+        const removeImage = (index) => {
+            setImages(prevImages => prevImages.filter((_, i) => i !== index));
+            setImagesPreviews(prevPreviews => {
+                // Revoke the URL to prevent memory leaks
+                URL.revokeObjectURL(prevPreviews[index]);
+                return prevPreviews.filter((_, i) => i !== index);
+            });
+        };
+        const handleDragOver = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        };
+
+        const handleDrop = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const files = Array.from(e.dataTransfer.files);
+            const imageFiles = files.filter(file => file.type.startsWith('image/'));
+            
+            if (imageFiles.length > 0) {
+                setImages(prevImages => [...prevImages, ...imageFiles]);
+                
+                const newPreviews = imageFiles.map(file => URL.createObjectURL(file));
+                setImagesPreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
+            }
+        };
+        
 
         const handleInputChange = (e) => {
             const { name, value } = e.target;
@@ -500,16 +528,29 @@ const [searchTerm, setSearchTerm] = useState('');
 
                     <div className="p-6 space-y-6">
                         {/* Image Upload Section */}
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                            <div className="flex flex-col items-center">
-                                <ImageIcon className="w-12 h-12 text-gray-400 mb-4" />
-                                <p className="text-gray-600 mb-2">Drag and drop vehicle images here</p>
-                                <label className="cursor-pointer bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors">
-                                    Browse Files
-                                    <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" multiple />
-                                </label>
-                            </div>
-                        </div>
+                        <div 
+    className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center"
+    onDragOver={handleDragOver}
+    onDrop={handleDrop}
+>
+    <div className="flex flex-col items-center">
+        <ImageIcon className="w-12 h-12 text-gray-400 mb-4" />
+        <p className="text-gray-600 mb-2">Drag and drop vehicle images here</p>
+        <label className="cursor-pointer bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors">
+            Browse Files
+            <input 
+                type="file" 
+                className="hidden" 
+                onChange={handleImageUpload} 
+                accept="image/*" 
+                multiple 
+            />
+        </label>
+    </div>
+</div>
+
+{/* Image Preview Section */}
+
 
                         {/* Image Preview Section */}
                         <div className="mt-4 flex flex-wrap gap-4">

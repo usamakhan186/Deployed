@@ -1638,15 +1638,15 @@ const CarDetailPage = () => {
 </div>
 
 {/* Desktop Header Section */}
-<div className="hidden md:block max-w-7xl mx-auto  px-8 py-4">
-    <div className="flex items-center justify-between mb-5 mt-4">
+<div className="hidden md:block max-w-7xl mx-auto  px-8 py-2        ">
+    <div className="flex items-center justify-between mb-3 mt-2">
         <div className="flex items-center">
             <ChevronLeft className="h-6 w-6 text-[#1a224f] stroke-[1.5] mr-1" />
             <h1 className="text-[28px] font-bold text-red-600/70 tracking-[-0.5px]">
                 Suzuki SX4 S-Cross 95 kW
             </h1>
         </div>
-        <div className="flex items-center space-x-6 mt-4">
+        <div className="flex items-center space-x-6 mt-2">
             <button className="flex items-center text-red-500 hover:text-red-600">
                 <Heart className="h-5 w-5 mr-1.5 stroke-[1.5]" />
                 <span className="text-[14px] font-medium underline underline-offset-2">Favorites</span>

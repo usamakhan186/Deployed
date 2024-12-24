@@ -8,6 +8,9 @@ const HeroSection = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [selectedMake, setSelectedMake] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
+  // Add these state declarations near the top with other useState declarations
+  const [mileageRange, setMileageRange] = useState({ min: '', max: '' });
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
 
   const makes = [
     "Abarth",
@@ -19,9 +22,9 @@ const HeroSection = () => {
     "Audi",
     "BMW",
 
-    
+
   ];
-  
+
   const modelsByMake = {
     "Abarth": ["500", "595", "595C", "695", "124 Spider"],
     "Acura": ["ILX", "MDX", "NSX", "RDX", "TLX", "RSX", "TSX"],
@@ -42,10 +45,10 @@ const HeroSection = () => {
     "Daihatsu": ["Charade", "Copen", "Sirion", "Terios", "Rocky", "Move"],
     "Dodge": ["Challenger", "Charger", "Durango", "Ram", "Journey", "Hornet"]
   };
-  
+
 
   const years = Array.from({ length: 25 }, (_, i) => 2024 - i);
-  
+
   const mileageRanges = [
     "0 - 10,000 km",
     "10,000 - 30,000 km",
@@ -64,7 +67,7 @@ const HeroSection = () => {
   ];
 
   const basicFormFields = [
-    { 
+    {
       label: "Make",
       placeholder: "Select make",
       options: makes,
@@ -74,61 +77,61 @@ const HeroSection = () => {
         setSelectedModel("");  // Reset model when make changes
       }
     },
-    { 
+    {
       label: "Model",
       placeholder: "Choose model",
       options: selectedMake ? modelsByMake[selectedMake] || [] : [],
       value: selectedModel,
       onChange: (e) => setSelectedModel(e.target.value)  // Remove disabled state
     },
-    { 
+    {
       label: "Registration from",
       placeholder: "Select year",
       options: years,
       value: "",
-      onChange: () => {}
+      onChange: () => { }
     }
-];
+  ];
 
 
-const advancedFormFields = [
-  {
-    label: "Mileage range",
-    type: "range",
-    fields: [
-      {
-        placeholder: "Min mileage",
-        value: "",
-        onChange: () => {},
-        type: "number"
-      },
-      {
-        placeholder: "Max mileage",
-        value: "",
-        onChange: () => {},
-        type: "number"
-      }
-    ]
-  },
-  {
-    label: "Price range",
-    type: "range",
-    fields: [
-      {
-        placeholder: "Min price",
-        value: "",
-        onChange: () => {},
-        type: "number"
-      },
-      {
-        placeholder: "Max price",
-        value: "",
-        onChange: () => {},
-        type: "number"
-      }
-    ]
-  }
-];
+  const advancedFormFields = [
+    {
+      label: "Mileage range",
+      type: "range",
+      fields: [
+        {
+          placeholder: "Min mileage",
+          value: mileageRange.min,
+          onChange: (e) => setMileageRange(prev => ({ ...prev, min: e.target.value })),
+          type: "number"
+        },
+        {
+          placeholder: "Max mileage",
+          value: mileageRange.max,
+          onChange: (e) => setMileageRange(prev => ({ ...prev, max: e.target.value })),
+          type: "number"
+        }
+      ]
+    },
+    {
+      label: "Price range",
+      type: "range",
+      fields: [
+        {
+          placeholder: "Min price",
+          value: priceRange.min,
+          onChange: (e) => setPriceRange(prev => ({ ...prev, min: e.target.value })),
+          type: "number"
+        },
+        {
+          placeholder: "Max price",
+          value: priceRange.max,
+          onChange: (e) => setPriceRange(prev => ({ ...prev, max: e.target.value })),
+          type: "number"
+        }
+      ]
+    }
+  ];
 
   const stats = [
     { value: 54000, label: "Cars traded" },
@@ -163,7 +166,7 @@ const advancedFormFields = [
   };
   const renderSelect = (field) => (
     <div className="relative">
-      <select 
+      <select
         className="w-full appearance-none bg-white border border-gray-200 rounded px-3 py-1.5 text-sm text-gray-900"
         value={field.value}
         onChange={field.onChange}
@@ -172,8 +175,8 @@ const advancedFormFields = [
           {field.placeholder}
         </option>
         {field.options && field.options.map((option) => (
-          <option 
-            key={option} 
+          <option
+            key={option}
             value={option}
             className="py-1"
           >
@@ -181,8 +184,8 @@ const advancedFormFields = [
           </option>
         ))}
       </select>
-      <ChevronDown 
-        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" 
+      <ChevronDown
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
         size={14}
       />
     </div>
@@ -202,14 +205,14 @@ const advancedFormFields = [
       ))}
     </div>
   );
-  
+
 
   // Rest of your component remains the same
   return (
     <>
       {/* Mobile View */}
       <div className="md:hidden relative w-full">
-        <div 
+        <div
           className="w-full h-[220px] relative"
           style={{
             backgroundImage: `url(${car.src})`,
@@ -227,7 +230,7 @@ const advancedFormFields = [
             </h1>
           </div>
         </div>
-        
+
         <div className="px-4 -mt-16 relative">
           <div className="max-w-md mx-auto">
             <div className="bg-white rounded-2xl p-4 shadow-lg">
@@ -238,14 +241,14 @@ const advancedFormFields = [
                   </div>
                 ))}
 
-{showAdvanced && advancedFormFields.map((field) => (
-  <div key={field.label} className="space-y-1.5">
-    <label className="block text-gray-700 text-sm">
-      {field.label}
-    </label>
-    {field.type === "range" ? renderRangeInputs(field) : renderSelect(field)}
-  </div>
-))}
+                {showAdvanced && advancedFormFields.map((field) => (
+                  <div key={field.label} className="space-y-1.5">
+                    <label className="block text-gray-700 text-sm">
+                      {field.label}
+                    </label>
+                    {field.type === "range" ? renderRangeInputs(field) : renderSelect(field)}
+                  </div>
+                ))}
 
                 <div className="flex items-center">
                   <label className="flex items-center cursor-pointer">
@@ -263,7 +266,7 @@ const advancedFormFields = [
                   1 043 923 Offers
                 </button>
 
-                <button 
+                <button
                   onClick={toggleAdvanced}
                   className="w-full text-red-500 hover:text-red-600 flex items-center justify-center gap-1 text-sm"
                 >
@@ -341,14 +344,14 @@ const advancedFormFields = [
                         </div>
                       ))}
 
-{showAdvanced && advancedFormFields.map((field) => (
-  <div key={field.label} className="space-y-1.5 col-span-2">
-    <label className="block text-gray-700 text-sm">
-      {field.label}
-    </label>
-    {field.type === "range" ? renderRangeInputs(field) : renderSelect(field)}
-  </div>
-))}
+                      {showAdvanced && advancedFormFields.map((field) => (
+                        <div key={field.label} className="space-y-1.5 col-span-2">
+                          <label className="block text-gray-700 text-sm">
+                            {field.label}
+                          </label>
+                          {field.type === "range" ? renderRangeInputs(field) : renderSelect(field)}
+                        </div>
+                      ))}
 
                       <div className="flex items-center">
                         <label className="flex items-center cursor-pointer">
@@ -362,14 +365,14 @@ const advancedFormFields = [
                         </label>
                       </div>
                     </div>
-                    
+
                     <Link href="/cars">
                       <button className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors text-sm mb-6">
                         1 043 923 Offers
                       </button>
                     </Link>
 
-                    <button 
+                    <button
                       onClick={toggleAdvanced}
                       className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm mb-6"
                     >

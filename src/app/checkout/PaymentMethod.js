@@ -1080,13 +1080,13 @@ const BankTransferForm = () => {
               <select className="w-24 p-2 md:p-3 border rounded-lg text-sm">
                 <option>+420</option>
               </select>
-              <input type="tel" className="flex-1 p-2 md:p-3 border rounded-lg text-sm" placeholder="674193684" />
+              <input type="tel" className="flex-1 p-2 md:p-3 border rounded-lg text-sm" placeholder="674193684"/>
             </div>
           </div>
 
           <div className="space-y-1">
             <label className="block text-xs text-gray-500">BIRTH DATE</label>
-            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="dd.mm.yyyy" />
+            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="dd.mm.yyyy"/>
           </div>
 
           {/* Billing Address Section */}
@@ -1096,23 +1096,23 @@ const BankTransferForm = () => {
 
           <div>
             <label className="block text-xs text-gray-500">STREET</label>
-            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="Street" />
+            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="Street"/>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-xs text-gray-500">HOUSE NUMBER</label>
-              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="House number" />
+              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="House number"/>
             </div>
             <div>
               <label className="block text-xs text-gray-500">POSTAL CODE</label>
-              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="222 00" />
+              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="222 00"/>
             </div>
           </div>
 
           <div>
             <label className="block text-xs text-gray-500">CITY</label>
-            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="City" />
+            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="City"/>
           </div>
 
           <div>
@@ -1131,10 +1131,7 @@ const BankTransferForm = () => {
 
           {/* Same Address Checkbox */}
           <div className="col-span-full">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" className="rounded border-gray-300" />
-              <span className="text-sm text-gray-700">Same as billing address</span>
-            </label>
+            
           </div>
 
           {/* Submit Button */}
@@ -1155,18 +1152,17 @@ const PaymentMethod = () => {
     delivery: false,
     additionalServices: false
   });
-
   const handleStepActivation = (payment) => {
     if (payment === 'bank') {
       setActiveSteps({
-        payment: true,
-        carAudit: true,
+        payment: false,  // This should be false initially
+        carAudit: true,   // Only this should be true initially
         delivery: false,
         additionalServices: false
       });
     } else if (payment === 'financing') {
       setActiveSteps({
-        payment: true,
+        payment: false,
         carAudit: false,
         delivery: false,
         additionalServices: false
@@ -1174,6 +1170,56 @@ const PaymentMethod = () => {
     }
     setSelectedPayment(payment);
   };
+
+  const handleNextStep = (currentStep) => {
+    switch(currentStep) {
+      case 'carAudit':
+        setActiveSteps({
+          payment: false,
+          carAudit: false,  // Hide current step
+          delivery: true,   // Show next step
+          additionalServices: false
+        });
+        break;
+      case 'delivery':
+        setActiveSteps({
+          payment: true,    // Show final step
+          carAudit: false,
+          delivery: false,  // Hide current step
+          additionalServices: false
+        });
+        break;
+      default:
+        break;
+    }
+  };
+  const StepIndicator = () => {
+    // This will show just the heading for the currently active step
+    return (
+      <div className="mb-6">
+        <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
+        <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
+          activeSteps.carAudit ? 'border-2 border-red-500 bg-red-50' : ''
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+              activeSteps.carAudit ? 'bg-red-500' : 'bg-gray-100'
+            }`}>
+              <Check className={`w-4 h-4 ${
+                activeSteps.carAudit ? 'text-white' : 'text-gray-400'
+              }`} />
+            </div>
+            <span className={`text-[15px] ${
+              activeSteps.carAudit ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
+            }`}>
+              CarAudit™ vehicle inspection
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-[#F8F9FE]">
@@ -1225,119 +1271,104 @@ const PaymentMethod = () => {
         </div>
       </div>
 
+   
+
+      
+
       {/* Render selected component */}
-      {selectedPayment === 'financing' && <FinancingOptions />}
-      {selectedPayment === 'bank' && <BankTransferForm />}
+{/* Render selected component */}
+{selectedPayment === 'bank' && (
+  <>
+    {/* Step 2 when active */}
+    {activeSteps.carAudit && <StepIndicator />}
+    {activeSteps.carAudit && <BankTransferForm />}
 
+    {/* Step 3 when active */}
+    {activeSteps.delivery && (
+      <>
+        <div className="mb-6">
+          <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
+          <div className="bg-white p-4 rounded-xl shadow-sm transition-all duration-300 border-2 border-red-500 bg-red-50">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                <Check className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-[15px] text-red-500 font-medium">Delivery</span>
+            </div>
+          </div>
+        </div>
+        {/* Delivery form will go here */}
+      </>
+    )}
 
-      {/* Steps Section */}
-      {/* Steps Section */}
+    {/* Step 4 when active */}
+    {activeSteps.payment && (
+      <>
+        <div className="mb-6">
+          <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
+          <div className="bg-white p-4 rounded-xl shadow-sm transition-all duration-300 border-2 border-red-500 bg-red-50">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                <Check className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-[15px] text-red-500 font-medium">Payment</span>
+            </div>
+          </div>
+        </div>
+        {/* Payment form will go here */}
+      </>
+    )}
+  </>
+)}
+
+{selectedPayment === 'financing' && <FinancingOptions />}
+
+{/* Steps list - hide each step when it's active */}
 <div className="space-y-6">
-  {/* Step 2 */}
-  <div>
-    <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
-    <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ease-in-out ${
-      activeSteps.carAudit ? 'bg-red-50 border-2 border-red-500' : ''
-    }`}>
-      <div className="flex items-center gap-3">
-        <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors duration-300 ${
-          activeSteps.carAudit ? 'bg-red-500' : 'bg-gray-100'
-        }`}>
-          <Check className={`w-4 h-4 ${
-            activeSteps.carAudit ? 'text-white' : 'text-gray-400'
-          }`} />
-        </div>
-        <span className={`text-[15px] ${
-          activeSteps.carAudit ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
-        }`}>
-          CarAudit™ vehicle inspection
-        </span>
-      </div>
-    </div>
-  </div>
-
-  {/* Step 3 */}
-  <div>
-    <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
-    <div className="space-y-3">
-      <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
-        activeSteps.delivery ? 'bg-red-50 border-2 border-red-500' : ''
-      }`}>
+  {/* Step 2 in list */}
+  {!activeSteps.carAudit && (
+    <div>
+      <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
+      <div className="bg-white p-4 rounded-xl shadow-sm">
         <div className="flex items-center gap-3">
-          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
-            activeSteps.delivery ? 'bg-red-500' : 'bg-gray-100'
-          }`}>
-            <Check className={`w-4 h-4 ${
-              activeSteps.delivery ? 'text-white' : 'text-gray-400'
-            }`} />
+          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+            <Check className="w-4 h-4 text-gray-400" />
           </div>
-          <span className={`text-[15px] ${
-            activeSteps.delivery ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
-          }`}>Delivery</span>
-        </div>
-      </div>
-
-      <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
-        activeSteps.additionalServices ? 'bg-red-50 border-2 border-red-500' : ''
-      }`}>
-        <div className="flex items-center gap-3">
-          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
-            activeSteps.additionalServices ? 'bg-red-500' : 'bg-gray-100'
-          }`}>
-            <Check className={`w-4 h-4 ${
-              activeSteps.additionalServices ? 'text-white' : 'text-gray-400'
-            }`} />
-          </div>
-          <span className={`text-[15px] ${
-            activeSteps.additionalServices ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
-          }`}>Additional Services</span>
-        </div>
-      </div>
-
-      <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
-        activeSteps.additionalServices ? 'bg-red-50 border-2 border-red-500' : ''
-      }`}>
-        <div className="flex items-center gap-3">
-          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
-            activeSteps.additionalServices ? 'bg-red-500' : 'bg-gray-100'
-          }`}>
-            <Check className={`w-4 h-4 ${
-              activeSteps.additionalServices ? 'text-white' : 'text-gray-400'
-            }`} />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-[15px] ${
-              activeSteps.additionalServices ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
-            }`}>Fast Guard</span>
-            <span className="text-xs text-red-500 bg-red-50 px-2 py-0.5 rounded">
-              RECOMMENDED
-            </span>
-          </div>
+          <span className="text-[15px]">CarAudit™ vehicle inspection</span>
         </div>
       </div>
     </div>
-  </div>
+  )}
 
-  {/* Step 4 */}
-  <div>
-    <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
-    <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
-      activeSteps.payment ? 'bg-red-50 border-2 border-red-500' : ''
-    }`}>
-      <div className="flex items-center gap-3">
-        <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
-          activeSteps.payment ? 'bg-red-500' : 'bg-gray-100'
-        }`}>
-          <Check className={`w-4 h-4 ${
-            activeSteps.payment ? 'text-white' : 'text-gray-400'
-          }`} />
+  {/* Step 3 in list */}
+  {!activeSteps.delivery && (
+    <div>
+      <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+            <Check className="w-4 h-4 text-gray-400" />
+          </div>
+          <span className="text-[15px]">Delivery</span>
         </div>
-        <span className={`text-[15px] ${
-          activeSteps.payment ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
-        }`}>Payment</span>
       </div>
     </div>
-  </div>
+  )}
+
+  {/* Step 4 in list */}
+  {!activeSteps.payment && (
+    <div>
+      <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+            <Check className="w-4 h-4 text-gray-400" />
+          </div>
+          <span className="text-[15px]">Payment</span>
+        </div>
+      </div>
+    </div>
+  )}
 </div>
     </div>
   );

@@ -340,7 +340,7 @@ const LoginModal = ({
                   <div className="relative flex justify-center text-sm">
                     <button
                       onClick={() => setShowEmailForm(true)}
-                      className="px-4 text-gray-500 bg-red-50/85 hover:text-red-500 transition-colors"
+                      className="px-4 py-2 text-gray-500 bg-red-50/85 hover:text-red-500 transition-colors rounded-md"
                     >
                       or via e-mail
                     </button>
@@ -358,7 +358,7 @@ const LoginModal = ({
                   <div className="relative flex justify-center text-sm">
                     <button
                       onClick={() => setShowEmailForm(false)}
-                      className="px-4 text-gray-500 bg-red-50/85 hover:text-red-500 transition-colors"
+                      className="px-4 py-2 text-gray-500 bg-red-50/85 hover:text-red-500 transition-colors rounded-md"
                     >
                       Back to social login
                     </button>
