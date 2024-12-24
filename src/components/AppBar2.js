@@ -875,13 +875,13 @@ const AppBar = () => {
          </Link>
        
          <Link 
-           href="/cars?tab=history" 
-           className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
-           onClick={() => setIsDropdownVisible(false)}
-         >
-           <Clock className="h-4 w-4 mr-3 text-gray-500" />
-           <span>Last searches</span>
-         </Link>
+  href={`/cars?tab=history`}
+  className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+  onClick={() => setIsDropdownVisible(false)}
+>
+  <Clock className="h-4 w-4 mr-3 text-gray-500" />
+  <span>Last searches</span>
+</Link>
        
          <Link 
            href="/favourite-cars" 

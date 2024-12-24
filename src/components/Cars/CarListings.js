@@ -362,12 +362,15 @@ const features = [
 const FilterSidebar = ({ isMobileOpen, setIsMobileOpen }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  // Add showAllFeatures state
-  const [showAllFeatures, setShowAllFeatures] = useState(false);
-
-  // Add activeTab state
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
 
 
   // Other states
@@ -964,6 +967,7 @@ const FilterSidebar = ({ isMobileOpen, setIsMobileOpen }) => {
           </button>
         </div>
       </div>
+      
 
       {/* Tabs */}
       <div className="flex border-b border-gray-200 mb-6 relative">
