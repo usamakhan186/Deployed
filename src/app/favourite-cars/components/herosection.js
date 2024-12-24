@@ -53,7 +53,7 @@ const FavoriteCarCard = ({ car }) => {
 
           {/* Action Button */}
           <div className="mt-6">
-            <Link href={`/cars/${car.id}`}>
+            <Link href={`/cars/car`}>
               <button className="w-full md:w-auto bg-red-500 hover:bg-red-600 text-white py-3 px-6 rounded-lg transition-colors text-sm font-medium">
                 View Details
               </button>
