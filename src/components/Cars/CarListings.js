@@ -363,6 +363,7 @@ const FilterSidebar = ({ isMobileOpen, setIsMobileOpen }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
+  const [showAllFeatures, setShowAllFeatures] = useState(false);
 
   useEffect(() => {
     const tab = searchParams.get('tab');
