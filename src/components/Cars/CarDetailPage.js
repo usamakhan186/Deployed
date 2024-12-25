@@ -927,7 +927,9 @@ const MobileCheckoutBar = () => {
             <div>
               <div className="text-sm text-gray-600">Total price</div>
               <div className="text-xl font-bold">€27,663</div>
+              
               <div className="text-xs text-gray-500">incl. services (€364)</div>
+              <div className="text-xs text-gray-500">€22,863 without VAT</div>
             </div>
             <button 
               onClick={() => setShowServicesModal(true)}
