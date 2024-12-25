@@ -922,7 +922,7 @@ const MobileCheckoutBar = () => {
     return (
       <>
         {/* Fixed bottom bar */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40">
+        <div className="fixed bottom-0   left-0 right-0 bg-white border-t border-gray-200 p-6 z-40 ">
           <div className="flex items-center justify-between mb-3">
             <div>
               <div className="text-sm text-gray-600">Total price</div>
@@ -1802,11 +1802,11 @@ const CarDetailPage = () => {
                     </div>
 
                     {/* Checkout Sidebar */}
-                    <div className="hidden lg:block lg:w-[380px]">
-                        <div className="sticky top-24">
+                    {/* <div className="hidden lg:block lg:w-[380px]">
+                        <div className="sticky top-[100%]">
                             <CheckoutSidebar />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Mobile Checkout Bar */}
