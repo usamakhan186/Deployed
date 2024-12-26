@@ -809,10 +809,10 @@ const MobileCheckoutBar = () => {
           </div>
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <span>Import MOT</span>
+              <span>Total</span>
               <Info className="w-4 h-4 ml-1 text-gray-400" />
             </div>
-            <span>€175</span>
+            <span>€364</span>
           </div>
         </div>
       </div>
@@ -927,9 +927,9 @@ const MobileCheckoutBar = () => {
             <div>
               <div className="text-sm text-gray-600">Total price</div>
               <div className="text-xl font-bold">€27,663</div>
-              
-              <div className="text-xs text-gray-500">incl. services (€364)</div>
+              <div className="text-xs text-gray-500">incl. services (€27,663)</div>
               <div className="text-xs text-gray-500">€22,863 without VAT</div>
+              
             </div>
             <button 
               onClick={() => setShowServicesModal(true)}
@@ -1691,9 +1691,9 @@ const CarDetailPage = () => {
             <div
                 key={index}
                 onClick={() => openModal(index)}
-                className="relative flex-shrink-0 w-[calc(50%-12px)] group cursor-pointer"
+                 className="relative flex-shrink-0 w-full md:w-[calc(50%-12px)] group cursor-pointer"
             >
-                <div className="relative w-full pb-[62.5%] overflow-hidden rounded-xl">
+                 <div className="relative w-full pb-[75%] md:pb-[62.5%] overflow-hidden rounded-xl">
                     <img
                         src={image}
                         alt={`Car view ${index + 1}`}
