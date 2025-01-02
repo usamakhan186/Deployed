@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { CircleUser, ChevronDown, BookmarkIcon, Clock, Heart, ShoppingCart, X, Eye, EyeOff,ArrowLeft , Menu } from 'lucide-react';
+import { CircleUser, ChevronDown, BookmarkIcon, Clock, Heart, ShoppingCart, X, Eye, EyeOff, ArrowLeft, Menu } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -76,8 +76,7 @@ const ServicesDropdown = ({ isScrolled }) => {
       {/* Dropdown Button */}
       <button
         onClick={handleClick}
-        className={`inline-flex justify-center w-full ${isScrolled ? 'text-black' : 'md:text-white text-gray-700'
-          } hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+        className="inline-flex justify-center w-full text-gray hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
       >
         Services
         <svg
@@ -159,8 +158,8 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal, isScrolled }) => 
       onMouseLeave={handleMouseLeave}
     >
       <div className="flex items-center cursor-pointer">
-        <CircleUser className={`h-6 w-6 ${isScrolled ? 'text-gray-600' : 'text-white'}`} />
-        <ChevronDown className={isScrolled ? 'text-gray-600' : 'text-white'} />
+        <CircleUser className="h-6 w-6 text-gray-600" />
+        <ChevronDown className="text-gray-600" />
       </div>
 
       {isDropdownVisible && (
@@ -180,7 +179,7 @@ const UserDropdown = ({ setShowLoginModal, setShowSignupModal, isScrolled }) => 
 
           <Link href="/favourite-cars">
             <button className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
-              <Heart className="h-4 w-4 mr-3 text-gray-500" />
+              <Heart className="h-4 w-4 mr-3 text-gray" />
               <span>Favorite cars</span>
             </button>
           </Link>
@@ -377,17 +376,17 @@ const LoginModal = ({
   );
 };
 
-const SignupModal = ({ 
-  showSignupModal, 
-  setShowSignupModal, 
-  setShowLoginModal, 
-  showForm, 
-  setShowForm, 
-  formData, 
-  handleInputChange, 
-  showPassword, 
-  setShowPassword, 
-  handleSignup 
+const SignupModal = ({
+  showSignupModal,
+  setShowSignupModal,
+  setShowLoginModal,
+  showForm,
+  setShowForm,
+  formData,
+  handleInputChange,
+  showPassword,
+  setShowPassword,
+  handleSignup
 }) => {
   const handleClose = () => {
     setShowSignupModal(false);
@@ -402,9 +401,8 @@ const SignupModal = ({
 
   return (
     <div
-      className={`fixed inset-0 flex z-50 items-center justify-center ${
-        showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      } transition-opacity duration-300`}
+      className={`fixed inset-0 flex z-50 items-center justify-center ${showSignupModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        } transition-opacity duration-300`}
     >
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -412,9 +410,8 @@ const SignupModal = ({
       />
 
       <div
-        className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${
-          showSignupModal ? 'scale-100' : 'scale-95'
-        }`}
+        className={`relative bg-red-50/85 rounded-lg w-full max-w-md max-h-[90vh] transform transition-all duration-300 ${showSignupModal ? 'scale-100' : 'scale-95'
+          }`}
       >
         <div className="px-8 pt-8 pb-6 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red-200 scrollbar-track-transparent hover:scrollbar-thumb-red-300">
           <div className="flex justify-between items-center mb-6">
@@ -476,7 +473,7 @@ const SignupModal = ({
                       onClick={() => setShowForm(false)}
                       className="rounded-md px-4 py-2 text-gray-500 hover:text-gray-700 focus:outline-none flex items-center bg-red-50/85"
                     >
-                       Back to Social Login
+                      Back to Social Login
                     </button>
                   </div>
                 </div>
@@ -702,7 +699,7 @@ const Navbar = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
-      color: isScrolled ? 'black' : 'white',
+      color: isScrolled ? 'black' : 'black',
     }),
     menu: (provided) => ({
       ...provided,
@@ -720,11 +717,11 @@ const Navbar = () => {
     return null;
   }
 
-  
+
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 ${isScrolled ? 'bg-white shadow-sm text-black' : 'bg-transparent'}`}>
+      <nav className="fixed top-0 w-full z-50 bg-white shadow-sm text-black">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Mobile Layout - Only shows on mobile */}
           <div className="md:hidden flex items-center justify-between h-16">
@@ -747,7 +744,7 @@ const Navbar = () => {
             </Link>
 
             <div className="flex items-center space-x-4">
-              <Heart className={`${isScrolled ? 'text-gray-600' : 'text-gray-100'} hover:text-red-500`} />
+              <Heart className={`${isScrolled ? 'text-gray-900' : 'text-gray'} hover:text-red-500`} />
               {/* Replace this existing button with the new one */}
               <button
                 onClick={() => setUserDropdownVisible(!userDropdownVisible)}
@@ -779,13 +776,13 @@ const Navbar = () => {
                 {/* CHANGE 3-8: Updated all navigation link colors */}
                 <Link
                   href="/cars"
-                  className={`${isScrolled ? 'text-black' : 'text-white'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                  className="text-gray hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Search
                 </Link>
                 <Link
                   href="/bestdealss"
-                  className={`${isScrolled ? 'text-black' : 'text-white'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                  className={`${isScrolled ? 'text-black' : 'text-gray'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   Best Deals
                 </Link>
@@ -794,19 +791,19 @@ const Navbar = () => {
                 </div>
                 <Link
                   href="/importproces"
-                  className={`${isScrolled ? 'text-black' : 'text-white'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                  className={`${isScrolled ? 'text-black' : 'text-gray'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   Import process
                 </Link>
                 <Link
                   href="/blog"
-                  className={`${isScrolled ? 'text-black' : 'text-white'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                  className={`${isScrolled ? 'text-black' : 'text-gray'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   News
                 </Link>
                 <Link
                   href="/about"
-                  className={`${isScrolled ? 'text-black' : 'text-white'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                  className={`${isScrolled ? 'text-black' : 'text-gray'} hover:text-red-400 hover:bg-gray-50/40 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   About
                 </Link>
@@ -815,7 +812,7 @@ const Navbar = () => {
 
             <div className="flex items-center space-x-4">
               {/* CHANGE 9: Updated Heart icon color */}
-              <Heart className={`${isScrolled ? 'text-gray-600' : 'text-gray-100'} hover:text-red-500 cursor-pointer`} />
+              <Heart className={`${isScrolled ? 'text-gray-600' : 'text-gray'} hover:text-red-500 cursor-pointer`} />
               <Select
                 options={languageOptions}
                 defaultValue={languageOptions[0]}
@@ -852,10 +849,10 @@ const Navbar = () => {
                     />
                   </Link>
                   <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="text-gray-600"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 text-gray-600"
                   >
-                    <X size={24} />
+                    <Menu size={24} />
                   </button>
                 </div>
                 <div className="flex-1 overflow-y-auto">
@@ -908,7 +905,7 @@ const Navbar = () => {
                   </button>
                   <Link href="/favourite-cars">
                     <div className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-                      <Heart className="h-4 w-4 mr-3 text-gray-500" />
+                      <Heart className="text-gray-600 hover:text-red-500 cursor-pointer" />
                       <span>Favorite cars</span>
                     </div>
                   </Link>

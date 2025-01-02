@@ -313,24 +313,26 @@ const HeroSection = () => {
   >
     {/* Main overlay with transparent top */}
     <div 
-      className="absolute inset-0" 
-      style={{
-        background: `linear-gradient(to top, 
-          rgb(239 68 68) 0%,
-          rgba(239, 68, 68, 0.95) 15%,
-          rgba(239, 68, 68, 0.8) 30%,
-          rgba(239, 68, 68, 0.6) 50%,
-          rgba(239, 68, 68, 0.2) 70%,
-          transparent 85%
-        )`
-      }}
-    />
+     className="absolute bottom-0 w-full h-[50%]" // Full screen height
+     style={{
+       background: `linear-gradient(to top, 
+         rgb(239 68 68 / 0.6) 0%,
+         rgb(239 68 68 / 0.5) 10%,
+         rgb(239 68 68 / 0.4) 20%,
+         rgb(239 68 68 / 0.3) 35%,
+         rgb(239 68 68 / 0.2) 50%,
+         rgb(239 68 68 / 0.1) 65%,
+         rgb(239 68 68 / 0.05) 80%,
+         transparent 100%
+       )`
+     }}
+     />
      <div 
-      className="absolute inset-0"
-      style={{
-        background: 'linear-gradient(to right, rgb(239 68 68, 0.9) 0%, rgba(239, 68, 68, 0.7) 30%, rgba(239, 68, 68, 0.1) 50%, transparent 100%)'
-      }}
-    />
+     className="absolute bottom-0 w-full h-screen"
+     style={{
+       background: 'linear-gradient(to right, rgb(239 68 68 / 0.3) 0%, rgb(239 68 68 / 0.2) 30%, rgb(239 68 68 / 0.1) 60%, rgb(239 68 68 / 0.05) 80%, transparent 100%)'
+     }}
+     />
     
     <div className="relative py-8 flex-1">
       <div className="max-w-6xl mx-auto px-6 lg:px-8 pt-16 lg:pt-32 pb-12 min-h-screen">

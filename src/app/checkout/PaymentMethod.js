@@ -1,18 +1,40 @@
 "use client";
-import React, { useState, useCallback, memo } from 'react';
-import { ChevronLeft, ChevronRight, Check, ChevronDown, X, Info } from 'lucide-react';
+import React, { useState, useCallback, memo, useEffect } from 'react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  CheckCircle,
+  ChevronDown,
+  X,
+  Info,
+  SmileIcon,
+  ClipboardIcon,
+  InfoIcon,
+  FileSearch,
+  FileText,
+  Wrench,  // Changed from Tool/Tools
+  FileCheck,
+  ShieldCheck,
+  AlertCircle,
+  Loader,
+  ClipboardCheck
+} from 'lucide-react';
+
+// Adjust the import path as needed
+// Adjust the import path as needed
+
+const FinancingOptions = ({ handleStepActivation }) => {
 
 
 
-
-
-const FinancingOptions = () => {
   // Primary form state
   const [loanAmount, setLoanAmount] = useState(45.3);
   const [period, setPeriod] = useState(36);
   const [downPayment, setDownPayment] = useState(4);
   const [showFinancingForm, setShowFinancingForm] = useState(false);
   const [formType, setFormType] = useState('consumer');
+  const [isFinancingDetailsVisible, setIsFinancingDetailsVisible] = useState(false);
 
   // Form data state
   const [consumerFormData, setConsumerFormData] = useState({
@@ -47,6 +69,183 @@ const FinancingOptions = () => {
     otherInstallments: '',
     otherExpenses: ''
   });
+
+  const [showFinancingDetails, setShowFinancingDetails] = useState(false);
+  const [showCarAudit, setShowCarAudit] = useState(false);
+
+  // const ApplicationSentView = () => {
+  //   return (
+  //     <div className="bg-white p-4 rounded-lg mb-6">
+  //       <div className="flex justify-between items-center">
+  //         <div className="flex items-center gap-2">
+  //           <Check className="w-5 h-5 text-green-500" />
+  //           <h2 className="text-lg font-medium">Financing or wire transfer?</h2>
+  //         </div>
+  //         <div className="text-blue-600 flex items-center gap-1">
+  //           Financing
+  //           <ChevronUp className="w-4 h-4" />
+  //         </div>
+  //       </div>
+
+  //       <p className="text-gray-600 mt-4 mb-6">
+  //         Before we get into the CarAudit, we need to choose a financing method...
+  //       </p>
+
+  //       <div className="bg-gray-50 p-6 rounded-lg space-y-4">
+  //         <h3 className="font-medium">Are you considering financing?</h3>
+  //         <div className="space-y-3">
+  //           <div className="flex items-center gap-2">
+  //             <Check className="w-5 h-5 text-green-500" />
+  //             <span>We are the only ones able to finance cars from abroad</span>
+  //           </div>
+  //           <div className="flex items-center gap-2">
+  //             <Check className="w-5 h-5 text-green-500" />
+  //             <span>Unbeatable rate from 7.95%</span>
+  //           </div>
+  //           <div className="flex items-center gap-2">
+  //             <Check className="w-5 h-5 text-green-500" />
+  //             <span>Everything simply online, approval within 4 hours</span>
+  //           </div>
+  //         </div>
+
+  //         <div className="flex justify-between items-center">
+  //           <span className="text-gray-500">OUR PARTNER FOR FINANCING</span>
+  //           <span>Agos logo</span>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
+
+  const FinancingDetailsView = () => {
+    const [showDetails, setShowDetails] = useState(false);
+    const [showStep2, setShowStep2] = useState(true);
+    const [isFinancingExpanded, setIsFinancingExpanded] = useState(true);
+
+    return (
+      <div className="">
+        <div className="bg-white rounded-lg border">
+          <div
+            className="flex justify-between items-center p-4 cursor-pointer border-b"
+            onClick={() => setIsFinancingExpanded(!isFinancingExpanded)}
+          >
+            <div className="flex items-center gap-2">
+              <SmileIcon className="w-5 h-5 text-red-500" />
+              <span className="font-medium text-red-500">Financing</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-white bg-red-500 px-4 py-2 rounded-md">
+                Application sent <CheckCircle className='inline-block ml-2' />
+              </div>
+              <ChevronDown className={`w-4 h-4 text-gray-400 transform transition-transform ${isFinancingExpanded ? 'rotate-180' : ''}`} />
+            </div>
+          </div>
+
+          {isFinancingExpanded && (
+            <div className="p-4">
+              <div className="bg-red-50/90 p-4 rounded-lg">
+                <div className="flex gap-3">
+                  <ClipboardIcon className="w-5 h-5 text-red-600" />
+                  <div>
+                    <h3 className="font-medium text-black">Your request for financing is being processed</h3>
+                    <p className="text-sm text-red-600">All you have to do now is wait, usually a request takes us 24 hours to process</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <h3 className="font-medium mb-4">Parameters of your financing option.</h3>
+                <div className="grid grid-cols-4 gap-4 p-4 border rounded-lg">
+                  <div>
+                    <div className="text-gray-500 text-sm">DOWNPAYMENT (30%)</div>
+                    <div className="font-medium">€6,918</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500 text-sm">INSTALLMENT</div>
+                    <div className="font-medium">48</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500 text-sm">INTEREST RATE / APR</div>
+                    <div className="font-medium">9.61% / 11.17%</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500 text-sm">MONTHLY</div>
+                    <div className="font-medium text-red-600">€275</div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowDetails(!showDetails);
+                  }}
+                  className="w-full text-white p-3 bg-red-500 rounded-lg mt-4 text-sm flex items-center justify-center gap-2"
+                >
+                  {showDetails ? 'Hide' : 'Show'} financing details
+                  <InfoIcon className="w-4 h-4 text-white" />
+                </button>
+
+                {showDetails && (
+                  <div className="bg-blue-50 p-4 rounded-lg mt-4 space-y-3">
+                    {/* Financing details content */}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <h3 className="font-medium mb-4">How the car is paid for in financing</h3>
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-red-50/95 rounded-full flex items-center justify-center text-red-600">1</div>
+                    <div>
+                      <p className="font-medium">Now you only pay for reservation €0 and the check €79</p>
+                      <p className="text-sm text-gray-500">If you decide not to buy the car after checking the car, the reservation will be refunded in full.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-red-50/95 rounded-full flex items-center justify-center text-red-600">2</div>
+                    <div>
+                      <p className="font-medium">When you decide to buy the car after checking the car, you will pay €6,918</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-red-50/95 rounded-full flex items-center justify-center text-red-600">3</div>
+                    <div>
+                      <p className="font-medium">After the delivery of the car, the bank will repay the borrowed amount €16,143</p>
+                      <p className="text-sm text-gray-500">This amount is paid by the bank directly to us, you no longer have to worry about anything.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <div className="flex gap-2 h-2 mb-2">
+                    <div className="flex-1 bg-blue-600 rounded" />
+                    <div className="flex-1 bg-green-500 rounded" />
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <div>
+                      <div className="text-red-500 font-medium">€6,918</div>
+                      <div className="text-gray-500">you pay</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-green-500 font-medium">€16,143</div>
+                      <div className="text-gray-500">the bank pays</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+
 
 
   const [companyFormData, setCompanyFormData] = useState({
@@ -87,7 +286,9 @@ const FinancingOptions = () => {
   const handleIWantFinancing = useCallback(() => {
     setShowFinancingForm(true);
   }, []);
-
+  const handleSubmit = () => {
+    setIsFinancingDetailsVisible(true);
+  };
   // Memoized form components
   const FormInput = memo(({
     label,
@@ -526,8 +727,14 @@ const FinancingOptions = () => {
           </label>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-red-600 transition-colors text-sm">
-              Check the financing options (non-binding)
+            <button
+              onClick={() => {
+                setIsFinancingDetailsVisible(true);
+                handleStepActivation('financing', true); // This activates Step 2
+              }}
+              className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-red-600 transition-colors text-sm"
+            >
+              Submit Details
             </button>
             <button className="flex-1 text-gray-700 py-3 px-6 rounded-lg border hover:bg-gray-50 transition-colors text-sm">
               Thank you, I'm not interested anymore
@@ -535,6 +742,7 @@ const FinancingOptions = () => {
           </div>
         </div>
       </div>
+
     );
   });
 
@@ -805,7 +1013,13 @@ const FinancingOptions = () => {
           </label>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <button className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+            <button
+              onClick={() => {
+                setIsFinancingDetailsVisible(true);
+                handleStepActivation('financing', true);
+              }}
+              className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+            >
               Check the financing options (non-binding)
             </button>
             <button className="w-full text-gray-700 py-3 rounded-lg border hover:bg-gray-50 transition-colors text-sm">
@@ -819,8 +1033,11 @@ const FinancingOptions = () => {
 
   return (
     <div className="bg-white rounded-lg p-4 md:p-6 space-y-4 md:space-y-6 mb-6 md:mb-8">
-      {!showFinancingForm ? (
+      {isFinancingDetailsVisible ? (
+        <FinancingDetailsView />
+      ) : !showFinancingForm ? (
         <>
+          {/* Your existing financing specifications UI remains the same */}
           <div className="flex justify-between items-center border-b pb-4">
             <h2 className="text-xl font-semibold">Financing specifications</h2>
           </div>
@@ -925,8 +1142,8 @@ const FinancingOptions = () => {
             <button
               onClick={() => setFormType('consumer')}
               className={`flex-1 py-3 text-center text-sm transition-colors ${formType === 'consumer'
-                  ? 'bg-red-500 text-white'
-                  : 'bg-gray-100 text-gray-700'
+                ? 'bg-red-500 text-white'
+                : 'bg-gray-100 text-gray-700'
                 }`}
             >
               Consumer
@@ -934,8 +1151,8 @@ const FinancingOptions = () => {
             <button
               onClick={() => setFormType('company')}
               className={`flex-1 py-3 text-center text-sm transition-colors ${formType === 'company'
-                  ? 'bg-red-500 text-white'
-                  : 'bg-gray-100 text-gray-700'
+                ? 'bg-red-500 text-white'
+                : 'bg-gray-100 text-gray-700'
                 }`}
             >
               Company
@@ -972,6 +1189,152 @@ const FinancingOptions = () => {
   );
 };
 
+const CarAuditInspection = () => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [isProcessing] = useState(true); // Always true as request is being processed
+  
+  return (
+    <div className="mb-6">
+      <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
+      <div className="bg-white rounded-lg overflow-hidden border">
+        {/* Header - Changed to red theme */}
+        <div 
+          className="p-4 flex justify-between items-center cursor-pointer"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
+              <Check className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-medium text-[15px] text-red-500">CarAudit™ vehicle inspection</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-red-500 font-medium">€79</span>
+            <ChevronDown 
+              className={`w-4 h-4 text-gray-400 transform transition-transform ${
+                isExpanded ? 'rotate-180' : ''
+              }`} 
+            />
+          </div>
+        </div>
+
+        {/* Content */}
+        {isExpanded && (
+          <div className="px-4 pb-4">
+            <div className="bg-red-50 p-4 rounded-lg mb-4">
+              <div className="flex items-start gap-3">
+                <ClipboardIcon className="w-5 h-5 text-red-600 mt-0.5" />
+                <div>
+                  <h3 className="font-medium text-gray-900">Your inspection request is being processed</h3>
+                  <p className="text-sm text-red-600">Please wait while we verify the details. This usually takes up to 24 hours.</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-[15px] text-gray-700">
+              We want you to buy a car in the best possible condition and this is why we have to first of all
+              thoroughly inspect the chosen car. You receive a details inspection report on the technical condition
+              of the car, photo documentation and our recommendation. Then it is up to you, in your own time, to
+              decide whether you want to buy the car.
+            </p>
+
+            <div className="mt-8 flex justify-between">
+              <div className="flex-1 pr-8">
+                <h4 className="font-medium mb-6">What happens after ordering the inspection</h4>
+                
+                <div className="space-y-6">
+                  <div className="flex gap-4">
+                    <div className="text-red-500 font-medium">1</div>
+                    <div>
+                      <p className="font-medium text-[15px]">We get the car VIN from the dealer</p>
+                      <p className="text-sm text-gray-500">
+                        and we check this in legal status in European countries 
+                        to see whether the car has been stolen or crashed and we also check the mileage.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="text-red-500 font-medium">2</div>
+                    <div>
+                      <p className="font-medium text-[15px]">We arrange a visit by a mechanic</p>
+                      <p className="text-sm text-gray-500">
+                        who checks the actual technical condition of the car.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="text-red-500 font-medium">3</div>
+                    <div>
+                      <p className="font-medium text-[15px]">In the case of a tax-deductible car, we check,</p>
+                      <p className="text-sm text-gray-500">
+                        to see whether the car really is tax-deductible.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="text-red-500 font-medium">4</div>
+                    <div>
+                      <p className="font-medium text-[15px]">You receive an inspection report</p>
+                      <p className="text-sm text-gray-500">
+                        including evaluation of the condition of the car. We assume a guarantee for this being the actual
+                        condition of the car and are liable to you for this if you subsequently decide to buy the car.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-72 bg-white rounded-lg border p-4">
+                <div className="text-center text-sm text-gray-500 uppercase mb-2">
+                  SALE PRICE
+                </div>
+                <div className="text-center mb-2">
+                  <span className="text-gray-400 line-through">€199</span>
+                </div>
+                <div className="text-center text-2xl font-medium text-red-500 mb-4">€79</div>
+                <div className="flex items-start gap-2 bg-green-50 p-3 rounded-lg">
+                  <Check className="w-4 h-4 text-green-600 mt-1" />
+                  <p className="text-sm text-green-700">
+                    Money-back guarantee if the car fails the inspection.
+                  </p>
+                </div>
+
+                <p className="text-xs text-gray-500 mt-4">
+                  We try to reserve each car with the dealer before the inspection. However, we cannot guarantee this 
+                  reservation. It all depends on the specific dealer. If the car is sold in the meanwhile, we will provide you a full 
+                  refund of the price of the inspection.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 bg-blue-50 p-4 rounded-lg">
+              <div className="flex items-start gap-2">
+                <Info className="w-4 h-4 text-blue-600 mt-1" />
+                <p className="text-sm text-blue-800">
+                  When buying with financing, it is necessary to wait for the pre-approval of the loan to order.
+                </p>
+              </div>
+            </div>
+            
+            {/* Disabled continue button */}
+            <button 
+              disabled={isProcessing}
+              className="w-full mt-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2
+                bg-gray-100 text-gray-400 cursor-not-allowed"
+            >
+              <Loader className="w-4 h-4 animate-spin" />
+              Processing request...
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 
 
 const BankTransferForm = () => {
@@ -979,7 +1342,7 @@ const BankTransferForm = () => {
     <div className="bg-white rounded-lg p-4 md:p-6 space-y-4 md:space-y-6 mb-6 md:mb-8">
       {/* Car inspection info */}
       <div>
-       
+
         <p className="text-sm md:text-base text-gray-600">
           We want you to buy a car in the best possible condition and this is why we have to first of all
           thoroughly inspect the chosen car. You receive a details inspection report on the technical condition
@@ -1080,13 +1443,13 @@ const BankTransferForm = () => {
               <select className="w-24 p-2 md:p-3 border rounded-lg text-sm">
                 <option>+420</option>
               </select>
-              <input type="tel" className="flex-1 p-2 md:p-3 border rounded-lg text-sm" placeholder="674193684"/>
+              <input type="tel" className="flex-1 p-2 md:p-3 border rounded-lg text-sm" placeholder="674193684" />
             </div>
           </div>
 
           <div className="space-y-1">
             <label className="block text-xs text-gray-500">BIRTH DATE</label>
-            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="dd.mm.yyyy"/>
+            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="dd.mm.yyyy" />
           </div>
 
           {/* Billing Address Section */}
@@ -1096,23 +1459,23 @@ const BankTransferForm = () => {
 
           <div>
             <label className="block text-xs text-gray-500">STREET</label>
-            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="Street"/>
+            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="Street" />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-xs text-gray-500">HOUSE NUMBER</label>
-              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="House number"/>
+              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="House number" />
             </div>
             <div>
               <label className="block text-xs text-gray-500">POSTAL CODE</label>
-              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="222 00"/>
+              <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="222 00" />
             </div>
           </div>
 
           <div>
             <label className="block text-xs text-gray-500">CITY</label>
-            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="City"/>
+            <input type="text" className="w-full p-2 md:p-3 border rounded-lg text-sm" placeholder="City" />
           </div>
 
           <div>
@@ -1131,7 +1494,7 @@ const BankTransferForm = () => {
 
           {/* Same Address Checkbox */}
           <div className="col-span-full">
-            
+
           </div>
 
           {/* Submit Button */}
@@ -1145,6 +1508,7 @@ const BankTransferForm = () => {
 };
 
 const PaymentMethod = () => {
+
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [activeSteps, setActiveSteps] = useState({
     payment: false,
@@ -1152,18 +1516,19 @@ const PaymentMethod = () => {
     delivery: false,
     additionalServices: false
   });
-  const handleStepActivation = (payment) => {
+
+  const handleStepActivation = (payment, activateCarAudit = false) => {
     if (payment === 'bank') {
       setActiveSteps({
-        payment: false,  // This should be false initially
-        carAudit: true,   // Only this should be true initially
+        payment: false,
+        carAudit: true,
         delivery: false,
         additionalServices: false
       });
     } else if (payment === 'financing') {
       setActiveSteps({
         payment: false,
-        carAudit: false,
+        carAudit: activateCarAudit,
         delivery: false,
         additionalServices: false
       });
@@ -1172,20 +1537,20 @@ const PaymentMethod = () => {
   };
 
   const handleNextStep = (currentStep) => {
-    switch(currentStep) {
+    switch (currentStep) {
       case 'carAudit':
         setActiveSteps({
           payment: false,
-          carAudit: false,  // Hide current step
-          delivery: true,   // Show next step
+          carAudit: false,
+          delivery: true,
           additionalServices: false
         });
         break;
       case 'delivery':
         setActiveSteps({
-          payment: true,    // Show final step
+          payment: true,
           carAudit: false,
-          delivery: false,  // Hide current step
+          delivery: false,
           additionalServices: false
         });
         break;
@@ -1193,55 +1558,27 @@ const PaymentMethod = () => {
         break;
     }
   };
-  const StepIndicator = () => {
-    // This will show just the heading for the currently active step
-    return (
-      <div className="mb-6">
-        <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
-        <div className={`bg-white p-4 rounded-xl shadow-sm transition-all duration-300 ${
-          activeSteps.carAudit ? 'border-2 border-red-500 bg-red-50' : ''
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
-              activeSteps.carAudit ? 'bg-red-500' : 'bg-gray-100'
-            }`}>
-              <Check className={`w-4 h-4 ${
-                activeSteps.carAudit ? 'text-white' : 'text-gray-400'
-              }`} />
-            </div>
-            <span className={`text-[15px] ${
-              activeSteps.carAudit ? 'text-red-500 font-medium' : 'text-[#1E1B39]'
-            }`}>
-              CarAudit™ vehicle inspection
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  };
-  
+
+  // In your PaymentMethod component, modify the StepIndicator:
+
+
+
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-[#F8F9FE]">
       {/* Payment Selection */}
       <div className='w-full mb-6'>
-        {/* <div className="flex items-center gap-3 mb-4">
-          <div className="text-lg text-[#1E1B39] font-medium">How to make a purchase</div>
-          <button className="text-blue-600 text-sm">Find out more</button>
-        </div> */}
-
         <div className="text-sm text-gray-500 uppercase mb-2">STEP 1</div>
         <div className="bg-white p-4 rounded-xl shadow-sm">
           <h2 className="text-lg font-medium text-[#1E1B39] mb-4">Are you interested in financing?</h2>
           <div className="space-y-3">
-          <button
-  onClick={() => handleStepActivation('financing')}
-  className={`w-full p-4 border rounded-xl text-left transition-all ${
-    selectedPayment === 'financing'
-      ? 'border-2 border-red-500 bg-red-50'
-      : 'border-gray-200'
-  }`}
->
+            <button
+              onClick={() => handleStepActivation('financing')}
+              className={`w-full p-4 border rounded-xl text-left transition-all ${selectedPayment === 'financing'
+                ? 'border-2 border-red-500 bg-red-50'
+                : 'border-gray-200'
+                }`}
+            >
               <div className="flex items-center gap-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPayment === 'financing' ? 'border-red-500' : 'border-gray-300'
                   }`}>
@@ -1252,13 +1589,12 @@ const PaymentMethod = () => {
             </button>
 
             <button
-  onClick={() => handleStepActivation('bank')}
-  className={`w-full p-4 border rounded-xl text-left transition-all ${
-    selectedPayment === 'bank'
-      ? 'border-2 border-red-500 bg-red-50'
-      : 'border-gray-200'
-  }`}
->
+              onClick={() => handleStepActivation('bank')}
+              className={`w-full p-4 border rounded-xl text-left transition-all ${selectedPayment === 'bank'
+                ? 'border-2 border-red-500 bg-red-50'
+                : 'border-gray-200'
+                }`}
+            >
               <div className="flex items-center gap-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPayment === 'bank' ? 'border-red-500' : 'border-gray-300'
                   }`}>
@@ -1271,107 +1607,109 @@ const PaymentMethod = () => {
         </div>
       </div>
 
-   
+      {/* Bank Transfer Flow */}
+      {selectedPayment === 'bank' && (
+        <>
+          {activeSteps.carAudit && <BankTransferForm />}
 
-      
 
-      {/* Render selected component */}
-{/* Render selected component */}
-{selectedPayment === 'bank' && (
-  <>
-    {/* Step 2 when active */}
-    {activeSteps.carAudit && <StepIndicator />}
-    {activeSteps.carAudit && <BankTransferForm />}
-
-    {/* Step 3 when active */}
-    {activeSteps.delivery && (
-      <>
-        <div className="mb-6">
-          <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
-          <div className="bg-white p-4 rounded-xl shadow-sm transition-all duration-300 border-2 border-red-500 bg-red-50">
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-                <Check className="w-4 h-4 text-white" />
+          {activeSteps.delivery && (
+            <>
+              <div className="mb-6">
+                <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
+                <div className="bg-white p-4 rounded-xl shadow-sm transition-all duration-300 border-2 border-red-500 bg-red-50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-[15px] text-red-500 font-medium">Delivery</span>
+                  </div>
+                </div>
               </div>
-              <span className="text-[15px] text-red-500 font-medium">Delivery</span>
+            </>
+          )}
+
+          {activeSteps.payment && (
+            <>
+              <div className="mb-6">
+                <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
+                <div className="bg-white p-4 rounded-xl shadow-sm transition-all duration-300 border-2 border-red-500 bg-red-50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-[15px] text-red-500 font-medium">Payment</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      {/* Financing Flow */}
+      {/* Financing Flow */}
+      {/* Financing Flow */}
+      {/* Financing Flow */}
+      {selectedPayment === 'financing' && (
+        <>
+          <FinancingOptions handleStepActivation={handleStepActivation} />
+          {activeSteps.carAudit && <CarAuditInspection />}
+        </>
+      )}
+
+      {/* Bank Transfer Flow */}
+      {selectedPayment === 'bank' && (
+        <>
+          {activeSteps.carAudit && <BankTransferForm />}
+        </>
+      )}
+
+      {/* Steps list */}
+      <div className="space-y-6">
+        {!activeSteps.carAudit && (
+          <div>
+            <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+                  <Check className="w-4 h-4 text-gray-400" />
+                </div>
+                <span className="text-[15px]">CarAudit™ vehicle inspection</span>
+              </div>
             </div>
           </div>
-        </div>
-        {/* Delivery form will go here */}
-      </>
-    )}
+        )}
 
-    {/* Step 4 when active */}
-    {activeSteps.payment && (
-      <>
-        <div className="mb-6">
-          <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
-          <div className="bg-white p-4 rounded-xl shadow-sm transition-all duration-300 border-2 border-red-500 bg-red-50">
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-                <Check className="w-4 h-4 text-white" />
+        {!activeSteps.delivery && (
+          <div>
+            <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+                  <Check className="w-4 h-4 text-gray-400" />
+                </div>
+                <span className="text-[15px]">Delivery</span>
               </div>
-              <span className="text-[15px] text-red-500 font-medium">Payment</span>
             </div>
           </div>
-        </div>
-        {/* Payment form will go here */}
-      </>
-    )}
-  </>
-)}
+        )}
 
-{selectedPayment === 'financing' && <FinancingOptions />}
-
-{/* Steps list - hide each step when it's active */}
-<div className="space-y-6">
-  {/* Step 2 in list */}
-  {!activeSteps.carAudit && (
-    <div>
-      <div className="text-sm text-gray-500 uppercase mb-2">STEP 2</div>
-      <div className="bg-white p-4 rounded-xl shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-            <Check className="w-4 h-4 text-gray-400" />
+        {!activeSteps.payment && (
+          <div>
+            <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+                  <Check className="w-4 h-4 text-gray-400" />
+                </div>
+                <span className="text-[15px]">Payment</span>
+              </div>
+            </div>
           </div>
-          <span className="text-[15px]">CarAudit™ vehicle inspection</span>
-        </div>
+        )}
       </div>
-    </div>
-  )}
-
-  {/* Step 3 in list */}
-  {!activeSteps.delivery && (
-    <div>
-      <div className="text-sm text-gray-500 uppercase mb-2">STEP 3</div>
-      <div className="bg-white p-4 rounded-xl shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-            <Check className="w-4 h-4 text-gray-400" />
-          </div>
-          <span className="text-[15px]">Delivery</span>
-        </div>
-      </div>
-    </div>
-  )}
-
-  {/* Step 4 in list */}
-  {!activeSteps.payment && (
-    <div>
-      <div className="text-sm text-gray-500 uppercase mb-2">STEP 4</div>
-      <div className="bg-white p-4 rounded-xl shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
-            <Check className="w-4 h-4 text-gray-400" />
-          </div>
-          <span className="text-[15px]">Payment</span>
-        </div>
-      </div>
-    </div>
-  )}
-</div>
     </div>
   );
 };
-
 export default PaymentMethod;
